@@ -2,12 +2,12 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     127.0.0.1
     database_port:     ~
-    database_name:     symfony
+    database_name:     srpsbooking
     database_user:     root
     database_password: ~
 
     mailer_transport:  smtp
-    mailer_host:       127.0.0.1
+    mailer_host:       mail-relay.gla.ac.uk
     mailer_user:       ~
     mailer_password:   ~
 
