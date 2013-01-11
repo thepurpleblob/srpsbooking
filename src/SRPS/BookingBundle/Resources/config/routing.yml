@@ -1,0 +1,7 @@
+srps_booking_homepage:
+    pattern:  /booking
+    defaults: { _controller: SRPSBookingBundle:Default:index }
+
+srps_booking_homepage:
+    pattern:  /booking/admin
+    defaults: { _controller: SRPSBookingBundle:Admin:index }
