@@ -2,6 +2,26 @@ srps_booking_homepage:
     pattern:  /booking
     defaults: { _controller: SRPSBookingBundle:Default:index }
 
-srps_booking_homepage:
-    pattern:  /booking/admin
+admin_index:
+    pattern:  /admin
     defaults: { _controller: SRPSBookingBundle:Admin:index }
+    
+admin_service:
+    pattern:  /admin/service
+    defaults: { _controller: SRPSBookingBundle:Service:index }
+        
+admin_service_new:
+    pattern:  /admin/service/new
+    defaults: { _controller: SRPSBookingBundle:Service:new }
+    
+admin_service_show:
+    pattern:  /admin/service/{id}/show
+    defaults: { _controller: SRPSBookingBundle:Service:show }
+    
+admin_service_create:
+    pattern:  /admin/service/create
+    defaults: { _controller: SRPSBookingBundle:Service:create }
+    
+admin_service_edit:
+    pattern:  /admin/service/{id}/edit
+    defaults: { _controller: SRPSBookingBundle:Service:index }

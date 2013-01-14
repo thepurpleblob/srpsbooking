@@ -13,7 +13,6 @@ use SRPS\BookingBundle\Form\ServiceType;
 /**
  * Service controller.
  *
- * @Route("/admin/service")
  */
 class ServiceController extends Controller
 {
