@@ -10,8 +10,14 @@
 {% block title %}SRPS Bookings Administration{% endblock title %}
 
 {% block body %}
-    {% block sidebar %}{% endblock sidebar %}
-    {% block content %}{% endblock content %}
+    <div class="row-fluid">
+        <div class="span3">
+            {% block sidebar %}{% endblock sidebar %}
+        </div>
+        <div class="span9">    
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
 {% endblock body%}
 
 {% block javascripts %}

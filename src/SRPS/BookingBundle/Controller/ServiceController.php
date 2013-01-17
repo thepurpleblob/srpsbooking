@@ -19,8 +19,6 @@ class ServiceController extends Controller
     /**
      * Lists all Service entities.
      *
-     * @Route("/", name="admin_service")
-     * @Template()
      */
     public function indexAction()
     {
@@ -28,9 +26,8 @@ class ServiceController extends Controller
 
         $entities = $em->getRepository('SRPSBookingBundle:Service')->findAll();
 
-        return array(
-            'entities' => $entities,
-        );
+        return $this->render('SRPSBookingBundle:Service:index.html.twig',
+            array('entities'=>$entities));
     }
 
     /**
@@ -51,35 +48,32 @@ class ServiceController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return $this->render('SRPSBookingBundle:Service:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
     }
 
     /**
      * Displays a form to create a new Service entity.
-     *
-     * @Route("/new", name="admin_service_new")
-     * @Template()
      */
     public function newAction()
     {
         $entity = new Service();
+        
+        // Populate
+        $entity->setDate( new \DateTime() );
+        
         $form   = $this->createForm(new ServiceType(), $entity);
 
-        return array(
+        return $this->render('SRPSBookingBundle:Service:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ));
     }
 
     /**
      * Creates a new Service entity.
-     *
-     * @Route("/create", name="admin_service_create")
-     * @Method("POST")
-     * @Template("SRPSBookingBundle:Service:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -95,17 +89,14 @@ class ServiceController extends Controller
             return $this->redirect($this->generateUrl('admin_service_show', array('id' => $entity->getId())));
         }
 
-        return array(
+        return $this->render('SRPSBookingBundle:Service:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ));
     }
 
     /**
      * Displays a form to edit an existing Service entity.
-     *
-     * @Route("/{id}/edit", name="admin_service_edit")
-     * @Template()
      */
     public function editAction($id)
     {
@@ -120,19 +111,15 @@ class ServiceController extends Controller
         $editForm = $this->createForm(new ServiceType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
     }
 
     /**
      * Edits an existing Service entity.
-     *
-     * @Route("/{id}/update", name="admin_service_update")
-     * @Method("POST")
-     * @Template("SRPSBookingBundle:Service:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
@@ -155,11 +142,11 @@ class ServiceController extends Controller
             return $this->redirect($this->generateUrl('admin_service_edit', array('id' => $id)));
         }
 
-        return array(
+        return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
     }
 
     /**

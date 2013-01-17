@@ -1,7 +1,47 @@
 <h1>Service creation</h1>
 
 <form action="{{ path('admin_service_create') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+  {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.visible) }}
+    {{ form_row(form.date) }}        
+                
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Meal name</th>
+                    <th>Visible?</th>
+                    <th>Meal price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="lead">A</th>
+                    <td>{{ form_widget(form.mealaname) }}</td>
+                    <td>{{ form_widget(form.mealavisible) }}</td>
+                    <td>{{ form_widget(form.mealaprice) }}</td>
+                </tr>
+                <tr>
+                    <th class="lead">B</th>
+                    <td>{{ form_widget(form.mealbname) }}</td>
+                    <td>{{ form_widget(form.mealbvisible) }}</td>
+                    <td>{{ form_widget(form.mealbprice) }}</td>
+                </tr>
+                <tr>
+                    <th class="lead">C</th>
+                    <td>{{ form_widget(form.mealcname) }}</td>
+                    <td>{{ form_widget(form.mealcvisible) }}</td>
+                    <td>{{ form_widget(form.mealcprice) }}</td>
+                </tr>
+                <tr>
+                    <th class="lead">D</th>
+                    <td>{{ form_widget(form.mealdname) }}</td>
+                    <td>{{ form_widget(form.mealdvisible) }}</td>
+                    <td>{{ form_widget(form.mealdprice) }}</td>
+                </tr>
+            </tbody>
+        </table>      
     <p>
         <button type="submit">Create</button>
     </p>

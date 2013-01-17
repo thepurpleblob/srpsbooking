@@ -1,69 +1,39 @@
-<h1>Service list</h1>
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
 
-<table class="records_list">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Visible</th>
-            <th>Date</th>
-            <th>Mealaname</th>
-            <th>Mealavisible</th>
-            <th>Mealaprice</th>
-            <th>Mealbname</th>
-            <th>Mealbvisible</th>
-            <th>Mealbprice</th>
-            <th>Mealcname</th>
-            <th>Mealcvisible</th>
-            <th>Mealcprice</th>
-            <th>Mealdname</th>
-            <th>Mealdvisible</th>
-            <th>Mealdprice</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td><a href="{{ path('admin_service_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.code }}</td>
-            <td>{{ entity.name }}</td>
-            <td>{{ entity.description }}</td>
-            <td>{{ entity.visible }}</td>
-            <td>{% if entity.date %}{{ entity.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-            <td>{{ entity.mealaname }}</td>
-            <td>{{ entity.mealavisible }}</td>
-            <td>{{ entity.mealaprice }}</td>
-            <td>{{ entity.mealbname }}</td>
-            <td>{{ entity.mealbvisible }}</td>
-            <td>{{ entity.mealbprice }}</td>
-            <td>{{ entity.mealcname }}</td>
-            <td>{{ entity.mealcvisible }}</td>
-            <td>{{ entity.mealcprice }}</td>
-            <td>{{ entity.mealdname }}</td>
-            <td>{{ entity.mealdvisible }}</td>
-            <td>{{ entity.mealdprice }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('admin_service_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_service_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% block content %}
+    <h2>Service list</h2>
 
-<ul>
-    <li>
-        <a href="{{ path('admin_service_new') }}">
-            Create a new entry
-        </a>
-    </li>
-</ul>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Visible</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.code }}</td>
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.visible }}</td>
+                    <td>{% if entity.date %}{{ entity.date|date('d/m/Y') }}{% endif %}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-success" href="{{ path('admin_service_show', { 'id': entity.id }) }}">show</a>
+                            <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': entity.id }) }}">edit</a>
+                        </div>
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('admin_service_new') }}">
+                Create a new entry
+            </a>
+        </div>
+{% endblock content %}

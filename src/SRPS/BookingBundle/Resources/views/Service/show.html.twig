@@ -1,97 +1,79 @@
-<h1>Service</h1>
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
 
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ entity.id }}</td>
-        </tr>
-        <tr>
-            <th>Code</th>
-            <td>{{ entity.code }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ entity.name }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ entity.description }}</td>
-        </tr>
-        <tr>
-            <th>Visible</th>
-            <td>{{ entity.visible }}</td>
-        </tr>
-        <tr>
-            <th>Date</th>
-            <td>{{ entity.date|date('Y-m-d H:i:s') }}</td>
-        </tr>
-        <tr>
-            <th>Mealaname</th>
-            <td>{{ entity.mealaname }}</td>
-        </tr>
-        <tr>
-            <th>Mealavisible</th>
-            <td>{{ entity.mealavisible }}</td>
-        </tr>
-        <tr>
-            <th>Mealaprice</th>
-            <td>{{ entity.mealaprice }}</td>
-        </tr>
-        <tr>
-            <th>Mealbname</th>
-            <td>{{ entity.mealbname }}</td>
-        </tr>
-        <tr>
-            <th>Mealbvisible</th>
-            <td>{{ entity.mealbvisible }}</td>
-        </tr>
-        <tr>
-            <th>Mealbprice</th>
-            <td>{{ entity.mealbprice }}</td>
-        </tr>
-        <tr>
-            <th>Mealcname</th>
-            <td>{{ entity.mealcname }}</td>
-        </tr>
-        <tr>
-            <th>Mealcvisible</th>
-            <td>{{ entity.mealcvisible }}</td>
-        </tr>
-        <tr>
-            <th>Mealcprice</th>
-            <td>{{ entity.mealcprice }}</td>
-        </tr>
-        <tr>
-            <th>Mealdname</th>
-            <td>{{ entity.mealdname }}</td>
-        </tr>
-        <tr>
-            <th>Mealdvisible</th>
-            <td>{{ entity.mealdvisible }}</td>
-        </tr>
-        <tr>
-            <th>Mealdprice</th>
-            <td>{{ entity.mealdprice }}</td>
-        </tr>
-    </tbody>
-</table>
+{% block content %}
+    <h2>Service</h2>
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_service') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('admin_service_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('admin_service_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Code</th>
+                <td>{{ entity.code }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
+            </tr>
+            <tr>
+                <th>Visible</th>
+                <td>{{ entity.visible }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ entity.date|date('d/m/Y') }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Meals</h3>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Visible</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <th class="lead">A</th>
+                <td>{{ entity.mealaname }}</td>
+                <td>{{ entity.mealavisible }}</td>
+                <td>{{ entity.mealaprice }}</td>
+            </tr>
+            <tr>
+                <th class="lead">B</th>
+                <td>{{ entity.mealbname }}</td>
+                <td>{{ entity.mealbvisible }}</td>
+                <td>{{ entity.mealbprice }}</td>
+            </tr>
+            <tr>
+                <th class="lead">C</th>
+                <td>{{ entity.mealcname }}</td>
+                <td>{{ entity.mealcvisible }}</td>
+                <td>{{ entity.mealcprice }}</td>
+            </tr>
+            <tr>
+                <th class="lead">D</th>
+                <td>{{ entity.mealdname }}</td>
+                <td>{{ entity.mealdvisible }}</td>
+                <td>{{ entity.mealdprice }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="btn-group">
+            <a class="btn btn-success" href="{{ path('admin_service') }}">
+                Back to the list
+            </a>
+            <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+    </div>
+{% endblock content %}
