@@ -63,6 +63,15 @@ class ServiceController extends Controller
         
         // Populate
         $entity->setDate( new \DateTime() );
+        $entity->setVisible( 1 );
+        $entity->setMealaname( 'Breakfast');
+        $entity->setMealavisible(0);
+        $entity->setMealbname( 'Lunch');
+        $entity->setMealbvisible(0);
+        $entity->setMealcname( 'Dinner');
+        $entity->setMealcvisible(0);  
+        $entity->setMealdname( '');
+        $entity->setMealdvisible(0);        
         
         $form   = $this->createForm(new ServiceType(), $entity);
 
