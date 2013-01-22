@@ -18,30 +18,30 @@ class ServiceType extends AbstractType
                 'choices' => array(1 => 'Yes', 0 => 'No'),
                 'required' => false
             ))
-            ->add('date', 'date', array('widget'=>'single_text'))
+            ->add('date', 'date', array('widget'=>'single_text', 'format'=>'dd/MM/yyyy'))
             ->add('mealaname')
             ->add('mealavisible', 'choice', array(
                 'choices' => array(1 => 'Yes', 0 => 'No'),
                 'required' => false
-            ))                
+            ))
             ->add('mealaprice')
             ->add('mealbname')
             ->add('mealbvisible', 'choice', array(
                 'choices' => array(1 => 'Yes', 0 => 'No'),
                 'required' => false
-            ))                
+            ))
             ->add('mealbprice')
             ->add('mealcname')
             ->add('mealcvisible', 'choice', array(
                 'choices' => array(1 => 'Yes', 0 => 'No'),
                 'required' => false
-            ))                
+            ))
             ->add('mealcprice')
             ->add('mealdname')
             ->add('mealdvisible', 'choice', array(
                 'choices' => array(1 => 'Yes', 0 => 'No'),
                 'required' => false
-            ))              
+            ))
             ->add('mealdprice')
         ;
     }

@@ -110,6 +110,29 @@ class Service {
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $mealdprice;
+    
+    /**
+     * constructor - set defaults
+     */
+    public function __construct() {
+        $this->code = '';
+        $this->name = '';
+        $this->description = '';
+        $this->visible = 1;
+        $this->date = new \DateTime();
+        $this->mealaname = 'Breakfast';
+        $this->mealbname = 'Lunch';
+        $this->mealcname = 'Dinner';
+        $this->mealdname = 'Not used';
+        $this->mealaprice = 0;
+        $this->mealbprice = 0;
+        $this->mealcprice = 0;
+        $this->mealdprice = 0;
+        $this->mealavisible = 0;
+        $this->mealbvisible = 0;
+        $this->mealcvisible = 0;
+        $this->mealdvisible = 0;
+    }
 
     /**
      * Get code

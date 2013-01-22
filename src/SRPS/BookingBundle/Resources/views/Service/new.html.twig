@@ -6,7 +6,8 @@
 
     <h2>New service</h2>
 
-    <form class="form-horizontal" action="{{ path('admin_service_create') }}" method="post" {{ form_enctype(form) }}>
+    <form class="form-horizontal" action="{{ path('admin_service_create') }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
+      {{ form_row(form.code) }}
       {{ form_row(form.name) }}
         {% spaceless %}
             <div class="control-group">
@@ -59,6 +60,7 @@
         <p>
             <button type="submit">Create</button>
         </p>
+        {{ form_rest(form) }}     
     </form>
 
     <ul class="record_actions">
@@ -70,3 +72,11 @@
     </ul>
 
 {% endblock content %}
+    
+{%block javascripts %}
+    {{ parent() }}
+    
+    <script>
+        $('#srps_bookingbundle_servicetype_date').datepicker({dateFormat: "dd/mm/yy" });
+    </script>
+{% endblock javascripts %}    

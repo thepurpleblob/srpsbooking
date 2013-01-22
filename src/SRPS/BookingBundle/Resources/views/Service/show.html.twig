@@ -15,11 +15,11 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ entity.description }}</td>
+                <td>{{ entity.description|raw }}</td>
             </tr>
             <tr>
                 <th>Visible</th>
-                <td>{{ entity.visible }}</td>
+                <td>{{ entity.visible ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>Date</th>
@@ -27,9 +27,9 @@
             </tr>
         </tbody>
     </table>
-    
+
     <h3>Meals</h3>
-    
+
     <table class="table">
         <thead>
             <tr>
@@ -40,35 +40,34 @@
             </tr>
         </thead>
         <tbody>
-            
             <tr>
                 <th class="lead">A</th>
                 <td>{{ entity.mealaname }}</td>
-                <td>{{ entity.mealavisible }}</td>
-                <td>{{ entity.mealaprice }}</td>
+                <td>{{ entity.mealavisible ? 'Yes' : 'No' }}</td>
+                <td>&pound;{{ entity.mealaprice }}</td>
             </tr>
             <tr>
                 <th class="lead">B</th>
                 <td>{{ entity.mealbname }}</td>
-                <td>{{ entity.mealbvisible }}</td>
-                <td>{{ entity.mealbprice }}</td>
+                <td>{{ entity.mealbvisible ? 'Yes' : 'No' }}</td>
+                <td>&pound;{{ entity.mealbprice }}</td>
             </tr>
             <tr>
                 <th class="lead">C</th>
                 <td>{{ entity.mealcname }}</td>
-                <td>{{ entity.mealcvisible }}</td>
-                <td>{{ entity.mealcprice }}</td>
+                <td>{{ entity.mealcvisible ? 'Yes' : 'No' }}</td>
+                <td>&pound;{{ entity.mealcprice }}</td>
             </tr>
             <tr>
                 <th class="lead">D</th>
                 <td>{{ entity.mealdname }}</td>
-                <td>{{ entity.mealdvisible }}</td>
-                <td>{{ entity.mealdprice }}</td>
+                <td>{{ entity.mealdvisible ? 'Yes' : 'No' }}</td>
+                <td>&pound;{{ entity.mealdprice }}</td>
             </tr>
         </tbody>
     </table>
 
-    <div class="btn-group">
+    <div>
             <a class="btn btn-success" href="{{ path('admin_service') }}">
                 Back to the list
             </a>
