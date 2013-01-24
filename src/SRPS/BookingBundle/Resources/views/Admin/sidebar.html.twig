@@ -1,0 +1,21 @@
+{# Sidebar template #}
+
+<h4>Admin menu</h4>
+
+<ul id="adminmenu">
+    <li>
+        <a class="btn" href="{{ path('admin_service_show', { 'id': entity.id }) }}">
+            Show service
+        </a>
+    </li>
+    <li>
+        <a class="btn" href="{{ path('admin_service_edit', { 'id': entity.id }) }}">
+            Basic details
+        </a>
+    </li>
+    <li>
+        <a class="btn" href="{{ path('admin_service') }}">
+            Return to list
+        </a>
+    </li>
+</ul>

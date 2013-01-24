@@ -2,6 +2,10 @@
 
 {% form_theme edit_form 'SRPSBookingBundle:Admin:fields.html.twig' %}
 
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
 {% block content %}
     <h2>Service edit</h2>
 

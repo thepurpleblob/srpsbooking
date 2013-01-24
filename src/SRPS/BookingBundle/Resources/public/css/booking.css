@@ -1,0 +1,16 @@
+body {
+    padding: 10px;
+}
+
+ul#adminmenu {
+    list-style-type: none;
+    color: red;
+}
+
+#adminmenu li {
+    margin-bottom: 8px;
+}
+
+#adminmenu li a.btn {
+    width: 100px;
+}

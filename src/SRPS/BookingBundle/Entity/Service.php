@@ -8,6 +8,9 @@
 namespace SRPS\BookingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Service describes the main data
@@ -134,6 +137,17 @@ class Service {
         $this->mealdvisible = 0;
     }
 
+    /**
+     * Validation stuff
+     */
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('code', new NotBlank());        
+        $metadata->addPropertyConstraint('name', new NotBlank());
+        $metadata->addPropertyConstraint('description', new NotBlank()); 
+        $metadata->addPropertyConstraint('date', new Assert\Date());        
+    }
+    
     /**
      * Get code
      *
