@@ -6,7 +6,7 @@
 
     <h2>New service</h2>
 
-    <form class="form-horizontal" action="{{ path('admin_service_create') }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
+    <form id="service-new-form" class="form-horizontal" action="{{ path('admin_service_create') }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
       {{ form_row(form.code) }}
       {{ form_row(form.name) }}
         {% spaceless %}
@@ -57,25 +57,20 @@
                     </tr>
                 </tbody>
             </table>      
-        <p>
-            <button type="submit">Create</button>
-        </p>
         {{ form_rest(form) }}     
     </form>
-
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('admin_service') }}">
-                Back to the list
-            </a>
-        </li>
-    </ul>
+    
+    <button class ="btn btn-primary" onclick="$('#service-new-form').submit();">
+        Create service
+    </button>
+    <a class="btn btn-warning" href="{{ path('admin_service') }}">
+        Cancel
+    </a>
 
 {% endblock content %}
     
 {%block javascripts %}
     {{ parent() }}
-    
     <script>
         $('#srps_bookingbundle_servicetype_date').datepicker({dateFormat: "dd/mm/yy" });
     </script>

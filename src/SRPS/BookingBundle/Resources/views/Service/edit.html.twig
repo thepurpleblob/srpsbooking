@@ -5,9 +5,19 @@
 {% block content %}
     <h2>Service edit</h2>
 
-    <form class="form-horizontal" action="{{ path('admin_service_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    <form id="service-edit-form" class="form-horizontal" action="{{ path('admin_service_update', { 'id': entity.id }) }}" 
+          novalidate="novalidate" method="post" {{ form_enctype(edit_form) }}>
+    {{ form_row(edit_form.code) }}
     {{ form_row(edit_form.name) }}
-    {{ form_row(edit_form.description) }}
+        {% spaceless %}
+            <div class="control-group">
+                {{ form_label(edit_form.description, null, {'label_attr': {'class': 'control-label'}}) }}
+                <div class="controls">
+                    {{ form_widget(edit_form.description, {'attr': {'cols': '40', 'rows': '8'}}) }}
+                    {{ form_errors(edit_form.description) }}
+                </div>        
+            </div>
+        {% endspaceless %}
     {{ form_row(edit_form.visible) }}
     {{ form_row(edit_form.date) }}        
                 
@@ -47,22 +57,21 @@
                 </tr>
             </tbody>
         </table>    
-        <p>
-            <button type="submit">Edit</button>
-        </p>
+        {{ form_rest(edit_form) }} 
     </form>
 
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('admin_service') }}">
-                Back to the list
-            </a>
-        </li>
-        <li>
-            <form action="{{ path('admin_service_delete', { 'id': entity.id }) }}" method="post">
-                {{ form_widget(delete_form) }}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
-    </ul>
+    <button class ="btn btn-primary" onclick="$('#service-edit-form').submit();">
+        Save changes
+    </button>
+    <a class="btn btn-warning" href="{{ path('admin_service_show', { 'id': entity.id }) }}">
+        Cancel
+    </a>
 {% endblock content %}
+    
+{%block javascripts %}
+    {{ parent() }}
+    
+    <script>
+        $('#srps_bookingbundle_servicetype_date').datepicker({dateFormat: "dd/mm/yy" });
+    </script>
+{% endblock javascripts %} 
