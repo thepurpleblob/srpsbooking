@@ -33,3 +33,15 @@ admin_service_update:
 admin_service_delete:
     pattern:  /admin/service/{id}/delete
     defaults: { _controller: SRPSBookingBundle:Service:delete }
+    
+admin_destination:
+    pattern:  /admin/destination/{serviceid}
+    defaults: { _controller: SRPSBookingBundle:Destination:index }    
+    
+admin_destination_new:
+    pattern:  /admin/destination/{serviceid}/new
+    defaults: { _controller: SRPSBookingBundle:Destination:new }  
+    
+admin_destination_create:
+    pattern:  /admin/destination/{serviceid}/create
+    defaults: { _controller: SRPSBookingBundle:Destination:create }    

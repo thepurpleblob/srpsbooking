@@ -1,0 +1,32 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h2>Destinations</h2>
+    <h4>{{ service.name }}</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.description }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('admin_service_show', { 'id': entity.id }) }}">show</a>
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('admin_destination_new', { 'serviceid': service.id }) }}">
+                Add a new destination
+            </a>
+        </div>
+{% endblock content %}

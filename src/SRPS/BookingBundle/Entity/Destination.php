@@ -24,6 +24,11 @@ class Destination {
     protected $id;
     
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $serviceid;
+    
+    /**
      * @ORM\Column(type="string", length=150)
      */    
     protected $name;
@@ -104,5 +109,28 @@ class Destination {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set serviceid
+     *
+     * @param integer $serviceid
+     * @return Destination
+     */
+    public function setServiceid($serviceid)
+    {
+        $this->serviceid = $serviceid;
+    
+        return $this;
+    }
+
+    /**
+     * Get serviceid
+     *
+     * @return integer 
+     */
+    public function getServiceid()
+    {
+        return $this->serviceid;
     }
 }

@@ -20,14 +20,21 @@ class DestinationController extends Controller
      * Lists all Service entities.
      *
      */
-    public function indexAction()
+    public function indexAction($serviceid)
     {
         $em = $this->getDoctrine()->getManager();
+        
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->find($serviceid);
 
-        $entities = $em->getRepository('SRPSBookingBundle:Destination')->findAll();
+        $entities = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
 
         return $this->render('SRPSBookingBundle:Destination:index.html.twig',
-            array('entities'=>$entities));
+            array(
+                'entities' => $entities,
+                'service' => $service,
+                ));
     }
 
     /**
@@ -57,14 +64,20 @@ class DestinationController extends Controller
     /**
      * Displays a form to create a new Service entity.
      */
-    public function newAction()
+    public function newAction($serviceid)
     {
-        $entity = new Service();       
+        $entity = new Destination(); 
+        $entity->setServiceid($serviceid);
+        
+        $em = $this->getDoctrine()->getManager();        
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->find($serviceid);        
         
         $form   = $this->createForm(new DestinationType(), $entity);
 
         return $this->render('SRPSBookingBundle:Destination:new.html.twig', array(
             'entity' => $entity,
+            'service' => $service,
             'form'   => $form->createView(),
         ));
     }

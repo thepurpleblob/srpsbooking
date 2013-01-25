@@ -1,0 +1,36 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% form_theme form 'SRPSBookingBundle:Admin:fields.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+
+    <h2>New destination</h2>
+    <h4>{{ service.name }}</h4>
+
+    <form id="destination-new-form" class="form-horizontal" action="{{ path('admin_destination_create', {'serviceid': service.id}) }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
+      {{ form_row(form.name) }}
+        {% spaceless %}
+            <div class="control-group">
+                {{ form_label(form.description, null, {'label_attr': {'class': 'control-label'}}) }}
+                <div class="controls">
+                    {{ form_widget(form.description, {'attr': {'cols': '40', 'rows': '4'}}) }}
+                    {{ form_errors(form.description) }}
+                </div>        
+            </div>
+        {% endspaceless %}
+        {{ form_rest(form) }}     
+    </form>
+    
+    <button class ="btn btn-primary" onclick="$('#destination-new-form').submit();">
+        Create destination
+    </button>
+    <a class="btn btn-warning" href="{{ path('admin_destination', { 'serviceid': service.id }) }}">
+        Cancel
+    </a>
+
+{% endblock content %}
+ 
