@@ -45,3 +45,23 @@ admin_destination_new:
 admin_destination_create:
     pattern:  /admin/destination/{serviceid}/create
     defaults: { _controller: SRPSBookingBundle:Destination:create }    
+    
+admin_destination_edit:
+    pattern:  /admin/destination/{id}/edit
+    defaults: { _controller: SRPSBookingBundle:Destination:edit }  
+    
+admin_destination_update:
+    pattern:  /admin/destination/{id}/update
+    defaults: { _controller: SRPSBookingBundle:Destination:update }   
+    
+admin_priceband:
+    pattern:  /admin/priceband/{serviceid}
+    defaults: { _controller: SRPSBookingBundle:Priceband:index }    
+    
+admin_priceband_new:
+    pattern:  /admin/priceband/{serviceid}/ned
+    defaults: { _controller: SRPSBookingBundle:Priceband:new }  
+    
+admin_priceband_edit:
+    pattern:  /admin/priceband/{id}/edit
+    defaults: { _controller: SRPSBookingBundle:Priceband:edit }     

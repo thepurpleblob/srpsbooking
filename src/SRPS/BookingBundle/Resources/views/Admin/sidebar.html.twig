@@ -4,17 +4,29 @@
 
 <ul id="adminmenu">
     <li>
-        <a class="btn" href="{{ path('admin_service_show', { 'id': entity.id }) }}">
+        <a class="btn btn-primary" href="{{ path('admin_service_show', { 'id': serviceid }) }}">
             Show service
         </a>
     </li>
     <li>
-        <a class="btn" href="{{ path('admin_service_edit', { 'id': entity.id }) }}">
-            Basic details
+        <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
+            Edit service
         </a>
     </li>
+    {% if serviceid %}
+        <li>
+            <a class="btn btn-warning" href="{{ path('admin_destination', { 'serviceid': serviceid }) }}">
+                Edit destinations
+            </a>
+        </li>   
+        <li>
+            <a class="btn btn-warning" href="{{ path('admin_priceband', { 'serviceid': serviceid }) }}">
+                Edit price bands
+            </a>
+        </li>           
+    {% endif %}
     <li>
-        <a class="btn" href="{{ path('admin_service') }}">
+        <a class="btn btn-success" href="{{ path('admin_service') }}">
             Return to list
         </a>
     </li>

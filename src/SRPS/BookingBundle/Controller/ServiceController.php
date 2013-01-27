@@ -51,6 +51,7 @@ class ServiceController extends Controller
         return $this->render('SRPSBookingBundle:Service:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'serviceid' => $id,
         ));
     }
 
@@ -112,6 +113,7 @@ class ServiceController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'serviceid' => $id,
         ));
     }
 
@@ -143,6 +145,7 @@ class ServiceController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'serviceid' => $id,
         ));
     }
 

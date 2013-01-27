@@ -14,10 +14,10 @@ use SRPS\BookingBundle\Form\DestinationType;
  * Service controller.
  *
  */
-class DestinationController extends Controller
+class PricebandController extends Controller
 {
     /**
-     * Lists all Service entities.
+     * Lists all Priceband entities.
      *
      */
     public function indexAction($serviceid)
@@ -27,10 +27,10 @@ class DestinationController extends Controller
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
-        $entities = $em->getRepository('SRPSBookingBundle:Destination')
+        $entities = $em->getRepository('SRPSBookingBundle:Priceband')
             ->findByServiceid($serviceid);
 
-        return $this->render('SRPSBookingBundle:Destination:index.html.twig',
+        return $this->render('SRPSBookingBundle:Priceband:index.html.twig',
             array(
                 'entities' => $entities,
                 'service' => $service,
@@ -39,7 +39,7 @@ class DestinationController extends Controller
     }
 
     /**
-     * Displays a form to create a new Destination entity.
+     * Displays a form to create a new Priceband entity.
      */
     public function newAction($serviceid)
     {
