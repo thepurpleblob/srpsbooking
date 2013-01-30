@@ -7,28 +7,41 @@
 {% block content %}
     <h2>Price bands</h2>
     <h4>{{ service.name }}</h4>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Destination</th>
-                <th>First</th>
-                <th>Standard</th>
-                <th>Child</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
+    
+    {% if destinations is empty %}
+        <div class="alert alert-block alert-error">
+            There are no destinations. You need to create at least one destination first.
+        </div>
+    {% else %}
+    
+        {% if entities is empty %}
+            <div class="alert alert-block alert-warning">
+                No price bands have been defined. 
+            </div>        
+        {% endif %}
+    
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>{{ entity.first }}</td>
-                    <td>{{ entity.standard }}</td>
-                    <td>{{ entity.child }}</td>
-                    <td>
-                        <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': entity.id }) }}">Edit</a>
-                    </td>
+                    <th>Destination</th>
+                    <th>First</th>
+                    <th>Standard</th>
+                    <th>Child</th>
                 </tr>
-        {% endfor %}
+            </thead>
+            <tbody>
+      
+            {% for entity in entities %}
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>{{ entity.first }}</td>
+                        <td>{{ entity.standard }}</td>
+                        <td>{{ entity.child }}</td>
+                        <td>
+                            <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': entity.id }) }}">Edit</a>
+                        </td>
+                    </tr>
+            {% endfor %}
             </tbody>
         </table>
 
@@ -37,4 +50,5 @@
                 Add a new price band
             </a>
         </div>
+    {% endif %}
 {% endblock content %}

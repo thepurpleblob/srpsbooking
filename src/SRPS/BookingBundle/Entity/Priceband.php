@@ -48,6 +48,12 @@ class Priceband {
      */     
     protected $child;
     
+    /**
+     * Convenience string for priceband form(s)
+     * @var type string 
+     */
+    protected $destination;
+    
     public function __construct() {
         $this->first = 0;
         $this->standard = 0;
@@ -177,5 +183,13 @@ class Priceband {
     public function getChild()
     {
         return $this->child;
+    }
+    
+    public function setDestination($destination) {
+        $this->destination = $destination;
+    }
+    
+    public function getDestination() {
+        return $this->destination;
     }
 }

@@ -28,6 +28,9 @@ class PricebandController extends Controller
         
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
+        
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
 
         $entities = $em->getRepository('SRPSBookingBundle:Priceband')
             ->findByServiceid($serviceid);
@@ -35,6 +38,7 @@ class PricebandController extends Controller
         return $this->render('SRPSBookingBundle:Priceband:index.html.twig',
             array(
                 'entities' => $entities,
+                'destinations' => $destinations,
                 'service' => $service,
                 'serviceid' => $serviceid
                 ));
@@ -60,6 +64,7 @@ class PricebandController extends Controller
             $priceband = new Priceband();
             $priceband->setServiceid($serviceid);
             $priceband->setDestinationid($destination->getId());
+            $priceband->setDestination($destination->getName());
             $pricebands->getPricebands()->add($priceband);
         }
      
