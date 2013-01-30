@@ -59,9 +59,13 @@ admin_priceband:
     defaults: { _controller: SRPSBookingBundle:Priceband:index }    
     
 admin_priceband_new:
-    pattern:  /admin/priceband/{serviceid}/ned
+    pattern:  /admin/priceband/{serviceid}/new
     defaults: { _controller: SRPSBookingBundle:Priceband:new }  
     
 admin_priceband_edit:
     pattern:  /admin/priceband/{id}/edit
-    defaults: { _controller: SRPSBookingBundle:Priceband:edit }     
+    defaults: { _controller: SRPSBookingBundle:Priceband:edit }  
+    
+admin_priceband_create:
+    pattern:  /admin/priceband/{serviceid}/create
+    defaults: { _controller: SRPSBookingBundle:Priceband:create }     

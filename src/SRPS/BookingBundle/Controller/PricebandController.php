@@ -7,8 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use SRPS\BookingBundle\Entity\Destination;
-use SRPS\BookingBundle\Form\DestinationType;
+use SRPS\BookingBundle\Entity\Priceband;
+use SRPS\BookingBundle\Entity\Pricebands;
+use SRPS\BookingBundle\Form\PricebandType;
+use SRPS\BookingBundle\Form\PricebandsType;
 
 /**
  * Service controller.
@@ -43,18 +45,30 @@ class PricebandController extends Controller
      */
     public function newAction($serviceid)
     {
-        $entity = new Destination(); 
-        $entity->setServiceid($serviceid);
-        
+        // Get service entity
         $em = $this->getDoctrine()->getManager();        
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);        
+            ->find($serviceid); 
         
-        $form   = $this->createForm(new DestinationType(), $entity);
+        // Get destinations for this service
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
+        
+        // create empty priceband entities
+        $pricebands = new Pricebands();
+        foreach ($destinations as $destination) {
+            $priceband = new Priceband();
+            $priceband->setServiceid($serviceid);
+            $priceband->setDestinationid($destination->getId());
+            $pricebands->getPricebands()->add($priceband);
+        }
+     
+        $form   = $this->createForm(new PricebandsType(), $pricebands);
 
-        return $this->render('SRPSBookingBundle:Destination:new.html.twig', array(
-            'entity' => $entity,
+        return $this->render('SRPSBookingBundle:Priceband:new.html.twig', array(
+            'pricebands' => $pricebands,
             'service' => $service,
+            'destinations' => $destinations,
             'serviceid' => $serviceid,
             'form'   => $form->createView(),
         ));
