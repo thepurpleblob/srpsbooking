@@ -23,6 +23,16 @@
                     <th>Child</th>
                 </tr>
             </thead>
+            <tbody>
+            {% for priceband in form.pricebands %}
+                <tr>
+                    <td>{{ form_row(priceband.destination) }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>        
+            {% endfor %}        
+            </tbody>
         </table>
         
 
