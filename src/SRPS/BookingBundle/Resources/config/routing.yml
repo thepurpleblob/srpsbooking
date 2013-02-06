@@ -4,7 +4,7 @@ srps_booking_homepage:
 
 admin_index:
     pattern:  /admin
-    defaults: { _controller: SRPSBookingBundle:Admin:index }
+    defaults: { _controller: SRPSBookingBundle:Service:index }
     
 admin_service:
     pattern:  /admin/service
@@ -68,4 +68,8 @@ admin_priceband_edit:
     
 admin_priceband_create:
     pattern:  /admin/priceband/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Priceband:create }     
+    defaults: { _controller: SRPSBookingBundle:Priceband:create }  
+    
+admin_priceband_update:
+    pattern:  /admin/priceband/{pricebandgroupid}/update
+    defaults: { _controller: SRPSBookingBundle:Priceband:update }      

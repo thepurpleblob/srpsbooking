@@ -14,7 +14,7 @@
         </div>
     {% else %}
     
-        {% if entities is empty %}
+        {% if bands is empty %}
             <div class="alert alert-block alert-warning">
                 No price bands have been defined. 
             </div>        
@@ -23,22 +23,41 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Destination</th>
-                    <th>First</th>
-                    <th>Standard</th>
-                    <th>Child</th>
+                    <th>Name</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
       
-            {% for entity in entities %}
+            {% for band in bands %}
                     <tr>
-                        <td>&nbsp;</td>
-                        <td>{{ entity.first }}</td>
-                        <td>{{ entity.standard }}</td>
-                        <td>{{ entity.child }}</td>
+                        <td>{{ band.name }}</td>
                         <td>
-                            <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': entity.id }) }}">Edit</a>
+                            <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': band.id }) }}">Edit</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-condensed table-priceband">
+                                <thead>
+                                    <tr>
+                                        <th>Destination</th>
+                                        <th>First</th>
+                                        <th>Standard</th>
+                                        <th>Child</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for priceband in band.bandtable %}
+                                    <tr>
+                                        <td>{{ priceband.destination }}</td>
+                                        <td>{{ priceband.first }}</td>
+                                        <td>{{ priceband.standard }}</td>
+                                        <td>{{ priceband.child }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </td>
                     </tr>
             {% endfor %}

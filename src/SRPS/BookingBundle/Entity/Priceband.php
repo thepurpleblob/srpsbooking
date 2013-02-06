@@ -32,6 +32,11 @@ class Priceband {
      * @ORM\Column(type="integer")
      */
     protected $destinationid;
+
+    /**
+     * @ORM\Column(type="integer")
+     */    
+    protected $pricebandgroupid;
     
     /**
      * @ORM\Column(type="decimal", scale=2)
@@ -191,5 +196,13 @@ class Priceband {
     
     public function getDestination() {
         return $this->destination;
+    }
+    
+    public function setPricebandgroupid($pricebandgroupid) {
+        $this->pricebandgroupid = $pricebandgroupid;
+    }
+    
+    public function getPricebandgroup() {
+        return $this->pricebandgroup;
     }
 }

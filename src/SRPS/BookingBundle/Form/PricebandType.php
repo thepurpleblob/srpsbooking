@@ -11,7 +11,7 @@ class PricebandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('destination',array('readonly'=>true))
+            ->add('destination', 'text', array('read_only'=>true))
             ->add('first')
             ->add('standard')
             ->add('child')

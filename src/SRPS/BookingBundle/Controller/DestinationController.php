@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SRPS\BookingBundle\Entity\Destination;
 use SRPS\BookingBundle\Form\DestinationType;
+use SRPS\BookingBundle\Entity\Pricebandgroup;
+use SRPS\BookingBundle\Entity\Priceband;
 
 /**
  * Service controller.
@@ -59,6 +61,39 @@ class DestinationController extends Controller
             'form'   => $form->createView(),
         ));
     }
+    
+    /**
+     * If we add a destination then we have to pad up the existing
+     * pricebands
+     * @param object $service service object
+     */
+    private function checkPricebands($service) {
+        $em = $this->getDoctrine()->getManager();
+        
+        // Get all the destinations for this service
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($service->getId());
+        
+        // Get all the priceband groups for this service
+        $groups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+            ->findByServiceid($service->getId());
+        
+        // run through groups checking all destinations are represented
+        foreach ($groups as $group) {
+            foreach ($destinations as $destination) {
+                $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
+                    ->findOneBy(array('pricebandgroupid' => $group->getId(), 'destinationid' => $destination->getId()));
+                if (!$priceband) {
+                    $priceband = new Priceband();
+                    $priceband->setServiceid($service->getId());
+                    $priceband->setDestinationid($destination->getId());
+                    $priceband->setPricebandgroupid($group->getId());
+                    $em->persist($priceband);
+                    $em->flush();
+                }
+            }
+        }
+    }
 
     /**
      * Creates a new Destination entity.
@@ -78,6 +113,9 @@ class DestinationController extends Controller
         if ($form->isValid()) {
             $em->persist($entity);
             $em->flush();
+            
+            // Pad the pricebands with new destination
+            $this->checkPricebands($service);
 
             return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $serviceid)));
         }
@@ -143,8 +181,11 @@ class DestinationController extends Controller
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
+            
+            // Check the pricebands are synced to destinations
+            $this->checkPricebands($service);            
 
-            return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $id)));
+            return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $serviceid)));
         }
 
         return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(

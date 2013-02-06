@@ -7,10 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\Common\Collections\ArrayCollection;
 use SRPS\BookingBundle\Entity\Priceband;
-use SRPS\BookingBundle\Entity\Pricebands;
+use SRPS\BookingBundle\Entity\Pricebandgroup;
 use SRPS\BookingBundle\Form\PricebandType;
-use SRPS\BookingBundle\Form\PricebandsType;
+use SRPS\BookingBundle\Form\PricebandgroupType;
 
 /**
  * Service controller.
@@ -18,6 +19,30 @@ use SRPS\BookingBundle\Form\PricebandsType;
  */
 class PricebandController extends Controller
 {
+    
+    /**
+     * Create the table to display price band group
+     * @param integer $pricebandgroupid
+     */
+    private function createPricebandTable($pricebandgroupid) {
+        $em = $this->getDoctrine()->getManager();
+        
+        // get the basic price bands
+        $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
+            ->findByPricebandgroupid($pricebandgroupid);
+        
+        // iterate over these and get destinations 
+        // (very inefficiently)
+        foreach ($pricebands as $priceband) {
+            $destinationid = $priceband->getDestinationid();
+            $destination = $em->getRepository('SRPSBookingBundle:Destination')
+                ->find($destinationid);
+            $priceband->setDestination($destination->getName());
+        }
+        
+        return $pricebands;
+    }
+    
     /**
      * Lists all Priceband entities.
      *
@@ -26,18 +51,28 @@ class PricebandController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         
+        // Get the Service entity
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
         
+        // Get the Pricebandgroup entities
+        $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+            ->findByServiceid($serviceid);
+        
+        // Get destinations mostly to check that there are some
         $destinations = $em->getRepository('SRPSBookingBundle:Destination')
             ->findByServiceid($serviceid);
-
-        $entities = $em->getRepository('SRPSBookingBundle:Priceband')
-            ->findByServiceid($serviceid);
+        
+        // Get the band info to go with bands
+        foreach ($pricebandgroup as $band) {
+            $pricebandgroupid = $band->getId();
+            $bandtable = $this->createPricebandTable($pricebandgroupid);
+            $band->bandtable = $bandtable;
+        }
 
         return $this->render('SRPSBookingBundle:Priceband:index.html.twig',
             array(
-                'entities' => $entities,
+                'bands' => $pricebandgroup,
                 'destinations' => $destinations,
                 'service' => $service,
                 'serviceid' => $serviceid
@@ -59,19 +94,20 @@ class PricebandController extends Controller
             ->findByServiceid($serviceid);
         
         // create empty priceband entities
-        $pricebands = new Pricebands();
+        $pricebandgroup = new Pricebandgroup();
+        $pricebandgroup->setServiceid($serviceid);
         foreach ($destinations as $destination) {
             $priceband = new Priceband();
             $priceband->setServiceid($serviceid);
             $priceband->setDestinationid($destination->getId());
             $priceband->setDestination($destination->getName());
-            $pricebands->getPricebands()->add($priceband);
+            $pricebandgroup->getPricebands()->add($priceband);
         }
      
-        $form   = $this->createForm(new PricebandsType(), $pricebands);
+        $form   = $this->createForm(new PricebandgroupType(), $pricebandgroup);
 
         return $this->render('SRPSBookingBundle:Priceband:new.html.twig', array(
-            'pricebands' => $pricebands,
+            'pricebands' => $pricebandgroup,
             'service' => $service,
             'destinations' => $destinations,
             'serviceid' => $serviceid,
@@ -84,95 +120,150 @@ class PricebandController extends Controller
      */
     public function createAction(Request $request, $serviceid)
     {
-        $entity = new Destination();
-        $entity->setServiceid($serviceid);
-        
+        // Get service entity
         $em = $this->getDoctrine()->getManager();        
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);         
+            ->find($serviceid); 
         
-        $form = $this->createForm(new DestinationType(), $entity);
+        // Get destinations for this service
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
+        
+        // create empty priceband entities
+        $pricebandgroup = new Pricebandgroup();
+        $pricebandgroup->setServiceid($serviceid);   
+        foreach ($destinations as $destination) {
+            $priceband = new Priceband();
+            $priceband->setServiceid($serviceid);
+            $priceband->setDestinationid($destination->getId());
+            $priceband->setDestination($destination->getName());
+            $pricebandgroup->getPricebands()->add($priceband);
+        }        
+        
+        $form = $this->createForm(new PricebandgroupType(), $pricebandgroup);
         $form->bind($request);
 
         if ($form->isValid()) {
-            $em->persist($entity);
+            $em->persist($pricebandgroup);
+            $em->flush();
+            $pricebandgroupid = $pricebandgroup->getId();
+            $pricebands = $pricebandgroup->getPricebands();
+            foreach ($pricebands as $priceband) {
+                $priceband->setPricebandgroupid($pricebandgroupid);
+                $em->persist($priceband);
+            }
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $serviceid)));
+            return $this->redirect($this->generateUrl('admin_priceband', array('serviceid' => $serviceid)));
         }
 
-        return $this->render('SRPSBookingBundle:Destination:new.html.twig', array(
-            'entity' => $entity,
+        return $this->render('SRPSBookingBundle:Priceband:new.html.twig', array(
+            'pricebands' => $pricebandgroup,
             'service' => $service,
+            'destinations' => $destinations,
             'serviceid' => $serviceid,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing Destination entity.
+     * Displays a form to edit an existing Priceband entity.
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('SRPSBookingBundle:Destination')->find($id);
+        $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')->find($id); 
+        
+        // remember _constructor isn't called
+        $pricebandgroup->setPricebands(new ArrayCollection());
 
         // Service
-        $serviceid = $entity->getServiceid();
+        $serviceid = $pricebandgroup->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);  
         
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Destination entity.');
+        // Get destinations for this service
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
+        
+        // get priceband for destination(s)
+        foreach ($destinations as $destination) {
+            $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
+                ->findOneBy(array('pricebandgroupid'=>$id, 'destinationid'=>$destination->getId()));
+            
+            // It's possible destination has been added
+            if (!$priceband) {
+                $priceband = new Priceband();
+                $priceband->setPricebandgroupid($id);
+                $priceband->setServiceid($serviceid);
+                $priceband->setDestinationid($destination->getId());               
+            }
+            $priceband->setDestination($destination->getName());
+            $pricebandgroup->getPricebands()->add($priceband);
         }
 
-        $editForm = $this->createForm(new DestinationType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createForm(new PricebandgroupType(), $pricebandgroup);
 
-        return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+        return $this->render('SRPSBookingBundle:Priceband:edit.html.twig', array(
+            'pricebands' => $pricebandgroup,
             'service' => $service,
+            'destinations' => $destinations,
             'serviceid' => $serviceid,
-        ));
+            'form'   => $editForm->createView(),
+        ));        
     }
 
     /**
      * Edits an existing Destination entity.
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, $pricebandgroupid)
     {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('SRPSBookingBundle:Destination')->find($id);
+        $em = $this->getDoctrine()->getManager();    
+        $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+            ->find($pricebandgroupid);
+        $pricebandgroup->setPricebands(new ArrayCollection());
         
-        // Service
-        $serviceid = $entity->getServiceid();
+        // Get the service 
+        $serviceid = $pricebandgroup->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);  
-                
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Destination entity.');
-        }
+            ->find($serviceid); 
+        
+        // Get destinations for this service
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
+        
+        // create empty priceband entities
+        $pricebandgroup->setServiceid($serviceid);   
+        foreach ($destinations as $destination) {
+            $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
+                ->findOneBy(array('pricebandgroupid'=>$pricebandgroupid, 'destinationid'=>$destination->getId()));
+            $pricebandgroup->getPricebands()->add($priceband);
+        }        
+        
+        $form = $this->createForm(new PricebandgroupType(), $pricebandgroup);
+        $form->bind($request);
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new DestinationType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
+        if ($form->isValid()) {
+            $em->persist($pricebandgroup);
+            $em->flush();
+            $pricebandgroupid = $pricebandgroup->getId();
+            $pricebands = $pricebandgroup->getPricebands();
+            foreach ($pricebands as $priceband) {
+                $priceband->setPricebandgroupid($pricebandgroupid);
+                $em->persist($priceband);
+            }
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $id)));
+            return $this->redirect($this->generateUrl('admin_priceband', array('serviceid' => $serviceid)));
         }
 
-        return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+        return $this->render('SRPSBookingBundle:Priceband:edit.html.twig', array(
+            'pricebands' => $pricebandgroup,
             'service' => $service,
-            'serviceid' => $serviceid,            
-        ));
+            'destinations' => $destinations,
+            'serviceid' => $serviceid,
+            'form'   => $form->createView(),
+        ));  
     }
 
     /**

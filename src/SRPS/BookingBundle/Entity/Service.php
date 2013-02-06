@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Service describes the main data
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author howard
  * @ORM\Entity
  * @ORM\Table(name="service")
+ * @UniqueEntity("code")
+ * @UniqueEntity("name")
  */
 class Service {
     
