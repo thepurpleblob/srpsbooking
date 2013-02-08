@@ -1,0 +1,111 @@
+<?php
+
+namespace SRPS\BookingBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\ExecutionContext;
+
+/**
+ * ORM entity for joining stations
+ *
+ * @author howard
+ * @ORM\Entity
+ * @ORM\Table(name="joining")
+ * @UniqueEntity({"station", "serviceid"}) 
+ */
+
+class Joining 
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */     
+    protected $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */      
+    protected $serviceid;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */      
+    protected $pricebandgroupid;    
+    
+    /**
+     * @ORM\Column(type="string", length=150)
+     */     
+    protected $station;
+    
+    /**
+     * @ORM\Column(type="string", length=10)
+     */     
+    protected $crs;   
+    
+    protected $pricebandname;
+    
+    public function __construct() {
+        $this->station = '';
+        $this->crs = '';
+    }
+    
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('station', new NotBlank());       
+        //$metadata->addPropertyConstraint('crs', new NotBlank());        
+    } 
+    
+    public function getId() {
+        return $this->id;
+    }
+    
+    public function setId($id) {
+        $this->id = $id;
+    }    
+    
+    public function getServiceid() {
+        return $this->serviceid;
+    }
+
+    public function setServiceid($serviceid) {
+        $this->serviceid = $serviceid;
+    }
+    
+    public function getPricebandgroupid() {
+        return $this->pricebandgroupid;
+    }
+    
+    public function setPricebandgroupid($pricebandgroupid) {
+        $this->pricebandgroupid = $pricebandgroupid;
+    }
+    
+    public function getStation() {
+        return $this->station;
+    }
+    
+    public function setStation($station) {
+        $this->station = $station;
+    }
+    
+    public function getCrs() {
+        return $this->crs;
+    }
+    
+    public function setCrs($crs) {
+        $this->crs = $crs;
+    }
+    
+    public function getPricebandname() {
+        return $this->pricebandname;
+    }
+    
+    public function setPricebandname($pricebandname) {
+        $this->pricebandname = $pricebandname;
+    }
+}

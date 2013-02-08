@@ -72,4 +72,24 @@ admin_priceband_create:
     
 admin_priceband_update:
     pattern:  /admin/priceband/{pricebandgroupid}/update
-    defaults: { _controller: SRPSBookingBundle:Priceband:update }      
+    defaults: { _controller: SRPSBookingBundle:Priceband:update }    
+    
+admin_joining:
+    pattern:  /admin/joining/{serviceid}
+    defaults: { _controller: SRPSBookingBundle:Joining:index }   
+    
+admin_joining_new:
+    pattern:  /admin/joining/{serviceid}/new
+    defaults: { _controller: SRPSBookingBundle:Joining:new }     
+    
+admin_joining_edit:
+    pattern:  /admin/joining/{joiningid}/edit
+    defaults: { _controller: SRPSBookingBundle:Joining:edit }   
+    
+admin_joining_create:
+    pattern:  /admin/joining/{serviceid}/create
+    defaults: { _controller: SRPSBookingBundle:Joining:create }    
+    
+admin_joining_update:
+    pattern:  /admin/joining/{joiningid}/update
+    defaults: { _controller: SRPSBookingBundle:Joining:update }      

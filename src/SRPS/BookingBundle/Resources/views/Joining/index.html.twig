@@ -1,0 +1,44 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h2>Joining stations</h2>
+    <h4>{{ service.name }}</h4>
+    
+    {% if not setup %}
+        <div class="alert alert-block alert-error">
+            There are no pricebands. You need to create at least one priceband (and 
+            at least one destination) first.
+        </div>    
+    {% else %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Station</th>
+                    <th>Price band</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.station }}</td>
+                        <td>{{ entity.pricebandname }}</td>
+                        <td>
+                            <a class="btn btn-warning" href="{{ path('admin_joining_edit', { 'joiningid': entity.id }) }}">Edit</a>
+                        </td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('admin_joining_new', { 'serviceid': service.id }) }}">
+                Add a new joining station
+            </a>
+        </div>
+    {% endif %}
+{% endblock content %}

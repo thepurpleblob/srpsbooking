@@ -1,0 +1,28 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% form_theme form 'SRPSBookingBundle:Admin:fields.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+
+    <h2>New joining station</h2>
+    <h4>{{ service.name }}</h4>
+
+    <form id="joining-new-form" class="form-horizontal" action="{{ path('admin_joining_create', {'serviceid': service.id}) }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
+      {{ form_row(form.station) }}
+      {{ form_row(form.pricebandgroupid) }}
+      {{ form_rest(form) }}     
+    </form>
+    
+    <button class ="btn btn-primary" onclick="$('#joining-new-form').submit();">
+        Create joining station
+    </button>
+    <a class="btn btn-warning" href="{{ path('admin_joining', { 'serviceid': service.id }) }}">
+        Cancel
+    </a>
+
+{% endblock content %}
+ 
