@@ -70,13 +70,107 @@
             </tr>
         </tbody>
     </table>
+    
+    <h3>Destinations</h3>
+    {% if destinations is empty %}
+        <div class="alert alert-block alert-error">
+            There are no destinations. You need to create at least one destination first.
+        </div>
+    {% else %}
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>    
+            </thead>    
+            <tbody>
+                {% for destination in destinations %}
+                    <tr>
+                        <td>{{ destination.name }}</td>
+                        <td>{{ destination.description | raw }}</td>
+                    </tr>
+                {% endfor %}    
+            </tbody>
+        </table>
+    {% endif %}
+    
+    <h3>Price bands</h3>
+    {% if pricebandgroups is empty %}
+        <div class="alert alert-block alert-error">
+            There are no price bands. You need to create at least one price band first.
+        </div>
+    {% else %}    
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>    
+            </thead>    
+            <tbody>
+                {% for pricebandgroup in pricebandgroups %}
+                    <tr>
+                        <td>{{ pricebandgroup.name }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-condensed table-priceband">
+                                <thead>
+                                    <tr>
+                                        <th>Destination</th>
+                                        <th>First</th>
+                                        <th>Standard</th>
+                                        <th>Child</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for priceband in pricebandgroup.bandtable %}
+                                    <tr>
+                                        <td>{{ priceband.destination }}</td>
+                                        <td>{{ priceband.first }}</td>
+                                        <td>{{ priceband.standard }}</td>
+                                        <td>{{ priceband.child }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>                    
+                {% endfor %}    
+            </tbody>
+        </table>    
+    {% endif %}
+    
+    <h3>Joining stations</h3>
+    {% if joinings is empty %}
+        <div class="alert alert-block alert-error">
+            There are no joining stations. You need to add at least one joining station first.
+        </div>
+    {% else %}  
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Station</th>
+                    <th>Price band</th>
+                </tr>    
+            </thead>    
+            <tbody>
+                {% for joining in joinings %}
+                    <tr>
+                        <td>{{ joining.station }}</td>
+                        <td>{{ joining.pricebandname }}</td>
+                    </tr>    
+                {% endfor %}
+            </tbody> 
+        </table>
+    {% endif %}
 
     <div>
-            <a class="btn btn-success" href="{{ path('admin_service') }}">
-                Back to the list
-            </a>
-            <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': entity.id }) }}">
-                Edit
-            </a>
+        <a class="btn btn-success" href="{{ path('admin_service') }}">
+            Back to the list
+        </a>
+        <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
     </div>
 {% endblock content %}

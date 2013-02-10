@@ -8,7 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SRPS\BookingBundle\Entity\Service;
+use SRPS\BookingBundle\Entity\Pricebandgroup;
 use SRPS\BookingBundle\Form\ServiceType;
+use SRPS\BookingBundle\Service\Booking;
 
 /**
  * Service controller.
@@ -29,7 +31,30 @@ class ServiceController extends Controller
         return $this->render('SRPSBookingBundle:Service:index.html.twig',
             array('entities'=>$entities));
     }
-
+    
+    /**
+     * Create the table to display price band group
+     * @param integer $pricebandgroupid
+     */
+    private function createPricebandTable($pricebandgroupid) {
+        $em = $this->getDoctrine()->getManager();
+        
+        // get the basic price bands
+        $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
+            ->findByPricebandgroupid($pricebandgroupid);
+        
+        // iterate over these and get destinations 
+        // (very inefficiently)
+        foreach ($pricebands as $priceband) {
+            $destinationid = $priceband->getDestinationid();
+            $destination = $em->getRepository('SRPSBookingBundle:Destination')
+                ->find($destinationid);
+            $priceband->setDestination($destination->getName());
+        }
+        
+        return $pricebands;
+    }    
+    
     /**
      * Finds and displays a Service entity.
      *
@@ -45,12 +70,36 @@ class ServiceController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Service entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
+        
+        // Get the other information stored for this service
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($id);
+        $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+            ->findByServiceid($id);
+        $joinings = $em->getRepository('SRPSBookingBundle:Joining')
+            ->findByServiceid($id);
+        
+        // iterate over these and get destinations 
+        // (very inefficiently)
+        $booking = $this->get('srps_booking');
+        foreach ($pricebandgroups as $band) {
+            $pricebandgroupid = $band->getId();
+            $bandtable = $booking->createPricebandTable($pricebandgroupid);
+            $band->bandtable = $bandtable;
+        }    
+        
+        // add pricebandgroup names
+        foreach ($joinings as $joining) {
+            $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+                ->find($joining->getPricebandgroupid());
+            $joining->setPricebandname($pricebandgroup->getName());
+        }         
 
         return $this->render('SRPSBookingBundle:Service:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity' => $entity,
+            'destinations' => $destinations,
+            'pricebandgroups' => $pricebandgroups,
+            'joinings' => $joinings,
             'serviceid' => $id,
         ));
     }
@@ -143,43 +192,10 @@ class ServiceController extends Controller
 
         return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
             'entity'      => $entity,
+            'destinations' => $destinations,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'serviceid' => $id,
         ));
-    }
-
-    /**
-     * Deletes a Service entity.
-     *
-     * @Route("/{id}/delete", name="admin_service_delete")
-     * @Method("POST")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SRPSBookingBundle:Service')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Service entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('admin_service'));
-    }
-
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
     }
 }

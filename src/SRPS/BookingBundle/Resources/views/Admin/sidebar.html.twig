@@ -26,7 +26,12 @@
         </li>     
         <li>
             <a class="btn btn-warning" href="{{ path('admin_joining', { 'serviceid': serviceid }) }}">
-                Edit joining station
+                Edit joining stations
+            </a>
+        </li>      
+        <li>
+            <a class="btn btn-primary" href="{{ path('admin_limits_edit', { 'serviceid': serviceid }) }}">
+                Booking limits
             </a>
         </li>         
     {% endif %}

@@ -92,4 +92,12 @@ admin_joining_create:
     
 admin_joining_update:
     pattern:  /admin/joining/{joiningid}/update
-    defaults: { _controller: SRPSBookingBundle:Joining:update }      
+    defaults: { _controller: SRPSBookingBundle:Joining:update }    
+    
+admin_limits_edit:
+    pattern:  /admin/limits/{serviceid}/edit
+    defaults: { _controller: SRPSBookingBundle:Limits:edit }  
+    
+admin_limits_update:
+    pattern:  /admin/limits/{serviceid}/update
+    defaults: { _controller: SRPSBookingBundle:Limits:update }    

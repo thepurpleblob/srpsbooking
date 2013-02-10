@@ -13,7 +13,7 @@ use SRPS\BookingBundle\Entity\Pricebandgroup;
 use SRPS\BookingBundle\Entity\Priceband;
 
 /**
- * Service controller.
+ * Destination controller.
  *
  */
 class DestinationController extends Controller

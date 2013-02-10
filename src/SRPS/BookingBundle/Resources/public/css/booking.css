@@ -19,3 +19,7 @@ table.table-priceband {
     margin: 0 40px;
     font-size: 75%;
 }
+
+div.summary_display {
+    font-family: monospace;
+}

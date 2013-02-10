@@ -2,6 +2,6 @@ parameters:
 #    srps_booking.example.class: SRPS\BookingBundle\Example
 
 services:
-#    srps_booking.example:
-#        class: %srps_booking.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    srps_booking:
+        class: SRPS\BookingBundle\Service\Booking
+        arguments: [ @doctrine.orm.entity_manager ]
