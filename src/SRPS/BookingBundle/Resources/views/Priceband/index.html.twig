@@ -31,10 +31,14 @@
       
             {% for band in bands %}
                     <tr>
-                        <td>{{ band.name }}</td>
+                        <td><b>{{ band.name }}</b></td>
                         <td>
                             <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': band.id }) }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">Delete</a>                            
+                            {% if band.used == 0 %}
+                                <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">Delete</a>                            
+                            {% else %}
+                                <a class="btn btn-danger disabled">Delete</a>
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>

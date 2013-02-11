@@ -41,6 +41,8 @@ class Pricebandgroup {
      */     
     protected $name;
     
+    protected $used;
+    
     public function __construct() {
         $this->pricebands = new ArrayCollection();
         $this->name = '';
@@ -89,5 +91,13 @@ class Pricebandgroup {
     
     public function setServiceid($serviceid) {
         $this->serviceid = $serviceid;
+    }
+    
+    public function getUsed() {
+        return $this->used;
+    }
+    
+    public function setUsed($used) {
+        $this->used = $used;
     }
 }

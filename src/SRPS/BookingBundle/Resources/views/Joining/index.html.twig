@@ -7,12 +7,12 @@
 {% block content %}
     <h2>Joining stations</h2>
     <h4>{{ service.name }}</h4>
-    
+
     {% if not setup %}
         <div class="alert alert-block alert-error">
-            There are no pricebands. You need to create at least one priceband (and 
+            There are no pricebands. You need to create at least one priceband (and
             at least one destination) first.
-        </div>    
+        </div>
     {% else %}
         <table class="table table-striped">
             <thead>
@@ -29,6 +29,7 @@
                         <td>{{ entity.pricebandname }}</td>
                         <td>
                             <a class="btn btn-warning" href="{{ path('admin_joining_edit', { 'joiningid': entity.id }) }}">Edit</a>
+                            <a class="btn btn-danger" href="{{ path('admin_joining_delete', { 'joiningid': entity.id }) }}">Delete</a>
                         </td>
                     </tr>
             {% endfor %}

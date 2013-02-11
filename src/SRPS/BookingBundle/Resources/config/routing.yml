@@ -5,107 +5,111 @@ srps_booking_homepage:
 admin_index:
     pattern:  /admin
     defaults: { _controller: SRPSBookingBundle:Service:index }
-    
+
 admin_service:
     pattern:  /admin/service
     defaults: { _controller: SRPSBookingBundle:Service:index }
-        
+
 admin_service_new:
     pattern:  /admin/service/new
     defaults: { _controller: SRPSBookingBundle:Service:new }
-    
+
 admin_service_show:
     pattern:  /admin/service/{id}/show
     defaults: { _controller: SRPSBookingBundle:Service:show }
-    
+
 admin_service_create:
     pattern:  /admin/service/create
     defaults: { _controller: SRPSBookingBundle:Service:create }
-    
+
 admin_service_edit:
     pattern:  /admin/service/{id}/edit
     defaults: { _controller: SRPSBookingBundle:Service:edit }
-       
+
 admin_service_update:
     pattern:  /admin/service/{id}/update
     defaults: { _controller: SRPSBookingBundle:Service:update }
-    
+
 admin_service_delete:
     pattern:  /admin/service/{id}/delete
     defaults: { _controller: SRPSBookingBundle:Service:delete }
-    
+
 admin_destination:
     pattern:  /admin/destination/{serviceid}
-    defaults: { _controller: SRPSBookingBundle:Destination:index }    
-    
+    defaults: { _controller: SRPSBookingBundle:Destination:index }
+
 admin_destination_new:
     pattern:  /admin/destination/{serviceid}/new
-    defaults: { _controller: SRPSBookingBundle:Destination:new }  
-    
+    defaults: { _controller: SRPSBookingBundle:Destination:new }
+
 admin_destination_create:
     pattern:  /admin/destination/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Destination:create }    
-    
+    defaults: { _controller: SRPSBookingBundle:Destination:create }
+
 admin_destination_edit:
     pattern:  /admin/destination/{id}/edit
-    defaults: { _controller: SRPSBookingBundle:Destination:edit }  
-    
+    defaults: { _controller: SRPSBookingBundle:Destination:edit }
+
 admin_destination_update:
     pattern:  /admin/destination/{id}/update
-    defaults: { _controller: SRPSBookingBundle:Destination:update }   
-    
+    defaults: { _controller: SRPSBookingBundle:Destination:update }
+
 admin_destination_delete:
     pattern:  /admin/destination/{id}/delete
-    defaults: { _controller: SRPSBookingBundle:Destination:delete }    
-    
+    defaults: { _controller: SRPSBookingBundle:Destination:delete }
+
 admin_priceband:
     pattern:  /admin/priceband/{serviceid}
-    defaults: { _controller: SRPSBookingBundle:Priceband:index }    
-    
+    defaults: { _controller: SRPSBookingBundle:Priceband:index }
+
 admin_priceband_new:
     pattern:  /admin/priceband/{serviceid}/new
-    defaults: { _controller: SRPSBookingBundle:Priceband:new }  
-    
+    defaults: { _controller: SRPSBookingBundle:Priceband:new }
+
 admin_priceband_edit:
     pattern:  /admin/priceband/{id}/edit
-    defaults: { _controller: SRPSBookingBundle:Priceband:edit }  
-    
+    defaults: { _controller: SRPSBookingBundle:Priceband:edit }
+
 admin_priceband_create:
     pattern:  /admin/priceband/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Priceband:create }  
-    
+    defaults: { _controller: SRPSBookingBundle:Priceband:create }
+
 admin_priceband_update:
     pattern:  /admin/priceband/{pricebandgroupid}/update
-    defaults: { _controller: SRPSBookingBundle:Priceband:update }    
-    
+    defaults: { _controller: SRPSBookingBundle:Priceband:update }
+
 admin_priceband_delete:
     pattern:  /admin/priceband/{pricebandgroupid}/delete
-    defaults: { _controller: SRPSBookingBundle:Priceband:delete }     
-    
+    defaults: { _controller: SRPSBookingBundle:Priceband:delete }
+
 admin_joining:
     pattern:  /admin/joining/{serviceid}
-    defaults: { _controller: SRPSBookingBundle:Joining:index }   
-    
+    defaults: { _controller: SRPSBookingBundle:Joining:index }
+
 admin_joining_new:
     pattern:  /admin/joining/{serviceid}/new
-    defaults: { _controller: SRPSBookingBundle:Joining:new }     
-    
+    defaults: { _controller: SRPSBookingBundle:Joining:new }
+
 admin_joining_edit:
     pattern:  /admin/joining/{joiningid}/edit
-    defaults: { _controller: SRPSBookingBundle:Joining:edit }   
-    
+    defaults: { _controller: SRPSBookingBundle:Joining:edit }
+
 admin_joining_create:
     pattern:  /admin/joining/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Joining:create }    
-    
+    defaults: { _controller: SRPSBookingBundle:Joining:create }
+
 admin_joining_update:
     pattern:  /admin/joining/{joiningid}/update
-    defaults: { _controller: SRPSBookingBundle:Joining:update }    
-    
+    defaults: { _controller: SRPSBookingBundle:Joining:update }
+
+admin_joining_delete:
+    pattern:  /admin/joining/{joiningid}/delete
+    defaults: { _controller: SRPSBookingBundle:Joining:delete }
+
 admin_limits_edit:
     pattern:  /admin/limits/{serviceid}/edit
-    defaults: { _controller: SRPSBookingBundle:Limits:edit }  
-    
+    defaults: { _controller: SRPSBookingBundle:Limits:edit }
+
 admin_limits_update:
     pattern:  /admin/limits/{serviceid}/update
-    defaults: { _controller: SRPSBookingBundle:Limits:update }    
+    defaults: { _controller: SRPSBookingBundle:Limits:update }

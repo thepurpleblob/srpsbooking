@@ -27,6 +27,7 @@ class PricebandController extends Controller
     public function indexAction($serviceid)
     {
         $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
         
         // Get the Service entity
         $service = $em->getRepository('SRPSBookingBundle:Service')
@@ -46,6 +47,7 @@ class PricebandController extends Controller
             $pricebandgroupid = $band->getId();
             $bandtable = $booking->createPricebandTable($pricebandgroupid);
             $band->bandtable = $bandtable;
+            $band->setUsed($booking->isPricebandUsed($band));
         }
 
         return $this->render('SRPSBookingBundle:Priceband:index.html.twig',
@@ -248,31 +250,32 @@ class PricebandController extends Controller
      * Deletes a Service entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($pricebandgroupid)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SRPSBookingBundle:Service')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Service entity.');
-            }
-
-            $em->remove($entity);
+        $em = $this->getDoctrine()->getManager();
+        
+        // Remove pricebands associated with this group
+        $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
+            ->findByPricebandgroupid($pricebandgroupid);
+        if ($pricebands) {
+            foreach ($pricebands as $priceband)  {
+                $em->remove($priceband);
+            }  
             $em->flush();
+        }    
+        
+        // Remove pricebandgroup
+        $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+            ->find($pricebandgroupid);
+        if ($pricebandgroup) {
+            $serviceid = $pricebandgroup->getServiceid();
+            $em->remove($pricebandgroup);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('admin_priceband', array('serviceid' => $serviceid)));          
         }
 
         return $this->redirect($this->generateUrl('admin_service'));
-    }
-
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
     }
 }

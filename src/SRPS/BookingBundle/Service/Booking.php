@@ -62,5 +62,25 @@ class Booking
         
         return false;
     }
+    
+    /**
+     * Is the priceband group assigned 
+     * in any joining station
+     * @param object $pricebandgroup
+     */
+    public function isPricebandUsed($pricebandgroup) {
+        $em = $this->em;
+        
+        // find joining stations that specify this group
+        $joinings = $em->getRepository('SRPSBookingBundle:Joining')
+            ->findByPricebandgroupid($pricebandgroup->getId());
+        
+        // if there are any then it is used
+        if ($joinings) {
+            return true;
+        }
+        
+        return false;
+    }
 
 }
