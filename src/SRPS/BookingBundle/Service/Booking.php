@@ -33,5 +33,34 @@ class Booking
         
         return $pricebands;
     }    
+    
+    /**
+     * Is destination used? 
+     * Checks if destination can be deleted
+     * @param object $destination 
+     * @return boolean true if used
+     */
+    public function isDestinationUsed($destination) {
+        $em = $this->em;
+        
+        // find pricebands that specify this destination
+        $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
+            ->findByDestinationid($destination->getId());
+        
+        // if there are non then not used
+        if (!$pricebands) {
+            return false;
+        }
+        
+        // otherwise, all prices MUST be 0
+        foreach ($pricebands as $priceband) {
+            if (($priceband->getFirst()>0) or ($priceband->getStandard()>0)
+                    and ($priceband->getChild()>0)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
 }

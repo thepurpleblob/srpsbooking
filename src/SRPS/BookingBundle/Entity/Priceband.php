@@ -64,6 +64,13 @@ class Priceband {
         $this->standard = 0;
         $this->child = 0;
     }
+    
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('first', new NotBlank());   
+        $metadata->addPropertyConstraint('standard', new NotBlank());
+        $metadata->addPropertyConstraint('child', new NotBlank());        
+    }      
 
     /**
      * Get id

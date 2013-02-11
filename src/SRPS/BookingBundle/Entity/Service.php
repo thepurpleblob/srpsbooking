@@ -148,6 +148,14 @@ class Service {
         $metadata->addPropertyConstraint('code', new NotBlank());        
         $metadata->addPropertyConstraint('name', new NotBlank());
         $metadata->addPropertyConstraint('description', new NotBlank()); 
+        $metadata->addPropertyConstraint('mealaname', new NotBlank()); 
+        $metadata->addPropertyConstraint('mealbname', new NotBlank());
+        $metadata->addPropertyConstraint('mealcname', new NotBlank());
+        $metadata->addPropertyConstraint('mealdname', new NotBlank());
+        $metadata->addPropertyConstraint('mealaprice', new NotBlank()); 
+        $metadata->addPropertyConstraint('mealbprice', new NotBlank());
+        $metadata->addPropertyConstraint('mealcprice', new NotBlank());
+        $metadata->addPropertyConstraint('mealdprice', new NotBlank());        
         $metadata->addPropertyConstraint('date', new Assert\Date());        
     }
     

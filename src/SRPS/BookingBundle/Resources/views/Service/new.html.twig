@@ -33,27 +33,27 @@
                 <tbody>
                     <tr>
                         <th class="lead">A</th>
-                        <td>{{ form_widget(form.mealaname) }}</td>
+                        <td>{{ form_widget(form.mealaname) }} {{ form_errors(form.mealaname) }}</td>
                         <td>{{ form_widget(form.mealavisible) }}</td>
-                        <td>{{ form_widget(form.mealaprice) }}</td>
+                        <td>{{ form_widget(form.mealaprice) }} {{ form_errors(form.mealaprice) }}</td>
                     </tr>
                     <tr>
                         <th class="lead">B</th>
-                        <td>{{ form_widget(form.mealbname) }}</td>
+                        <td>{{ form_widget(form.mealbname) }} {{ form_errors(form.mealbname) }}</td>
                         <td>{{ form_widget(form.mealbvisible) }}</td>
-                        <td>{{ form_widget(form.mealbprice) }}</td>
+                        <td>{{ form_widget(form.mealbprice) }} {{ form_errors(form.mealbprice) }}</td>
                     </tr>
                     <tr>
                         <th class="lead">C</th>
-                        <td>{{ form_widget(form.mealcname) }}</td>
+                        <td>{{ form_widget(form.mealcname) }} {{ form_errors(form.mealcname) }}</td>
                         <td>{{ form_widget(form.mealcvisible) }}</td>
-                        <td>{{ form_widget(form.mealcprice) }}</td>
+                        <td>{{ form_widget(form.mealcprice) }} {{ form_errors(form.mealcprice) }}</td>
                     </tr>
                     <tr>
                         <th class="lead">D</th>
-                        <td>{{ form_widget(form.mealdname) }}</td>
+                        <td>{{ form_widget(form.mealdname) }} {{ form_errors(form.mealdname) }}</td>
                         <td>{{ form_widget(form.mealdvisible) }}</td>
-                        <td>{{ form_widget(form.mealdprice) }}</td>
+                        <td>{{ form_widget(form.mealdprice) }} {{ form_errors(form.mealdprice) }}</td>
                     </tr>
                 </tbody>
             </table>      

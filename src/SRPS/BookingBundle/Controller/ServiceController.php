@@ -156,12 +156,10 @@ class ServiceController extends Controller
         }
 
         $editForm = $this->createForm(new ServiceType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'serviceid' => $id,
         ));
     }
@@ -179,7 +177,6 @@ class ServiceController extends Controller
             throw $this->createNotFoundException('Unable to find Service entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new ServiceType(), $entity);
         $editForm->bind($request);
 
@@ -192,9 +189,8 @@ class ServiceController extends Controller
 
         return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
             'entity'      => $entity,
-            'destinations' => $destinations,
+            //'destinations' => $destinations,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'serviceid' => $id,
         ));
     }

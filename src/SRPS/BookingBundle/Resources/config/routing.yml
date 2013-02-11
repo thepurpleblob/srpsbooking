@@ -54,6 +54,10 @@ admin_destination_update:
     pattern:  /admin/destination/{id}/update
     defaults: { _controller: SRPSBookingBundle:Destination:update }   
     
+admin_destination_delete:
+    pattern:  /admin/destination/{id}/delete
+    defaults: { _controller: SRPSBookingBundle:Destination:delete }    
+    
 admin_priceband:
     pattern:  /admin/priceband/{serviceid}
     defaults: { _controller: SRPSBookingBundle:Priceband:index }    
@@ -73,6 +77,10 @@ admin_priceband_create:
 admin_priceband_update:
     pattern:  /admin/priceband/{pricebandgroupid}/update
     defaults: { _controller: SRPSBookingBundle:Priceband:update }    
+    
+admin_priceband_delete:
+    pattern:  /admin/priceband/{pricebandgroupid}/delete
+    defaults: { _controller: SRPSBookingBundle:Priceband:delete }     
     
 admin_joining:
     pattern:  /admin/joining/{serviceid}

@@ -25,12 +25,18 @@ class DestinationController extends Controller
     public function indexAction($serviceid)
     {
         $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');        
         
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
         $entities = $em->getRepository('SRPSBookingBundle:Destination')
             ->findByServiceid($serviceid);
+        
+        // Check if used
+        foreach ($entities as $entity) {
+            $entity->setUsed( $booking->isDestinationUsed($entity));
+        }
 
         return $this->render('SRPSBookingBundle:Destination:index.html.twig',
             array(
@@ -201,31 +207,30 @@ class DestinationController extends Controller
      * Deletes a Service entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SRPSBookingBundle:Service')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Service entity.');
-            }
-
-            $em->remove($entity);
+        $em = $this->getDoctrine()->getManager();
+        
+        // delete pricebands associated with this
+        $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
+            ->findByDestinationid($id);
+        if ($pricebands) {
+            foreach ($pricebands as $priceband) {
+                $em->remove($priceband);   
+            }    
+        }
+        $em->flush();
+        
+        // delete destination
+        $destination = $em->getRepository('SRPSBookingBundle:Destination')
+            ->find($id);
+        if ($destination) {
+            $serviceid = $destination->getServiceid();
+            $em->remove($destination);
             $em->flush();
+            return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $serviceid)));
         }
 
         return $this->redirect($this->generateUrl('admin_service'));
-    }
-
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
     }
 }

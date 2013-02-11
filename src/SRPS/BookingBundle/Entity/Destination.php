@@ -40,6 +40,8 @@ class Destination {
      */   
     protected $description;
     
+    protected $used;
+    
     /**
      * constructor - set defaults
      */
@@ -134,5 +136,13 @@ class Destination {
     public function getServiceid()
     {
         return $this->serviceid;
+    }
+    
+    public function getUsed() {
+        return $this->used;
+    }
+    
+    public function setUsed($used) {
+        $this->used = $used;
     }
 }

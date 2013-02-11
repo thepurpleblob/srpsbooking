@@ -30,10 +30,10 @@
             <tbody>
             {% for priceband in form.pricebands %}
                 <tr>
-                    <td>{{ form_widget(priceband.destination) }}</td>
-                    <td>{{ form_widget(priceband.first) }}</td>
-                    <td>{{ form_widget(priceband.standard) }}</td>
-                    <td>{{ form_widget(priceband.child) }}</td>
+                    <td>{{ form_widget(priceband.destination) }} {{ form_errors(priceband.destination) }}</td>
+                    <td>{{ form_widget(priceband.first) }} {{ form_errors(priceband.first) }}</td>
+                    <td>{{ form_widget(priceband.standard) }} {{ form_errors(priceband.standard) }}</td>
+                    <td>{{ form_widget(priceband.child) }} {{ form_errors(priceband.child) }}</td>
                 </tr>        
             {% endfor %}        
             </tbody>

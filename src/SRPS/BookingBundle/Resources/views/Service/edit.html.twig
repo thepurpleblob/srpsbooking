@@ -37,27 +37,27 @@
             <tbody>
                 <tr>
                     <th class="lead">A</th>
-                    <td>{{ form_widget(edit_form.mealaname) }}</td>
+                    <td>{{ form_widget(edit_form.mealaname) }} {{ form_errors(edit_form.mealaname) }}</td>
                     <td>{{ form_widget(edit_form.mealavisible) }}</td>
-                    <td>{{ form_widget(edit_form.mealaprice) }}</td>
+                    <td>{{ form_widget(edit_form.mealaprice) }} {{ form_errors(edit_form.mealaprice) }}</td>
                 </tr>
                 <tr>
                     <th class="lead">B</th>
-                    <td>{{ form_widget(edit_form.mealbname) }}</td>
+                    <td>{{ form_widget(edit_form.mealbname) }} {{ form_errors(edit_form.mealbname) }}</td>
                     <td>{{ form_widget(edit_form.mealbvisible) }}</td>
-                    <td>{{ form_widget(edit_form.mealbprice) }}</td>
+                    <td>{{ form_widget(edit_form.mealbprice) }} {{ form_errors(edit_form.mealbprice) }}</td>
                 </tr>
                 <tr>
                     <th class="lead">C</th>
-                    <td>{{ form_widget(edit_form.mealcname) }}</td>
+                    <td>{{ form_widget(edit_form.mealcname) }}  {{ form_errors(edit_form.mealcname) }}</td>
                     <td>{{ form_widget(edit_form.mealcvisible) }}</td>
-                    <td>{{ form_widget(edit_form.mealcprice) }}</td>
+                    <td>{{ form_widget(edit_form.mealcprice) }}  {{ form_errors(edit_form.mealcprice) }}</td>
                 </tr>
                 <tr>
                     <th class="lead">D</th>
-                    <td>{{ form_widget(edit_form.mealdname) }}</td>
+                    <td>{{ form_widget(edit_form.mealdname) }}  {{ form_errors(edit_form.mealdname) }}</td>
                     <td>{{ form_widget(edit_form.mealdvisible) }}</td>
-                    <td>{{ form_widget(edit_form.mealdprice) }}</td>
+                    <td>{{ form_widget(edit_form.mealdprice) }}  {{ form_errors(edit_form.mealdprice) }}</td>
                 </tr>
             </tbody>
         </table>    

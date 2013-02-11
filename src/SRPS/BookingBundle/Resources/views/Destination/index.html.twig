@@ -22,6 +22,11 @@
                     <td>{{ entity.description | raw }}</td>
                     <td>
                         <a class="btn btn-warning" href="{{ path('admin_destination_edit', { 'id': entity.id }) }}">Edit</a>
+                        {% if entity.used == 0 %}
+                            <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">Delete</a> 
+                        {% else %}
+                            <a class="btn btn-danger disabled">Delete</a>                            
+                        {% endif %}
                     </td>
                 </tr>
         {% endfor %}

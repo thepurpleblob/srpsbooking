@@ -34,6 +34,7 @@
                         <td>{{ band.name }}</td>
                         <td>
                             <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': band.id }) }}">Edit</a>
+                            <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">Delete</a>                            
                         </td>
                     </tr>
                     <tr>
