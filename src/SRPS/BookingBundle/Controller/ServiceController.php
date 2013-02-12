@@ -26,7 +26,10 @@ class ServiceController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SRPSBookingBundle:Service')->findAll();
+        $query = $em->createQuery(
+            'SELECT s FROM SRPSBookingBundle:Service s ORDER BY s.date'    
+        );
+        $entities = $query->getResult();
 
         return $this->render('SRPSBookingBundle:Service:index.html.twig',
             array('entities'=>$entities));

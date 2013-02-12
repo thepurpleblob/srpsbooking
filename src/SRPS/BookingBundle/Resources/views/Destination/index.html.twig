@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>CRS</th>
                 <th>Description</th>
             </tr>
         </thead>
@@ -19,13 +20,14 @@
         {% for entity in entities %}
                 <tr>
                     <td>{{ entity.name }}</td>
+                    <td>{{ entity.crs }}</td>
                     <td>{{ entity.description | raw }}</td>
                     <td>
                         <a class="btn btn-warning" href="{{ path('admin_destination_edit', { 'id': entity.id }) }}">Edit</a>
                         {% if entity.used == 0 %}
-                            <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">Delete</a> 
+                            <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">Delete</a>
                         {% else %}
-                            <a class="btn btn-danger disabled">Delete</a>                            
+                            <a class="btn btn-danger disabled">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

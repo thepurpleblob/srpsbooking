@@ -13,10 +13,11 @@
 
     <form id="joining-new-form" class="form-horizontal" action="{{ path('admin_joining_create', {'serviceid': service.id}) }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
       {{ form_row(form.station) }}
+      {{ form_row(form.crs) }}
       {{ form_row(form.pricebandgroupid) }}
-      {{ form_rest(form) }}     
+      {{ form_rest(form) }}
     </form>
-    
+
     <button class ="btn btn-primary" onclick="$('#joining-new-form').submit();">
         Create joining station
     </button>
@@ -25,4 +26,4 @@
     </a>
 
 {% endblock content %}
- 
+

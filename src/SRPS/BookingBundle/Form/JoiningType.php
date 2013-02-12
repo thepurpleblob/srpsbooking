@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class JoiningType extends AbstractType
 {
     protected $pricebands;
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // create choices array
@@ -19,15 +19,16 @@ class JoiningType extends AbstractType
         }
         asort($choices);
         $builder
+            ->add('crs', 'text', array('label'=>'CRS'))
             ->add('station')
             ->add('pricebandgroupid', 'choice', array('choices' => $choices))
         ;
     }
-    
+
     public function __construct($pricebands) {
         $this->pricebands = $pricebands;
     }
-    
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

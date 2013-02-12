@@ -12,6 +12,7 @@ class DestinationType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('crs', 'text', array('label'=>'CRS'))
             ->add('description')
         ;
     }

@@ -25,14 +25,14 @@ class DestinationController extends Controller
     public function indexAction($serviceid)
     {
         $em = $this->getDoctrine()->getManager();
-        $booking = $this->get('srps_booking');        
-        
+        $booking = $this->get('srps_booking');
+
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
         $entities = $em->getRepository('SRPSBookingBundle:Destination')
             ->findByServiceid($serviceid);
-        
+
         // Check if used
         foreach ($entities as $entity) {
             $entity->setUsed( $booking->isDestinationUsed($entity));
@@ -51,13 +51,13 @@ class DestinationController extends Controller
      */
     public function newAction($serviceid)
     {
-        $entity = new Destination(); 
+        $entity = new Destination();
         $entity->setServiceid($serviceid);
-        
-        $em = $this->getDoctrine()->getManager();        
+
+        $em = $this->getDoctrine()->getManager();
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);        
-        
+            ->find($serviceid);
+
         $form   = $this->createForm(new DestinationType(), $entity);
 
         return $this->render('SRPSBookingBundle:Destination:new.html.twig', array(
@@ -67,7 +67,7 @@ class DestinationController extends Controller
             'form'   => $form->createView(),
         ));
     }
-    
+
     /**
      * If we add a destination then we have to pad up the existing
      * pricebands
@@ -75,15 +75,15 @@ class DestinationController extends Controller
      */
     private function checkPricebands($service) {
         $em = $this->getDoctrine()->getManager();
-        
+
         // Get all the destinations for this service
         $destinations = $em->getRepository('SRPSBookingBundle:Destination')
             ->findByServiceid($service->getId());
-        
+
         // Get all the priceband groups for this service
         $groups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
             ->findByServiceid($service->getId());
-        
+
         // run through groups checking all destinations are represented
         foreach ($groups as $group) {
             foreach ($destinations as $destination) {
@@ -108,18 +108,19 @@ class DestinationController extends Controller
     {
         $entity = new Destination();
         $entity->setServiceid($serviceid);
-        
-        $em = $this->getDoctrine()->getManager();        
+
+        $em = $this->getDoctrine()->getManager();
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);         
-        
+            ->find($serviceid);
+
         $form = $this->createForm(new DestinationType(), $entity);
         $form->bind($request);
 
         if ($form->isValid()) {
+            $entity->setCrs(strtoupper($entity->getCrs()));
             $em->persist($entity);
             $em->flush();
-            
+
             // Pad the pricebands with new destination
             $this->checkPricebands($service);
 
@@ -145,19 +146,17 @@ class DestinationController extends Controller
         // Service
         $serviceid = $entity->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);  
-        
+            ->find($serviceid);
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Destination entity.');
         }
 
         $editForm = $this->createForm(new DestinationType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'service' => $service,
             'serviceid' => $serviceid,
         ));
@@ -170,26 +169,26 @@ class DestinationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('SRPSBookingBundle:Destination')->find($id);
-        
+
         // Service
         $serviceid = $entity->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);  
-                
+            ->find($serviceid);
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Destination entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new DestinationType(), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
+            $entity->setCrs(strtoupper($entity->getCrs()));
             $em->persist($entity);
             $em->flush();
-            
+
             // Check the pricebands are synced to destinations
-            $this->checkPricebands($service);            
+            $this->checkPricebands($service);
 
             return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $serviceid)));
         }
@@ -197,9 +196,8 @@ class DestinationController extends Controller
         return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'service' => $service,
-            'serviceid' => $serviceid,            
+            'serviceid' => $serviceid,
         ));
     }
 
@@ -210,17 +208,17 @@ class DestinationController extends Controller
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         // delete pricebands associated with this
         $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
             ->findByDestinationid($id);
         if ($pricebands) {
             foreach ($pricebands as $priceband) {
-                $em->remove($priceband);   
-            }    
+                $em->remove($priceband);
+            }
         }
         $em->flush();
-        
+
         // delete destination
         $destination = $em->getRepository('SRPSBookingBundle:Destination')
             ->find($id);

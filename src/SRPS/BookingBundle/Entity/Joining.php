@@ -16,59 +16,59 @@ use Symfony\Component\Validator\ExecutionContext;
  * @author howard
  * @ORM\Entity
  * @ORM\Table(name="joining")
- * @UniqueEntity({"station", "serviceid"}) 
+ * @UniqueEntity({"station", "serviceid"})
  */
 
-class Joining 
+class Joining
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     */     
+     */
     protected $id;
 
     /**
      * @ORM\Column(type="integer")
-     */      
+     */
     protected $serviceid;
-    
+
     /**
      * @ORM\Column(type="integer")
-     */      
-    protected $pricebandgroupid;    
-    
+     */
+    protected $pricebandgroupid;
+
     /**
      * @ORM\Column(type="string", length=150)
-     */     
+     */
     protected $station;
-    
+
     /**
      * @ORM\Column(type="string", length=10)
-     */     
-    protected $crs;   
-    
+     */
+    protected $crs;
+
     protected $pricebandname;
-    
+
     public function __construct() {
         $this->station = '';
         $this->crs = '';
     }
-    
+
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('station', new NotBlank());       
-        //$metadata->addPropertyConstraint('crs', new NotBlank());        
-    } 
-    
+        $metadata->addPropertyConstraint('station', new NotBlank());
+        $metadata->addPropertyConstraint('crs', new NotBlank());
+    }
+
     public function getId() {
         return $this->id;
     }
-    
+
     public function setId($id) {
         $this->id = $id;
-    }    
-    
+    }
+
     public function getServiceid() {
         return $this->serviceid;
     }
@@ -76,35 +76,35 @@ class Joining
     public function setServiceid($serviceid) {
         $this->serviceid = $serviceid;
     }
-    
+
     public function getPricebandgroupid() {
         return $this->pricebandgroupid;
     }
-    
+
     public function setPricebandgroupid($pricebandgroupid) {
         $this->pricebandgroupid = $pricebandgroupid;
     }
-    
+
     public function getStation() {
         return $this->station;
     }
-    
+
     public function setStation($station) {
         $this->station = $station;
     }
-    
+
     public function getCrs() {
         return $this->crs;
     }
-    
+
     public function setCrs($crs) {
         $this->crs = $crs;
     }
-    
+
     public function getPricebandname() {
         return $this->pricebandname;
     }
-    
+
     public function setPricebandname($pricebandname) {
         $this->pricebandname = $pricebandname;
     }

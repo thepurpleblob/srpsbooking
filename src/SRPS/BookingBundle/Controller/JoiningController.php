@@ -102,6 +102,7 @@ class JoiningController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            $entity->setCrs(strtoupper($entity->getCrs()));
             $em->persist($entity);
             $em->flush();
 
@@ -174,6 +175,7 @@ class JoiningController extends Controller
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
+            $entity->setCrs(strtoupper($entity->getCrs()));
             $em->persist($entity);
             $em->flush();
 
