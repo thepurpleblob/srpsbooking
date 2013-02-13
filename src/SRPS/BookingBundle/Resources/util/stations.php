@@ -6,11 +6,24 @@ $DBH = new PDO("mysql:host=localhost;dbname=roger", 'root');
 $STH = $DBH->query("SELECT * FROM Station");
 $STH->setFetchMode(PDO::FETCH_OBJ);
 
-echo "<?php\n";
-echo "\$stations = array(\n";
+$stations = array();
 while ($row = $STH->fetch()) {
     $crs = $row->stn_crs;
     $name = $row->stn_name;
-    echo "'$crs' => \"".addslashes($name)."\",\n";    
+    $stations[$crs] = $name;
 }
-echo ");\n";
+
+$DB = new PDO("mysql:host=localhost;dbname=srpsbookings", 'root');
+foreach ($stations as $crs => $name) {
+    $STM = $DB->query("SELECT * FROM station WHERE crs='$crs'");
+    if ($STM->columnCount()>0) {
+        echo "$crs found\n";
+    }
+    else {
+        echo "$crs not found\n";
+        $sname = addslashes($name);
+        if ($DB->exec("INSERT INTO station SET crs='$crs', name='$sname'")===false) {
+            echo "insert failed $crs\n";
+        }
+    }
+}
