@@ -1,7 +1,7 @@
-parameters:
-#    srps_booking.example.class: SRPS\BookingBundle\Example
-
 services:
+    srps_stations:
+        class: SRPS\BookingBundle\Service\Stations
+        arguments: [@doctrine.orm.entity_manager]
     srps_booking:
         class: SRPS\BookingBundle\Service\Booking
-        arguments: [ @doctrine.orm.entity_manager ]
+        arguments: [@doctrine.orm.entity_manager]

@@ -6,6 +6,10 @@ admin_index:
     pattern:  /admin
     defaults: { _controller: SRPSBookingBundle:Service:index }
 
+admin_install:
+    pattern:  /admin/install
+    defaults: { _controller: SRPSBookingBundle:Service:install }
+
 admin_service:
     pattern:  /admin/service
     defaults: { _controller: SRPSBookingBundle:Service:index }
@@ -113,11 +117,11 @@ admin_limits_edit:
 admin_limits_update:
     pattern:  /admin/limits/{serviceid}/update
     defaults: { _controller: SRPSBookingBundle:Limits:update }
-    
+
 booking:
     pattern: /booking/{code}
     defaults: { _controller: SRPSBookingBundle:Booking:index }
-    
+
 booking_numbers:
     pattern: /booking/{code}/numbers
-    defaults: { _controller: SRPSBookingBundle:Booking:numbers }    
+    defaults: { _controller: SRPSBookingBundle:Booking:numbers }

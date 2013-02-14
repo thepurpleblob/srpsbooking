@@ -102,6 +102,25 @@ class DestinationController extends Controller
     }
 
     /**
+     * If CRS is populated and name is not, try looking
+     * up name
+     * @param object $destination entity
+     */
+    private function findCrs($destination) {
+        $em = $this->getDoctrine()->getManager();
+
+        $crs = $destination->getCrs();
+        $name = $destination->getName();
+        if (empty($name) and !empty($crs)) {
+            $station = $em->getRepository('SRPSBookingBundle:Station')
+                ->findOneByCrs($destination->getCrs());
+            if ($station) {
+                $destination->setName( $station->getName() );
+            }
+        }
+    }
+
+    /**
      * Creates a new Destination entity.
      */
     public function createAction(Request $request, $serviceid)
@@ -181,6 +200,10 @@ class DestinationController extends Controller
 
         $editForm = $this->createForm(new DestinationType(), $entity);
         $editForm->bind($request);
+
+        // Check for CRS
+        $this->findCrs($entity);
+//echo "<pre>!!"; print_r($entity); die;
 
         if ($editForm->isValid()) {
             $entity->setCrs(strtoupper($entity->getCrs()));

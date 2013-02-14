@@ -4,6 +4,7 @@ namespace SRPS\BookingBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -27,26 +28,26 @@ class ServiceController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
-            'SELECT s FROM SRPSBookingBundle:Service s ORDER BY s.date'    
+            'SELECT s FROM SRPSBookingBundle:Service s ORDER BY s.date'
         );
         $entities = $query->getResult();
 
         return $this->render('SRPSBookingBundle:Service:index.html.twig',
             array('entities'=>$entities));
     }
-    
+
     /**
      * Create the table to display price band group
      * @param integer $pricebandgroupid
      */
     private function createPricebandTable($pricebandgroupid) {
         $em = $this->getDoctrine()->getManager();
-        
+
         // get the basic price bands
         $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
             ->findByPricebandgroupid($pricebandgroupid);
-        
-        // iterate over these and get destinations 
+
+        // iterate over these and get destinations
         // (very inefficiently)
         foreach ($pricebands as $priceband) {
             $destinationid = $priceband->getDestinationid();
@@ -54,10 +55,10 @@ class ServiceController extends Controller
                 ->find($destinationid);
             $priceband->setDestination($destination->getName());
         }
-        
+
         return $pricebands;
-    }    
-    
+    }
+
     /**
      * Finds and displays a Service entity.
      *
@@ -73,7 +74,7 @@ class ServiceController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Service entity.');
         }
-        
+
         // Get the other information stored for this service
         $destinations = $em->getRepository('SRPSBookingBundle:Destination')
             ->findByServiceid($id);
@@ -81,22 +82,22 @@ class ServiceController extends Controller
             ->findByServiceid($id);
         $joinings = $em->getRepository('SRPSBookingBundle:Joining')
             ->findByServiceid($id);
-        
-        // iterate over these and get destinations 
+
+        // iterate over these and get destinations
         // (very inefficiently)
         $booking = $this->get('srps_booking');
         foreach ($pricebandgroups as $band) {
             $pricebandgroupid = $band->getId();
             $bandtable = $booking->createPricebandTable($pricebandgroupid);
             $band->bandtable = $bandtable;
-        }    
-        
+        }
+
         // add pricebandgroup names
         foreach ($joinings as $joining) {
             $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
                 ->find($joining->getPricebandgroupid());
             $joining->setPricebandname($pricebandgroup->getName());
-        }         
+        }
 
         return $this->render('SRPSBookingBundle:Service:show.html.twig', array(
             'entity' => $entity,
@@ -112,8 +113,8 @@ class ServiceController extends Controller
      */
     public function newAction()
     {
-        $entity = new Service();       
-        
+        $entity = new Service();
+
         $form   = $this->createForm(new ServiceType(), $entity);
 
         return $this->render('SRPSBookingBundle:Service:new.html.twig', array(
@@ -196,5 +197,23 @@ class ServiceController extends Controller
             'edit_form'   => $editForm->createView(),
             'serviceid' => $id,
         ));
+    }
+
+    /**
+     * Calls routines to set the system up
+     * (hidden)
+     */
+    public function installAction() {
+
+        // Install the list of crs codes and stations
+        $stations = $this->get('srps_stations');
+
+        if ($stations->installStations()) {
+            return new Response("<p>The Stations list was installed</p>");
+        }
+        else {
+            return new Response("<p>The Stations list is already populated. No action taken</p>");
+        }
+
     }
 }
