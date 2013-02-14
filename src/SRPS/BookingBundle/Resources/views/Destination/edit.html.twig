@@ -33,3 +33,18 @@
         Cancel
     </a>
 {% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $("#srps_bookingbundle_destinationtype_crs").change(
+            function() {
+                crs = $(this).val();
+                name = $("#srps_bookingbundle_destinationtype_name");
+                if (!name) {
+                    $("#srps_bookingbundle_destinationtype_name").val(crs);
+                }
+            }
+        );
+    </script>
+{% endblock javascripts %}
