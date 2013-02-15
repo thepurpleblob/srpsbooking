@@ -11,6 +11,13 @@
     <h2>New destination</h2>
     <h4>{{ service.name }}</h4>
 
+    <div class="alert alert-info">
+        The description will be shown to the user to select their destination.
+        This can be a simple destination station or a destination station plus
+        an 'optional extra' (e.g. "Grange-over-Sands plus Windermere Cruise").
+        Please make sure you include all possible combinations as destinations.
+    </div>
+
     <form id="destination-new-form" class="form-horizontal" action="{{ path('admin_destination_create', {'serviceid': service.id}) }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
       {{ form_row(form.crs) }}
       {{ form_row(form.name) }}

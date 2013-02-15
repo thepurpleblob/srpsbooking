@@ -16,17 +16,17 @@
         <tbody>
         {% for entity in entities %}
                 <tr>
-                    <td>{{ entity.code }}</td>
+                    <td><strong>{{ entity.code }}</strong></td>
                     <td>{{ entity.name }}</td>
                     <td>{{ entity.visible ? 'Yes' : 'No' }}</td>
                     <td>{% if entity.date %}{{ entity.date|date('d/m/Y') }}{% endif %}</td>
                     <td>
                         <a class="btn btn-success" href="{{ path('admin_service_show', { 'id': entity.id }) }}">show</a>
                         {% if entity.visible %}
-                            <a class="btn btn-info" href="{{ path('booking', { 'code': entity.code }) }}">Booking</a>  
+                            <a class="btn btn-info" href="{{ path('booking', { 'code': entity.code }) }}">Booking</a>
                         {% else %}
-                            <a class="btn btn-info disabled">Booking</a>                           
-                        {% endif %}    
+                            <a class="btn btn-info disabled">Booking</a>
+                        {% endif %}
                     </td>
                 </tr>
         {% endfor %}

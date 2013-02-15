@@ -21,7 +21,7 @@ class JoiningType extends AbstractType
         $builder
             ->add('crs', 'text', array('label'=>'CRS'))
             ->add('station')
-            ->add('pricebandgroupid', 'choice', array('choices' => $choices))
+            ->add('pricebandgroupid', 'choice', array('choices' => $choices, 'label' => 'Priceband'))
         ;
     }
 
