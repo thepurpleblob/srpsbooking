@@ -3,6 +3,7 @@
 namespace SRPS\BookingBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -250,5 +251,24 @@ class DestinationController extends Controller
         }
 
         return $this->redirect($this->generateUrl('admin_service'));
+    }
+
+    /**
+     * Ajax function to find name from crs
+     */
+    public function ajaxAction() {
+       $em = $this->getDoctrine()->getManager();
+
+       // Get post variable for CRS
+       $crs = $_POST['crstyped'];
+
+       // Attempt to find in db
+       $station = $em->getRepository('SRPSBookingBundle:Station')
+           ->findOneByCrs($crs);
+       if ($station) {
+           return new Response($station->getName());
+       } else {
+           return new Response('');
+       }
     }
 }

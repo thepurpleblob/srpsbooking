@@ -7,7 +7,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h2>Service edit</h2>
+    <h2>Destination edit</h2>
     <h4>{{ service.name }}</h4>
 
     <form id="destination-edit-form" class="form-horizontal" action="{{ path('admin_destination_update', { 'id': entity.id }) }}"
@@ -40,9 +40,18 @@
         $("#srps_bookingbundle_destinationtype_crs").change(
             function() {
                 crs = $(this).val();
-                name = $("#srps_bookingbundle_destinationtype_name");
-                if (!name) {
-                    $("#srps_bookingbundle_destinationtype_name").val(crs);
+                name = $("#srps_bookingbundle_destinationtype_name").val();
+                //if (!name) {
+                if (true) {
+                    $.ajax({
+                        url: "{{ path('admin_destination_ajax') }}",
+                        data: { 'crstyped': crs },
+                        type: 'post',
+                        success: function(output) {
+                                $("#srps_bookingbundle_destinationtype_name").val(output);
+                            }
+                    });
+                    //$("#srps_bookingbundle_destinationtype_name").val(crs);
                 }
             }
         );

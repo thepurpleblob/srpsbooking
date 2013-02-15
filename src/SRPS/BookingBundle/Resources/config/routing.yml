@@ -38,6 +38,10 @@ admin_service_delete:
     pattern:  /admin/service/{id}/delete
     defaults: { _controller: SRPSBookingBundle:Service:delete }
 
+admin_destination_ajax:
+    pattern:  /admin/destination/ajax
+    defaults: { _controller: SRPSBookingBundle:Destination:ajax }
+
 admin_destination:
     pattern:  /admin/destination/{serviceid}
     defaults: { _controller: SRPSBookingBundle:Destination:index }
