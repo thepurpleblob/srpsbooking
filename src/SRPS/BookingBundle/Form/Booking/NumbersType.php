@@ -1,6 +1,6 @@
 <?php
 
-namespace SRPS\BookingBundle\Form;
+namespace SRPS\BookingBundle\Form\Booking;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -87,6 +87,35 @@ class Booking
     }
 
     /**
+     * Clear the current session data and delete any expired purchases
+     */
+    public function cleanPurchases() {
+        $em = $this->em;
+
+        // Get the session
+        $session = new Session();
+        $session->start();
+
+        // remove the key and the purchaseid
+        $session->remove('key');
+        $session->remove('purchaseid');
+
+        // get incomplete purchases older than 1 hour
+        $oldtime = time() - 3600;
+        $query = $em->createQuery("SELECT p FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=0 AND p.timestamp < :oldtime")
+            ->setParameter('oldtime', $oldtime);
+        $purchases = $query->getResult();
+
+        if ($purchases) {
+            foreach ($purchases as $purchase) {
+                $em->remove($purchase);
+            }
+            $em->flush();
+        }
+    }
+
+    /**
      * Find the current purchase record and/or create a new one if
      * needed
      */
@@ -96,7 +125,7 @@ class Booking
         // See if the purchase session attribute exists
         $session = new Session();
         $session->start();
-        //$session->migrate();
+        $session->migrate();
         if ($key = $session->get('key')) {
 
             // then we should have the record id and they should match
@@ -140,6 +169,7 @@ class Booking
         $purchase = new Purchase();
         $purchase->setSeskey($key);
         $purchase->setCode($code);
+        $purchase->setCreated(time());
         $purchase->setTimestamp(time());
 
         // and persist it

@@ -31,6 +31,11 @@ class Purchase {
     protected $timestamp;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $created;
+
+    /**
      * @ORM\Column(type="string", length=200)
      */
     protected $seskey;
@@ -49,6 +54,11 @@ class Purchase {
      * @ORM\Column(type="string", length=50)
      */
     protected $bookingref;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $completed;
 
     /**
      * @ORM\Column(type="string", length=15)
@@ -159,6 +169,7 @@ class Purchase {
         $this->type = 'O';
         $this->code = '';
         $this->bookingref = '';
+        $this->completed = false;
         $this->title = 'Mr';
         $this->surname = '';
         $this->firstname = '';
@@ -213,6 +224,16 @@ class Purchase {
     public function getTimestamp()
     {
         return $this->timestamp;
+    }
+
+    public function setCreated($created) {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getCreated() {
+        return $this->created;
     }
 
     /**

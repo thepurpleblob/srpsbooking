@@ -133,3 +133,7 @@ booking_numbers:
 booking_joining:
     pattern: /booking/joining
     defaults: { _controller: SRPSBookingBundle:Booking:joining }
+
+booking_destination:
+    pattern: /booking/destination
+    defaults: { _controller: SRPSBookingBundle:Booking:destination }
