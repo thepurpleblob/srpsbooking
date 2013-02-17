@@ -123,9 +123,13 @@ admin_limits_update:
     defaults: { _controller: SRPSBookingBundle:Limits:update }
 
 booking:
-    pattern: /booking/{code}
+    pattern: /booking/start/{code}
     defaults: { _controller: SRPSBookingBundle:Booking:index }
 
 booking_numbers:
-    pattern: /booking/{code}/numbers
+    pattern: /booking/numbers/{code}
     defaults: { _controller: SRPSBookingBundle:Booking:numbers }
+
+booking_joining:
+    pattern: /booking/joining
+    defaults: { _controller: SRPSBookingBundle:Booking:joining }

@@ -6,6 +6,14 @@
 
 {% block content %}
     <h2>Service</h2>
+    <h3>{{entity.name}} ({{ entity.code }})</h3>
+
+    {% if not entity.visible %}
+    <div class="text-error">
+        This service is not currently available for booking. Change <i>Visble</i>
+        to <i>Yes</i> if required.
+    </div>
+    {% endif %}
 
     <table class="table">
         <tbody>
@@ -70,7 +78,7 @@
             </tr>
         </tbody>
     </table>
-    
+
     <h3>Destinations</h3>
     {% if destinations is empty %}
         <div class="alert alert-block alert-error">
@@ -82,31 +90,31 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
-                </tr>    
-            </thead>    
+                </tr>
+            </thead>
             <tbody>
                 {% for destination in destinations %}
                     <tr>
                         <td>{{ destination.name }}</td>
                         <td>{{ destination.description | raw }}</td>
                     </tr>
-                {% endfor %}    
+                {% endfor %}
             </tbody>
         </table>
     {% endif %}
-    
+
     <h3>Price bands</h3>
     {% if pricebandgroups is empty %}
         <div class="alert alert-block alert-error">
             There are no price bands. You need to create at least one price band first.
         </div>
-    {% else %}    
+    {% else %}
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
                     <th>Name</th>
-                </tr>    
-            </thead>    
+                </tr>
+            </thead>
             <tbody>
                 {% for pricebandgroup in pricebandgroups %}
                     <tr>
@@ -135,33 +143,33 @@
                                 </tbody>
                             </table>
                         </td>
-                    </tr>                    
-                {% endfor %}    
+                    </tr>
+                {% endfor %}
             </tbody>
-        </table>    
+        </table>
     {% endif %}
-    
+
     <h3>Joining stations</h3>
     {% if joinings is empty %}
         <div class="alert alert-block alert-error">
             There are no joining stations. You need to add at least one joining station first.
         </div>
-    {% else %}  
+    {% else %}
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
                     <th>Station</th>
                     <th>Price band</th>
-                </tr>    
-            </thead>    
+                </tr>
+            </thead>
             <tbody>
                 {% for joining in joinings %}
                     <tr>
                         <td>{{ joining.station }}</td>
                         <td>{{ joining.pricebandname }}</td>
-                    </tr>    
+                    </tr>
                 {% endfor %}
-            </tbody> 
+            </tbody>
         </table>
     {% endif %}
 

@@ -1,31 +1,31 @@
-{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+{% extends 'SRPSBookingBundle:Booking:booking.html.twig' %}
 
 {% block content %}
     <h2>SRPS Railtours Online Booking</h2>
 
     <h3 class="text-error">Important booking information - please read first</h3>
-    
+
     <p>
         Please do <b>not</b> use this online booking service if you have any
         special requirements. Such requirements include:
     </p>
-    
+
     <ul>
         <li>limited mobility,</li>
         <li>dietary requirements,</li>
         <li>groups of more than sixteen persons,</li>
         <li>any other special requests</li>
     </ul>
-    
+
     <p>
-        In these cases, or if you have any other queries, please phone our 
+        In these cases, or if you have any other queries, please phone our
         booking line on <strong>0131 538 5205 (7pm to 9pm)</strong>.
     </p>
-    
+
     <div>
-        <a class="btn btn-primary" href="{{ path('booking_numbers', { 'code': code }) }}">
+        <a class="btn btn-primary" href="{{ path('booking_numbers', {'code': code}) }}">
             Book tour '{{ service.name }}'
-        </a>        
+        </a>
         <a class="btn btn-warning" href="http://railtours.srps.org.uk/">
             Cancel
         </a>

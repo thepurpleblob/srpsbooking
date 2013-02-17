@@ -13,10 +13,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @author howard
  * @ORM\Entity
- * @ORM\Table(name="booking")
+ * @ORM\Table(name="purchase")
  * @UniqueEntity("bookingref")
  */
-class Booking {
+class Purchase {
 
     /**
      * @ORM\Id
@@ -31,9 +31,9 @@ class Booking {
     protected $timestamp;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=200)
      */
-    protected $session;
+    protected $seskey;
 
     /**
      * @ORM\Column(type="string", length=1)
@@ -159,7 +159,7 @@ class Booking {
         $this->type = 'O';
         $this->code = '';
         $this->bookingref = '';
-        $this->title = '';
+        $this->title = 'Mr';
         $this->surname = '';
         $this->firstname = '';
         $this->address1 = '';
@@ -172,14 +172,14 @@ class Booking {
         $this->joining = '';
         $this->destination = '';
         $this->class = '';
-        $this->adults = 0;
+        $this->adults = 2;
         $this->children = 0;
         $this->meala = 0;
         $this->mealb = 0;
         $this->mealc = 0;
         $this->meald = 0;
         $this->payment = 0;
-        $this->date = new DateTime();
+        $this->date = new \DateTime();
     }
 
     /**
@@ -216,26 +216,26 @@ class Booking {
     }
 
     /**
-     * Set session
+     * Set key
      *
-     * @param string $session
+     * @param string $seskey
      * @return Booking
      */
-    public function setSession($session)
+    public function setSeskey($seskey)
     {
-        $this->session = $session;
+        $this->seskey = $seskey;
 
         return $this;
     }
 
     /**
-     * Get session
+     * Get seskey
      *
      * @return string
      */
-    public function getSession()
+    public function getSeskey()
     {
-        return $this->session;
+        return $this->seskey;
     }
 
     /**
