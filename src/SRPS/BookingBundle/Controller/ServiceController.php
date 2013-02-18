@@ -32,8 +32,13 @@ class ServiceController extends Controller
         );
         $entities = $query->getResult();
 
+        // get booking status
+        $enablebooking = $this->container->getParameter('enablebooking');
+
         return $this->render('SRPSBookingBundle:Service:index.html.twig',
-            array('entities'=>$entities));
+            array('entities' => $entities,
+                  'enablebooking' => $enablebooking
+                ));
     }
 
     /**
