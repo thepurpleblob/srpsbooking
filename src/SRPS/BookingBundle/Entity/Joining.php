@@ -48,11 +48,35 @@ class Joining
      */
     protected $crs;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $meala;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $mealb;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $mealc;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $meald;
+
     protected $pricebandname;
 
     public function __construct() {
         $this->station = '';
         $this->crs = '';
+        $this->meala = true;
+        $this->mealb = true;
+        $this->mealc = true;
+        $this->meald = true;
     }
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
@@ -107,5 +131,37 @@ class Joining
 
     public function setPricebandname($pricebandname) {
         $this->pricebandname = $pricebandname;
+    }
+
+    public function getMeala() {
+        return $this->meala;
+    }
+
+    public function setMeala($meala) {
+        $this->meala = $meala;
+    }
+
+    public function getMealb() {
+        return $this->mealb;
+    }
+
+    public function setMealb($mealb) {
+        $this->mealb = $mealb;
+    }
+
+    public function getMealc() {
+        return $this->mealc;
+    }
+
+    public function setMealc($mealc) {
+        $this->mealc = $mealc;
+    }
+
+    public function getMeald() {
+        return $this->meald;
+    }
+
+    public function setMeald($meald) {
+        $this->meald = $meald;
     }
 }

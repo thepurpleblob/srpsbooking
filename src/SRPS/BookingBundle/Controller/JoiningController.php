@@ -71,7 +71,7 @@ class JoiningController extends Controller
         $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
             ->findByServiceid($serviceid);
 
-        $joiningtype = new JoiningType($pricebandgroups);
+        $joiningtype = new JoiningType($pricebandgroups, $service);
         $form   = $this->createForm($joiningtype, $entity);
 
         return $this->render('SRPSBookingBundle:Joining:new.html.twig', array(
@@ -97,7 +97,7 @@ class JoiningController extends Controller
         $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
             ->findByServiceid($serviceid);
 
-        $joiningtype = new JoiningType($pricebandgroups);
+        $joiningtype = new JoiningType($pricebandgroups, $service);
         $form = $this->createForm($joiningtype, $entity);
         $form->bind($request);
 
@@ -138,7 +138,7 @@ class JoiningController extends Controller
         $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
             ->findByServiceid($serviceid);
 
-        $joiningtype = new JoiningType($pricebandgroups);
+        $joiningtype = new JoiningType($pricebandgroups, $service);
         $editForm = $this->createForm($joiningtype, $entity);
 
         return $this->render('SRPSBookingBundle:Joining:edit.html.twig', array(
@@ -170,7 +170,7 @@ class JoiningController extends Controller
         $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
             ->findByServiceid($serviceid);
 
-        $joiningtype = new JoiningType($pricebandgroups);
+        $joiningtype = new JoiningType($pricebandgroups, $service);
         $editForm = $this->createForm($joiningtype, $entity);
         $editForm->bind($request);
 

@@ -10,6 +10,8 @@ class JoiningType extends AbstractType
 {
     protected $pricebands;
 
+    protected $service;
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // create choices array
@@ -21,12 +23,29 @@ class JoiningType extends AbstractType
         $builder
             ->add('crs', 'text', array('label'=>'CRS'))
             ->add('station')
-            ->add('pricebandgroupid', 'choice', array('choices' => $choices, 'label' => 'Priceband'))
-        ;
+            ->add('pricebandgroupid', 'choice', array('choices' => $choices, 'label' => 'Priceband'));
+
+        if ($this->service->getMealavisible()) {
+            $builder
+               ->add('meala', 'checkbox', array('label' => $this->service->getMealaname()));
+        }
+        if ($this->service->getMealbvisible()) {
+            $builder
+                ->add('mealb', 'checkbox', array('label' => $this->service->getMealbname()));
+        }
+        if ($this->service->getMealcvisible()) {
+            $builder
+                ->add('mealc', 'checkbox', array('label' => $this->service->getMealcname()));
+        }
+        if ($this->service->getMealdvisible()) {
+            $builder
+                ->add('meald', 'checkbox', array('label' => $this->service->getMealdname()));
+        }
     }
 
-    public function __construct($pricebands) {
+    public function __construct($pricebands, $service) {
         $this->pricebands = $pricebands;
+        $this->service = $service;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
