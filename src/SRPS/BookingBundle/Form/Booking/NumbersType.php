@@ -39,7 +39,8 @@ class NumbersType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'SRPS\BookingBundle\Entity\Purchase'
+            'data_class' => 'SRPS\BookingBundle\Entity\Purchase',
+            'csrf_protection' => false
         ));
     }
 

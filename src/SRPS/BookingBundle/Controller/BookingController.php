@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SRPS\BookingBundle\Form\Booking\NumbersType;
+use SRPS\BookingBundle\Form\Booking\JoiningType;
 
 class BookingController extends Controller
 {
@@ -122,7 +123,7 @@ echo "HERE"; die;
         }
 
         // display form
-        return $this->render('SRPSBookingBundle:Booking:numbers.html.twig', array(
+        return $this->render('SRPSBookingBundle:Booking:joining.html.twig', array(
             'purchase' => $purchase,
             'code' => $code,
             'service' => $service,
