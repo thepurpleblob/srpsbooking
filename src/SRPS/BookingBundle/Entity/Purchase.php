@@ -60,6 +60,11 @@ class Purchase {
      */
     protected $completed;
 
+     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $manual;
+
     /**
      * @ORM\Column(type="string", length=15)
      */
@@ -170,6 +175,7 @@ class Purchase {
         $this->code = '';
         $this->bookingref = '';
         $this->completed = false;
+        $this->manual = false;
         $this->title = 'Mr';
         $this->surname = '';
         $this->firstname = '';
@@ -809,5 +815,21 @@ class Purchase {
     public function getDate()
     {
         return $this->date;
+    }
+
+    public function setCompleted($completed) {
+        $this->completed = $completed;
+    }
+
+    public function isCompleted() {
+        return $this->completed;
+    }
+
+    public function setManual($manual) {
+        $this->manual = $manual;
+    }
+
+    public function isManual() {
+        return $this->manual;
     }
 }

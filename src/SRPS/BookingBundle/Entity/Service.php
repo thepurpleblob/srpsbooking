@@ -24,99 +24,99 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("name")
  */
 class Service {
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @ORM\Column(type="string", length=50)
      */
     protected $code;
-    
+
     /**
      * @ORM\Column(type="string", length=150)
      */
     protected $name;
-    
+
     /**
      * @ORM\Column(type="text")
-     */    
+     */
     protected $description;
-    
+
     /**
      * @ORM\Column(type="boolean")
      */
     protected $visible;
-    
+
     /**
      * @ORM\Column(type="date")
      */
     protected $date;
-    
+
     /**
      * @ORM\Column(type="string", length=100)
      */
     protected $mealaname;
-    
+
     /**
      * @ORM\Column( type="boolean")
      */
     protected $mealavisible;
-    
+
     /**
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $mealaprice;
-   
+
     /**
      * @ORM\Column(type="string", length=100)
      */
     protected $mealbname;
-    
+
     /**
      * @ORM\Column( type="boolean")
      */
     protected $mealbvisible;
-    
+
     /**
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $mealbprice;
-    
+
     /**
      * @ORM\Column(type="string", length=100)
      */
     protected $mealcname;
-    
+
     /**
      * @ORM\Column( type="boolean")
      */
     protected $mealcvisible;
-    
+
     /**
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $mealcprice;
-    
+
     /**
      * @ORM\Column(type="string", length=100)
      */
     protected $mealdname;
-    
+
     /**
      * @ORM\Column( type="boolean")
      */
     protected $mealdvisible;
-    
+
     /**
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $mealdprice;
-    
+
     /**
      * constructor - set defaults
      */
@@ -145,24 +145,24 @@ class Service {
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('code', new NotBlank());        
+        $metadata->addPropertyConstraint('code', new NotBlank());
         $metadata->addPropertyConstraint('name', new NotBlank());
-        $metadata->addPropertyConstraint('description', new NotBlank()); 
-        $metadata->addPropertyConstraint('mealaname', new NotBlank()); 
+        $metadata->addPropertyConstraint('description', new NotBlank());
+        $metadata->addPropertyConstraint('mealaname', new NotBlank());
         $metadata->addPropertyConstraint('mealbname', new NotBlank());
         $metadata->addPropertyConstraint('mealcname', new NotBlank());
         $metadata->addPropertyConstraint('mealdname', new NotBlank());
-        $metadata->addPropertyConstraint('mealaprice', new NotBlank()); 
+        $metadata->addPropertyConstraint('mealaprice', new NotBlank());
         $metadata->addPropertyConstraint('mealbprice', new NotBlank());
         $metadata->addPropertyConstraint('mealcprice', new NotBlank());
-        $metadata->addPropertyConstraint('mealdprice', new NotBlank());        
-        $metadata->addPropertyConstraint('date', new Assert\Date());        
+        $metadata->addPropertyConstraint('mealdprice', new NotBlank());
+        $metadata->addPropertyConstraint('date', new Assert\Date());
     }
-    
+
     /**
      * Get code
      *
-     * @return integer 
+     * @return integer
      */
     public function getCode()
     {
@@ -178,14 +178,14 @@ class Service {
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -201,14 +201,14 @@ class Service {
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -224,16 +224,16 @@ class Service {
     public function setVisible($visible)
     {
         $this->visible = $visible;
-    
+
         return $this;
     }
 
     /**
      * Get visible
      *
-     * @return boolean 
+     * @return boolean
      */
-    public function getVisible()
+    public function isVisible()
     {
         return $this->visible;
     }
@@ -247,14 +247,14 @@ class Service {
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -270,14 +270,14 @@ class Service {
     public function setMealaname($mealaname)
     {
         $this->mealaname = $mealaname;
-    
+
         return $this;
     }
 
     /**
      * Get mealaname
      *
-     * @return string 
+     * @return string
      */
     public function getMealaname()
     {
@@ -293,16 +293,16 @@ class Service {
     public function setMealavisible($mealavisible)
     {
         $this->mealavisible = $mealavisible;
-    
+
         return $this;
     }
 
     /**
      * Get mealavisible
      *
-     * @return boolean 
+     * @return boolean
      */
-    public function getMealavisible()
+    public function isMealavisible()
     {
         return $this->mealavisible;
     }
@@ -316,14 +316,14 @@ class Service {
     public function setMealaprice($mealaprice)
     {
         $this->mealaprice = $mealaprice;
-    
+
         return $this;
     }
 
     /**
      * Get mealaprice
      *
-     * @return float 
+     * @return float
      */
     public function getMealaprice()
     {
@@ -339,14 +339,14 @@ class Service {
     public function setMealbname($mealbname)
     {
         $this->mealbname = $mealbname;
-    
+
         return $this;
     }
 
     /**
      * Get mealbname
      *
-     * @return string 
+     * @return string
      */
     public function getMealbname()
     {
@@ -362,16 +362,16 @@ class Service {
     public function setMealbvisible($mealbvisible)
     {
         $this->mealbvisible = $mealbvisible;
-    
+
         return $this;
     }
 
     /**
      * Get mealbvisible
      *
-     * @return boolean 
+     * @return boolean
      */
-    public function getMealbvisible()
+    public function isMealbvisible()
     {
         return $this->mealbvisible;
     }
@@ -385,14 +385,14 @@ class Service {
     public function setMealbprice($mealbprice)
     {
         $this->mealbprice = $mealbprice;
-    
+
         return $this;
     }
 
     /**
      * Get mealbprice
      *
-     * @return float 
+     * @return float
      */
     public function getMealbprice()
     {
@@ -408,14 +408,14 @@ class Service {
     public function setMealcname($mealcname)
     {
         $this->mealcname = $mealcname;
-    
+
         return $this;
     }
 
     /**
      * Get mealcname
      *
-     * @return string 
+     * @return string
      */
     public function getMealcname()
     {
@@ -431,16 +431,16 @@ class Service {
     public function setMealcvisible($mealcvisible)
     {
         $this->mealcvisible = $mealcvisible;
-    
+
         return $this;
     }
 
     /**
      * Get mealcvisible
      *
-     * @return boolean 
+     * @return boolean
      */
-    public function getMealcvisible()
+    public function isMealcvisible()
     {
         return $this->mealcvisible;
     }
@@ -454,14 +454,14 @@ class Service {
     public function setMealcprice($mealcprice)
     {
         $this->mealcprice = $mealcprice;
-    
+
         return $this;
     }
 
     /**
      * Get mealcprice
      *
-     * @return float 
+     * @return float
      */
     public function getMealcprice()
     {
@@ -477,14 +477,14 @@ class Service {
     public function setMealdname($mealdname)
     {
         $this->mealdname = $mealdname;
-    
+
         return $this;
     }
 
     /**
      * Get mealdname
      *
-     * @return string 
+     * @return string
      */
     public function getMealdname()
     {
@@ -500,16 +500,16 @@ class Service {
     public function setMealdvisible($mealdvisible)
     {
         $this->mealdvisible = $mealdvisible;
-    
+
         return $this;
     }
 
     /**
      * Get mealdvisible
      *
-     * @return boolean 
+     * @return boolean
      */
-    public function getMealdvisible()
+    public function isMealdvisible()
     {
         return $this->mealdvisible;
     }
@@ -523,14 +523,14 @@ class Service {
     public function setMealdprice($mealdprice)
     {
         $this->mealdprice = $mealdprice;
-    
+
         return $this;
     }
 
     /**
      * Get mealdprice
      *
-     * @return float 
+     * @return float
      */
     public function getMealdprice()
     {
@@ -540,7 +540,7 @@ class Service {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -556,7 +556,7 @@ class Service {
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 }

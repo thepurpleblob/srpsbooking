@@ -25,19 +25,19 @@ class JoiningType extends AbstractType
             ->add('station')
             ->add('pricebandgroupid', 'choice', array('choices' => $choices, 'label' => 'Priceband'));
 
-        if ($this->service->getMealavisible()) {
+        if ($this->service->isMealavisible()) {
             $builder
                ->add('meala', 'checkbox', array('label' => $this->service->getMealaname()));
         }
-        if ($this->service->getMealbvisible()) {
+        if ($this->service->isMealbvisible()) {
             $builder
                 ->add('mealb', 'checkbox', array('label' => $this->service->getMealbname()));
         }
-        if ($this->service->getMealcvisible()) {
+        if ($this->service->isMealcvisible()) {
             $builder
                 ->add('mealc', 'checkbox', array('label' => $this->service->getMealcname()));
         }
-        if ($this->service->getMealdvisible()) {
+        if ($this->service->isMealdvisible()) {
             $builder
                 ->add('meald', 'checkbox', array('label' => $this->service->getMealdname()));
         }

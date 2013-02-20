@@ -133,7 +133,7 @@ class Joining
         $this->pricebandname = $pricebandname;
     }
 
-    public function getMeala() {
+    public function isMeala() {
         return $this->meala;
     }
 
@@ -141,7 +141,7 @@ class Joining
         $this->meala = $meala;
     }
 
-    public function getMealb() {
+    public function isMealb() {
         return $this->mealb;
     }
 
@@ -149,7 +149,7 @@ class Joining
         $this->mealb = $mealb;
     }
 
-    public function getMealc() {
+    public function isMealc() {
         return $this->mealc;
     }
 
@@ -157,7 +157,7 @@ class Joining
         $this->mealc = $mealc;
     }
 
-    public function getMeald() {
+    public function isMeald() {
         return $this->meald;
     }
 
