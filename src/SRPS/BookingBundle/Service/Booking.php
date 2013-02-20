@@ -4,6 +4,7 @@ namespace SRPS\BookingBundle\Service;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use SRPS\BookingBundle\Entity\Purchase;
+use SRPS\BookingBundle\Entity\Count;
 
 class Booking
 {
@@ -119,7 +120,7 @@ class Booking
      * Find the current purchase record and/or create a new one if
      * needed
      */
-    public function getPurchase($code='') {
+    public function getPurchase($serviceid, $code='') {
         $em = $this->em;
 
         // See if the purchase session attribute exists
@@ -167,6 +168,7 @@ class Booking
 
         // create the new purchase object
         $purchase = new Purchase();
+        $purchase->setServiceid($serviceid);
         $purchase->setSeskey($key);
         $purchase->setCode($code);
         $purchase->setCreated(time());
@@ -188,6 +190,100 @@ class Booking
         $em->flush();
 
         return $purchase;
+    }
+
+    /**
+     * Convert a null to a zero
+     * (done a lot in countStuff)
+     */
+    private function zero($value) {
+        $result = ($value) ? $value : 0;
+        return $result;
+    }
+
+    /**
+     * Count the purchases and work out what's left. Major PITA this
+     */
+    public function countStuff($serviceid) {
+        $em = $this->em;
+
+        // Clear incomplete purchases older than 1 hour
+        $oldtime = time() - 3600;
+        $query = $em->createQuery("SELECT p FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=0 AND p.timestamp < :oldtime")
+            ->setParameter('oldtime', $oldtime);
+        $purchases = $query->getResult();
+        if ($purchases) {
+            foreach ($purchases as $purchase) {
+                $em->remove($purchase);
+            }
+            $em->flush();
+        }
+
+        // get limits
+        $limits = $em->getRepository('SRPSBookingBundle:Limits')
+            ->findOneByServiceid($serviceid);
+
+        // Create counts entity
+        $count = new Count();
+
+        // get first class booked
+        $fbquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=1 AND p.class='F' AND p.serviceid=$serviceid ");
+        $fbtotal = $fbquery->getResult();
+        $count->setBookedfirst($this->zero($fbtotal[0]['a']));
+
+        // get first class in progress
+        $fpquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=0 AND p.class='F' AND p.serviceid=$serviceid ");
+        $fptotal = $fpquery->getResult();
+        $count->setPendingfirst($this->zero($fptotal[0]['a']));
+
+        // firct class remainder is simply
+        $count->setRemainingfirst($limits->getFirst() - $count->getBookedfirst() - $count->getPendingfirst());
+
+        // get standard class booked
+        $sbquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=1 AND p.class='S' AND p.serviceid=$serviceid ");
+        $sbtotal = $sbquery->getResult();
+        $count->setBookedstandard($this->zero($sbtotal[0]['a']));
+
+        // get standard class in progress
+        $spquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=0 AND p.class='F' AND p.serviceid=$serviceid ");
+        $sptotal = $spquery->getResult();
+        $count->setPendingstandard($this->zero($sptotal[0]['a']));
+
+        // firct class remainder is simply
+        $count->setRemainingstandard($limits->getStandard() - $count->getBookedstandard() - $count->getPendingstandard());
+
+        // Get booked meals
+        $mbquery = $em->createQuery("SELECT SUM(p.meala) AS a, SUM(p.mealb) AS b,
+            SUM(p.mealc) AS c, SUM(p.meald) AS d FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=1 AND p.serviceid=$serviceid ");
+        $mbtotal = $mbquery->getResult();
+        $count->setBookedmeala($this->zero($mbtotal[0]['a']));
+        $count->setBookedmealb($this->zero($mbtotal[0]['b']));
+        $count->setBookedmealc($this->zero($mbtotal[0]['c']));
+        $count->setBookedmeald($this->zero($mbtotal[0]['d']));
+
+        // Get pending meals
+        $mpquery = $em->createQuery("SELECT SUM(p.meala) AS a, SUM(p.mealb) AS b,
+            SUM(p.mealc) AS c, SUM(p.meald) AS d FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=0 AND p.serviceid=$serviceid ");
+        $mptotal = $mpquery->getResult();
+        $count->setPendingmeala($this->zero($mptotal[0]['a']));
+        $count->setPendingmealb($this->zero($mptotal[0]['b']));
+        $count->setPendingmealc($this->zero($mptotal[0]['c']));
+        $count->setPendingmeald($this->zero($mptotal[0]['d']));
+
+        // Get remaining meals
+        $count->setRemainingmeala($limits->getMeala() - $count->getBookedmeala() - $count->getPendingmeala());
+        $count->setRemainingmealb($limits->getMealb() - $count->getBookedmealb() - $count->getPendingmealb());
+        $count->setRemainingmealc($limits->getMealc() - $count->getBookedmealc() - $count->getPendingmealc());
+        $count->setRemainingmeala($limits->getMeald() - $count->getBookedmeald() - $count->getPendingmeald());
+
+        return $count;
     }
 
 }

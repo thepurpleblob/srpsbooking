@@ -23,13 +23,20 @@ class LimitsController extends Controller
     public function editAction($serviceid)
     {
         $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
 
         // Always a chance the entity doesn't exist yet
         $entity = $em->getRepository('SRPSBookingBundle:Limits')
             ->findOneByServiceid($serviceid);
         if (!$entity) {
             $entity = new Limits();
+            $entity->setServiceid($serviceid);
+            $em->persist($entity);
+            $em->flush();
         }
+
+        // Get the current counts of everything
+        $count = $booking->countStuff($serviceid);
 
         // Service
         $service = $em->getRepository('SRPSBookingBundle:Service')
@@ -39,6 +46,7 @@ class LimitsController extends Controller
 
         return $this->render('SRPSBookingBundle:Limits:edit.html.twig', array(
             'entity'      => $entity,
+            'count' => $count,
             'edit_form'   => $editForm->createView(),
             'service' => $service,
             'serviceid' => $serviceid,
@@ -51,6 +59,8 @@ class LimitsController extends Controller
     public function updateAction(Request $request, $serviceid)
     {
         $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
+
         $entity = $em->getRepository('SRPSBookingBundle:Limits')
             ->findOneByServiceid($serviceid);
         if (!$entity) {

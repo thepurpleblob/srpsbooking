@@ -38,15 +38,15 @@ class BookingController extends Controller
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
 
-        // Grab current purchase
-        $purchase = $booking->getPurchase($code);
-
         // Get the service object
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->findOneByCode($code);
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
+
+        // Grab current purchase
+        $purchase = $booking->getPurchase($service->getServiceid(), $code);
 
         // create form
         $numberstype = new NumbersType();

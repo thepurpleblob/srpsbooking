@@ -33,6 +33,11 @@ class Purchase {
     /**
      * @ORM\Column(type="integer")
      */
+    protected $serviceid;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     protected $created;
 
     /**
@@ -831,5 +836,13 @@ class Purchase {
 
     public function isManual() {
         return $this->manual;
+    }
+
+    public function setServiceid($serviceid) {
+        $this->serviceid = $serviceid;
+    }
+
+    public function getServiceid() {
+        return $this->serviceid;
     }
 }

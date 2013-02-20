@@ -28,54 +28,54 @@
                     <td>
                         {{ form_widget(edit_form.first) }}
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{{ count.bookedfirst }}</td>
+                    <td>{{ count.pendingfirst }}</td>
+                    <td>{{ count.remainingfirst }}</td>
                 </tr>
                 <tr>
                     <td>Standard</td>
                     <td>
                         {{ form_widget(edit_form.standard) }}
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{{ count.bookedstandard }}</td>
+                    <td>{{ count.pendingstandard }}</td>
+                    <td>{{ count.remainingstandard }}</td>
                 </tr>
                 <tr>
                     <td><b>Meal A</b> ({{ service.mealaname }})</td>
                     <td>
                         {{ form_widget(edit_form.meala) }}
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{{ count.bookedmeala }}</td>
+                    <td>{{ count.pendingmeala }}</td>
+                    <td>{{ count.remainingmeala }}</td>
                 </tr>
                 <tr>
                     <td><b>Meal B</b> ({{ service.mealbname }})</td>
                     <td>
                         {{ form_widget(edit_form.mealb) }}
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{{ count.bookedmealb }}</td>
+                    <td>{{ count.pendingmealb }}</td>
+                    <td>{{ count.remainingmealb }}</td>
                 </tr>
                 <tr>
                     <td><b>Meal C</b> ({{ service.mealcname }})</td>
                     <td>
                         {{ form_widget(edit_form.mealc) }}
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{{ count.bookedmealc }}</td>
+                    <td>{{ count.pendingmealc }}</td>
+                    <td>{{ count.remainingmealc }}</td>
                 </tr>
                 <tr>
                     <td><b>Meal D</b> ({{ service.mealdname }})</td>
                     <td>
                         {{ form_widget(edit_form.meald) }}
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{{ count.bookedmeald }}</td>
+                    <td>{{ count.pendingmeald }}</td>
+                    <td>{{ count.remainingmeald }}</td>
                 </tr>
             </tbody>
         </table>
