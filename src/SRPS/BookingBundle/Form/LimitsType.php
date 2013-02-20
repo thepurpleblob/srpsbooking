@@ -13,11 +13,10 @@ class LimitsType extends AbstractType
         $builder
             ->add('first')
             ->add('standard')
-            ->add('child')
             ->add('meala', 'integer', array('label' => 'Meal A'))
             ->add('mealb', 'integer', array('label' => 'Meal B'))
             ->add('mealc', 'integer', array('label' => 'Meal C'))
-            ->add('meald', 'integer', array('label' => 'Meal D'))    
+            ->add('meald', 'integer', array('label' => 'Meal D'))
         ;
     }
 
