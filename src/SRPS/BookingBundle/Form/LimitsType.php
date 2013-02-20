@@ -8,15 +8,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class LimitsType extends AbstractType
 {
+    protected $service;
+
+    public function __construct($service) {
+        $this->service = $service;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('first')
             ->add('standard')
-            ->add('meala', 'integer', array('label' => 'Meal A'))
-            ->add('mealb', 'integer', array('label' => 'Meal B'))
-            ->add('mealc', 'integer', array('label' => 'Meal C'))
-            ->add('meald', 'integer', array('label' => 'Meal D'))
+            ->add('meala', 'integer', array('label' => $this->service->getMealaname()))
+            ->add('mealb', 'integer', array('label' => $this->service->getMealbname()))
+            ->add('mealc', 'integer', array('label' => $this->service->getMealbname()))
+            ->add('meald', 'integer', array('label' => $this->service->getMealbname()))
         ;
     }
 

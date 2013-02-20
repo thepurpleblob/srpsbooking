@@ -23,19 +23,19 @@ class LimitsController extends Controller
     public function editAction($serviceid)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         // Always a chance the entity doesn't exist yet
         $entity = $em->getRepository('SRPSBookingBundle:Limits')
             ->findOneByServiceid($serviceid);
         if (!$entity) {
             $entity = new Limits();
-        }        
+        }
 
         // Service
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);  
+            ->find($serviceid);
 
-        $editForm = $this->createForm(new LimitsType(), $entity);
+        $editForm = $this->createForm(new LimitsType($service), $entity);
 
         return $this->render('SRPSBookingBundle:Limits:edit.html.twig', array(
             'entity'      => $entity,
@@ -56,13 +56,13 @@ class LimitsController extends Controller
         if (!$entity) {
             $entity = new Limits();
             $entity->setServiceid($serviceid);
-        }        
-        
+        }
+
         // Service
         $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);  
+            ->find($serviceid);
 
-        $editForm = $this->createForm(new LimitsType(), $entity);
+        $editForm = $this->createForm(new LimitsType($service), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
@@ -76,7 +76,7 @@ class LimitsController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'service' => $service,
-            'serviceid' => $serviceid,            
+            'serviceid' => $serviceid,
         ));
     }
 
