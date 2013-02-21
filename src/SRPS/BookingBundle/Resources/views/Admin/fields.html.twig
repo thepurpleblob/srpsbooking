@@ -1,6 +1,6 @@
 {# src/SRPS/BookingBundle/Resources/views/Admin/fields.html.twig #}
 
-{# origina in vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form/form_div_layout.html.twig #}
+{# original in vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form/form_div_layout.html.twig #}
 
 {% block form_row %}
 {% spaceless %}
@@ -35,8 +35,8 @@
 {% spaceless %}
     {% for child in form %}
         <label class="radio">
-        {{ form_widget(child) }}
-        {{ child.label }}
+        <pre>{{ form_widget(child) }}</pre>
+        {{ child.vars.label }}
         </label>
     {% endfor %}
 {% endspaceless %}
