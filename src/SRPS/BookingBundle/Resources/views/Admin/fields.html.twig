@@ -1,5 +1,7 @@
 {# src/SRPS/BookingBundle/Resources/views/Admin/fields.html.twig #}
 
+{# origina in vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form/form_div_layout.html.twig #}
+
 {% block form_row %}
 {% spaceless %}
     <div class="control-group">
@@ -7,7 +9,7 @@
         <div class="controls">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
-        </div>        
+        </div>
     </div>
 {% endspaceless %}
 {% endblock form_row %}
@@ -28,3 +30,14 @@
     {% endif %}
 {% endspaceless %}
 {% endblock form_errors %}
+
+{% block choice_widget_expanded %}
+{% spaceless %}
+    {% for child in form %}
+        <label class="radio">
+        {{ form_widget(child) }}
+        {{ child.label }}
+        </label>
+    {% endfor %}
+{% endspaceless %}
+{% endblock choice_widget_expanded %}

@@ -95,7 +95,9 @@ class Booking
 
         // Get the session
         $session = new Session();
-        $session->start();
+//        if (!$session->isStarted()) {
+//            $session->start();
+//        }
 
         // remove the key and the purchaseid
         $session->remove('key');
@@ -120,12 +122,14 @@ class Booking
      * Find the current purchase record and/or create a new one if
      * needed
      */
-    public function getPurchase($serviceid, $code='') {
+    public function getPurchase($serviceid=0, $code='') {
         $em = $this->em;
 
         // See if the purchase session attribute exists
         $session = new Session();
-        $session->start();
+//        if (!$session->isStarted()) {
+//            $session->start();
+//        }
         $session->migrate();
         if ($key = $session->get('key')) {
 
@@ -158,10 +162,11 @@ class Booking
         // If we get here, there is no session set up, so
         // there won't be a purchase record either
 
-        // if no code was supplied then we are not allowed a new one
-        if (empty($code)) {
+        // if no code or serviceid was supplied then we are not allowed a new one
+        if (empty($code) or empty($serviceid)) {
             throw new \Exception('The purchase record was not found');
         }
+
 
         // create a random new key
         $key = sha1(microtime(true).mt_rand(10000,90000));

@@ -46,7 +46,7 @@ class BookingController extends Controller
         }
 
         // Grab current purchase
-        $purchase = $booking->getPurchase($service->getServiceid(), $code);
+        $purchase = $booking->getPurchase($service->getId(), $code);
 
         // create form
         $numberstype = new NumbersType();
@@ -61,7 +61,6 @@ class BookingController extends Controller
 
                 return $this->redirect($this->generateUrl('booking_joining'));
             }
-echo "<pre>ERR  "; print_r($form->getErrors()); die;
         }
 
         // display form
@@ -93,7 +92,7 @@ echo "<pre>ERR  "; print_r($form->getErrors()); die;
         $stations = $em->getRepository('SRPSBookingBundle:Joining')
             ->findByServiceid($service->getId());
         if (!$stations) {
-            throw new Exception('No joining stations found for this service');
+            throw new \Exception('No joining stations found for this service');
         }
 
         // If there is only one then there is nothing to do
@@ -107,7 +106,7 @@ echo "<pre>ERR  "; print_r($form->getErrors()); die;
         }
 
         // create form
-        $joiningtype = new JoiningType();
+        $joiningtype = new JoiningType($stations);
         $form   = $this->createForm($joiningtype, $purchase);
 
         // submitted?
@@ -117,7 +116,6 @@ echo "<pre>ERR  "; print_r($form->getErrors()); die;
                 $em->persist($purchase);
                 $em->flush();
 
-echo "HERE"; die;
                 return $this->redirect($this->generateUrl('booking_destination'));
             }
         }

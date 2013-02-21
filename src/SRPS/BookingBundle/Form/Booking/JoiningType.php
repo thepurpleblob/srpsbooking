@@ -9,10 +9,26 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class JoiningType extends AbstractType
 {
 
+    protected $stations;
+
+    public function __construct($stations) {
+        $this->stations = $stations;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Construct list
+        $choices = array();
+        foreach ($this->stations as $station) {
+            $choices[$station->getCrs()] = $station->getStation();
+        }
+
         $builder
-            ->add('joining')
+            ->add('joining', 'choice', array(
+                'choices' => $choices,
+                'expanded' => true,
+                'label' => 'Select station',
+            ))
         ;
     }
 
