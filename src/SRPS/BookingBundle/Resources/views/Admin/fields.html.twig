@@ -35,8 +35,8 @@
 {% spaceless %}
     {% for child in form %}
         <label class="radio">
-        <pre>{{ form_widget(child) }}</pre>
-        {{ child.vars.label }}
+            {{ form_widget(child) }}
+            <b>{{ child.vars.label }}</b>
         </label>
     {% endfor %}
 {% endspaceless %}
