@@ -32,28 +32,28 @@ class MealsType extends AbstractType
             $builder
                 ->add('meala', 'choice', array(
                 'choices' => $choices,
-                'label' => $this->service->getMealaname(),
+                'label' => $this->service->getMealaname() . ' £' . $this->service->getMealaprice() . ' each',
             ));
         }
         if ($this->joining->isMealb()) {
             $builder
                 ->add('mealb', 'choice', array(
                 'choices' => $choices,
-                'label' => $this->service->getMealbname(),
+                'label' => $this->service->getMealbname() . ' £' . $this->service->getMealbprice() . ' each',
             ));
         }
         if ($this->joining->isMealc()) {
             $builder
                 ->add('mealc', 'choice', array(
                 'choices' => $choices,
-                'label' => $this->service->getMealcname(),
+                'label' => $this->service->getMealcname() . ' £' . $this->service->getMealcprice() . ' each',
             ));
         }
         if ($this->joining->isMeald()) {
             $builder
                 ->add('meald', 'choice', array(
                 'choices' => $choices,
-                'label' => $this->service->getMealdname(),
+                'label' => $this->service->getMealdname() . ' £' . $this->service->getMealdprice() . ' each',
             ));
         }
     }

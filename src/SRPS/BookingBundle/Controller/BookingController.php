@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SRPS\BookingBundle\Form\Booking\NumbersType;
 use SRPS\BookingBundle\Form\Booking\JoiningType;
 use SRPS\BookingBundle\Form\Booking\DestinationType;
+use SRPS\BookingBundle\Form\Booking\MealsType;
 use Symfony\Component\Form\FormError;
 
 class BookingController extends Controller
@@ -64,6 +65,8 @@ class BookingController extends Controller
                 $children = $purchase->getChildren();
                 if (($adults + $children) > 16) {
                     $form->get('adults')->addError(new FormError('Total party size is more than 16.'));
+                } else if (($adults<1) or ($adults>16) or ($children<0) or ($children>16)) {
+                    $form->get('adults')->addError(new FormError('Value supplied out of range.'));
                 } else {
                     $em->persist($purchase);
                     $em->flush();
@@ -246,7 +249,7 @@ class BookingController extends Controller
 
         // get the joining station (to see what meals available)
         $station = $em->getRepository('SRPSBookingBundle:Joining')
-            ->findOneBy(array('serviceid'=>$service->getId(), 'joining'=>$purchase->getJoining()));
+            ->findOneBy(array('serviceid'=>$service->getId(), 'crs'=>$purchase->getJoining()));
         if (!$station) {
             throw new \Exception('No joining stations found for this service');
         }
@@ -255,8 +258,8 @@ class BookingController extends Controller
         $passengercount = $purchase->getAdults() + $purchase->getChildren();
 
         // create form
-        $joiningtype = new JoiningType($station, $service, $passengercount);
-        $form   = $this->createForm($joiningtype, $purchase);
+        $mealstype = new MealsType($station, $service, $passengercount);
+        $form   = $this->createForm($mealstype, $purchase);
 
         // submitted?
         if ($this->getRequest()->getMethod() == 'POST') {
@@ -276,7 +279,7 @@ class BookingController extends Controller
         }
 
         // display form
-        return $this->render('SRPSBookingBundle:Booking:joining.html.twig', array(
+        return $this->render('SRPSBookingBundle:Booking:meals.html.twig', array(
             'purchase' => $purchase,
             'code' => $code,
             'service' => $service,
