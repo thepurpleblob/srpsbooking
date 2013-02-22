@@ -9,7 +9,7 @@
 
     <p>
         There is more than one destination/option for this tour. Please choose
-        the one you would like.
+        the one you would like (Prices are per passenger)
     </p>
 
     <form id="destination-form" class="form-horizontal" action="{{ path('booking_destination') }}"
@@ -19,6 +19,8 @@
               <label class="radio">
                   <input type="radio" value="{{ destination.crs }}" name="srps_bookingbundle_booking_destinationtype[destination]">
                   <p>{{ destination.description | raw }}</p>
+                  <p>First: &pound;{{ destination.first }},  Standard:
+                      &pound;{{ destination.standard }},  Child: &pound;{{ destination.child }}</p>
               </label>
           {% endfor %}
           {{ form_errors(form.destination) }}

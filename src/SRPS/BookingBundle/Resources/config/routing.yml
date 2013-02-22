@@ -137,3 +137,11 @@ booking_joining:
 booking_destination:
     pattern: /booking/destination
     defaults: { _controller: SRPSBookingBundle:Booking:destination }
+
+booking_meals:
+    pattern: /booking/meals
+    defaults: { _controller: SRPSBookingBundle:Booking:meals }
+
+booking_class:
+    pattern: /booking/class
+    defaults: { _controller: SRPSBookingBundle:Booking:meals }
