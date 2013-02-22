@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SRPS\BookingBundle\Form\Booking\NumbersType;
 use SRPS\BookingBundle\Form\Booking\JoiningType;
+use SRPS\BookingBundle\Form\Booking\DestinationType;
+use Symfony\Component\Form\FormError;
 
 class BookingController extends Controller
 {
@@ -56,10 +58,18 @@ class BookingController extends Controller
         if ($this->getRequest()->getMethod() == 'POST') {
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-                $em->persist($purchase);
-                $em->flush();
 
-                return $this->redirect($this->generateUrl('booking_joining'));
+                // check numbers
+                $adults = $purchase->getAdults();
+                $children = $purchase->getChildren();
+                if (($adults + $children) > 16) {
+                    $form->get('adults')->addError(new FormError('Total party size is more than 16.'));
+                } else {
+                    $em->persist($purchase);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('booking_joining'));
+                }
             }
         }
 
@@ -113,16 +123,86 @@ class BookingController extends Controller
         if ($this->getRequest()->getMethod() == 'POST') {
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-                $em->persist($purchase);
-                $em->flush();
 
-                return $this->redirect($this->generateUrl('booking_destination'));
+                // check that we have a value of some sort
+                if (!$purchase->getJoining()) {
+                    $form->get('joining')->addError(new FormError('You must choose a joining station'));
+                } else {
+                    $em->persist($purchase);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('booking_destination'));
+                }
             }
         }
 
         // display form
         return $this->render('SRPSBookingBundle:Booking:joining.html.twig', array(
             'purchase' => $purchase,
+            'code' => $code,
+            'service' => $service,
+            'form'   => $form->createView(),
+        ));
+    }
+
+    public function destinationAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
+
+        // Grab current purchase
+        $purchase = $booking->getPurchase();
+
+        // Get the service object
+        $code = $purchase->getCode();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->findOneByCode($code);
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find code ' . $code);
+        }
+
+        // get the destinations
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($service->getId());
+        if (!$destinations) {
+            throw new \Exception('No destinations found for this service');
+        }
+
+        // If there is only one then there is nothing to do
+        if (count($destinations)==1) {
+            $destination = array_pop($destinations);
+            $purchase->setDestination($destination->getCrs());
+            $em->persist($purchase);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('booking_meals'));
+        }
+
+        // create form
+        $destinationtype = new DestinationType($destinations);
+        $form   = $this->createForm($destinationtype, $purchase);
+
+        // submitted?
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+
+                // check that we have a value of some sort
+                if (!$purchase->getDestination()) {
+                    $form->get('destination')->addError(new FormError('You must make a choice'));
+                } else {
+                    $em->persist($purchase);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('booking_meals'));
+                }
+            }
+        }
+
+        // display form
+        return $this->render('SRPSBookingBundle:Booking:destination.html.twig', array(
+            'purchase' => $purchase,
+            'destinations' => $destinations,
             'code' => $code,
             'service' => $service,
             'form'   => $form->createView(),

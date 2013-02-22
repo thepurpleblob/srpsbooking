@@ -1,0 +1,36 @@
+{% extends 'SRPSBookingBundle:Booking:booking.html.twig' %}
+
+{% form_theme form 'SRPSBookingBundle:Admin:fields.html.twig' %}
+
+{% block content %}
+    <h2>SRPS Railtours Online Booking</h2>
+
+    <h3 class="text-error">Destination...</h3>
+
+    <p>
+        There is more than one destination/option for this tour. Please choose
+        the one you would like.
+    </p>
+
+    <form id="destination-form" class="form-horizontal" action="{{ path('booking_destination') }}"
+          novalidate="novalidate" method="post" {{ form_enctype(form) }}>
+
+          {% for destination in destinations %}
+              <label class="radio">
+                  <input type="radio" value="{{ destination.crs }}" name="srps_bookingbundle_booking_destinationtype[destination]">
+                  <p>{{ destination.description | raw }}</p>
+              </label>
+          {% endfor %}
+          {{ form_errors(form.destination) }}
+    </form>
+
+    <div>
+        <a class="btn btn-primary" onclick="$('#destination-form').submit();">
+            Next step
+        </a>
+        <a class="btn btn-warning" href="http://railtours.srps.org.uk/">
+            Cancel
+        </a>
+    </div>
+
+{% endblock content %}
