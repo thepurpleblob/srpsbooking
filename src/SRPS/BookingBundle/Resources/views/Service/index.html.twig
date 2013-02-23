@@ -35,6 +35,12 @@
             </tbody>
         </table>
 
+        {% if not enablebooking %}
+            <div class="alert">
+                NOTE: Booking is currently disabled on this site
+            </div>
+        {% endif %}
+
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ path('admin_service_new') }}">
                 Add a new service
