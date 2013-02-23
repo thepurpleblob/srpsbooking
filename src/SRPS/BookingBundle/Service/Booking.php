@@ -225,9 +225,15 @@ class Booking
             $em->flush();
         }
 
-        // get limits
+        // Always a chance the limits don't exist yet
         $limits = $em->getRepository('SRPSBookingBundle:Limits')
             ->findOneByServiceid($serviceid);
+        if (!$limits) {
+            $limits = new Limits();
+            $limits->setServiceid($serviceid);
+            $em->persist($limits);
+            $em->flush();
+        }
 
         // Create counts entity
         $count = new Count();
