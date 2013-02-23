@@ -48,28 +48,28 @@ class MealsType extends AbstractType
             $choices[$i] = "$i";
         }
 
-        if ($this->joining->isMeala()) {
+        if ($this->joining->isMeala() and $this->service->isMealavisible()) {
             $builder
                 ->add('meala', 'choice', array(
                 'choices' => $this->getChoices($this->numbers->getRemainingmeala()),
                 'label' => $this->service->getMealaname() . ' £' . $this->service->getMealaprice() . ' each',
             ));
         }
-        if ($this->joining->isMealb()) {
+        if ($this->joining->isMealb() and $this->service->isMealbvisible()) {
             $builder
                 ->add('mealb', 'choice', array(
                 'choices' => $this->getChoices($this->numbers->getRemainingmealb()),
                 'label' => $this->service->getMealbname() . ' £' . $this->service->getMealbprice() . ' each',
             ));
         }
-        if ($this->joining->isMealc()) {
+        if ($this->joining->isMealc() and $this->service->isMealcvisible()) {
             $builder
                 ->add('mealc', 'choice', array(
                 'choices' => $this->getChoices($this->numbers->getRemainingmealc()),
                 'label' => $this->service->getMealcname() . ' £' . $this->service->getMealcprice() . ' each',
             ));
         }
-        if ($this->joining->isMeald()) {
+        if ($this->joining->isMeald() and $this->service->isMealdvisible()) {
             $builder
                 ->add('meald', 'choice', array(
                 'choices' => $this->getChoices($this->numbers->getRemainingmeald()),
