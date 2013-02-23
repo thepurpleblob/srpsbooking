@@ -181,7 +181,7 @@ class Purchase {
         $this->bookingref = '';
         $this->completed = false;
         $this->manual = false;
-        $this->title = 'Mr';
+        $this->title = '';
         $this->surname = '';
         $this->firstname = '';
         $this->address1 = '';

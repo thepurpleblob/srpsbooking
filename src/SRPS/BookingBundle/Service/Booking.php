@@ -255,7 +255,7 @@ class Booking
 
         // get standard class in progress
         $spquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
-            WHERE p.completed=0 AND p.class='F' AND p.serviceid=$serviceid ");
+            WHERE p.completed=0 AND p.class='S' AND p.serviceid=$serviceid ");
         $sptotal = $spquery->getResult();
         $count->setPendingstandard($this->zero($sptotal[0]['a']));
 
@@ -283,10 +283,12 @@ class Booking
         $count->setPendingmeald($this->zero($mptotal[0]['d']));
 
         // Get remaining meals
+        //$rma = $limits->getMeala() - $count->getBookedmeala() - $count->getPendingmeala();
+        //$count->setRemainingmeala($rma);
         $count->setRemainingmeala($limits->getMeala() - $count->getBookedmeala() - $count->getPendingmeala());
         $count->setRemainingmealb($limits->getMealb() - $count->getBookedmealb() - $count->getPendingmealb());
         $count->setRemainingmealc($limits->getMealc() - $count->getBookedmealc() - $count->getPendingmealc());
-        $count->setRemainingmeala($limits->getMeald() - $count->getBookedmeald() - $count->getPendingmeald());
+        $count->setRemainingmeald($limits->getMeald() - $count->getBookedmeald() - $count->getPendingmeald());
 
         return $count;
     }

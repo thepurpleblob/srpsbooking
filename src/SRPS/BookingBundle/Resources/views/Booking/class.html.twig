@@ -12,7 +12,7 @@
         price breakdown is shown for your information.
     </p>
 
-    <form id="class-form" class="form-horizontal" action="{{ path('booking_destination') }}"
+    <form id="class-form" class="form-horizontal" action="{{ path('booking_class') }}"
           novalidate="novalidate" method="post" {{ form_enctype(form) }}>
 
         {% if availablefirst %}
@@ -68,9 +68,6 @@
                 Next step
             </a>
         {% endif %}
-        <a class="btn btn-warning" href="http://railtours.srps.org.uk/">
-            Cancel
-        </a>
     </div>
 
 {% endblock content %}

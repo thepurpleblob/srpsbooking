@@ -12,6 +12,7 @@ use SRPS\BookingBundle\Form\Booking\JoiningType;
 use SRPS\BookingBundle\Form\Booking\DestinationType;
 use SRPS\BookingBundle\Form\Booking\MealsType;
 use SRPS\BookingBundle\Form\Booking\ClassType;
+use SRPS\BookingBundle\Form\Booking\PersonalType;
 use Symfony\Component\Form\FormError;
 
 class BookingController extends Controller
@@ -258,8 +259,11 @@ class BookingController extends Controller
         // Get the passenger count
         $passengercount = $purchase->getAdults() + $purchase->getChildren();
 
+        // we need to know about the number
+        $numbers = $booking->countStuff($service->getId());
+
         // create form
-        $mealstype = new MealsType($station, $service, $passengercount);
+        $mealstype = new MealsType($station, $service, $numbers, $passengercount);
         $form   = $this->createForm($mealstype, $purchase);
 
         // submitted?
@@ -312,9 +316,15 @@ class BookingController extends Controller
         $farefirst = $booking->calculateFare($service, $purchase, 'F');
 
         // we need to know about the number
+        // it's a bodge - but if the choice is made then skip this check
         $numbers = $booking->countStuff($service->getId());
-        $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
-        $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
+        if (!$purchase->getClass()) {
+            $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
+            $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
+        } else {
+            $availablefirst = true;
+            $availablestandard = true;
+        }
 
         // create form
         $classtype = new ClassType();
@@ -325,14 +335,16 @@ class BookingController extends Controller
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
 
-                // check that we have a value of some sort
-                if (!$purchase->getJoining()) {
-                    $form->get('joining')->addError(new FormError('You must choose a joining station'));
-                } else {
+                // check that we have a valid response
+                $class = $purchase->getClass();
+                if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
                     $em->persist($purchase);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_class'));
+                    return $this->redirect($this->generateUrl('booking_personal'));
+
+                } else {
+                    $form->get('class')->addError(new FormError('You must make a selection'));
                 }
             }
         }
@@ -349,4 +361,53 @@ class BookingController extends Controller
             'form'   => $form->createView(),
         ));
     }
+
+    public function personalAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
+
+        // Grab current purchase
+        $purchase = $booking->getPurchase();
+
+        // Get the service object
+        $code = $purchase->getCode();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->findOneByCode($code);
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find code ' . $code);
+        }
+
+        // create form
+        $personaltype = new PersonalType();
+        $form   = $this->createForm($personaltype, $purchase);
+
+        // submitted?
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+
+                // check that we have a valid response
+                $class = $purchase->getClass();
+                if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
+                    $em->persist($purchase);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('booking_personal'));
+
+                } else {
+                    $form->get('class')->addError(new FormError('You must make a selection'));
+                }
+            }
+        }
+
+        // display form
+        return $this->render('SRPSBookingBundle:Booking:personal.html.twig', array(
+            'purchase' => $purchase,
+            'code' => $code,
+            'service' => $service,
+            'form'   => $form->createView(),
+        ));
+    }
 }
+

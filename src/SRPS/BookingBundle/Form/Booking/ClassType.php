@@ -22,6 +22,7 @@ class ClassType extends AbstractType
         $builder
             ->add('class', 'choice', array(
             'choices' => $choices,
+            'expanded' => true,
         ));
     }
 

@@ -12,11 +12,31 @@ class MealsType extends AbstractType
     protected $joining;
     protected $passengercount;
     protected $service;
+    protected $numbers;
 
-    public function __construct($joining, $service, $passengercount) {
+    public function __construct($joining, $service, $numbers, $passengercount) {
         $this->joining = $joining;
         $this->service = $service;
+        $this->numbers = $numbers;
         $this->passengercount = $passengercount;
+    }
+
+    private function getChoices($remaining) {
+
+        // if the remaining meals is less than passengers then
+        if ($remaining < $this->passengercount) {
+            $limit = $remaining;
+        } else {
+            $limit = $this->passengercount;
+        }
+
+        // build array
+        $choices = array(0 => 'None');
+        for ($i=1; $i<=$limit; $i++) {
+            $choices[$i] = "$i";
+        }
+
+        return $choices;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,28 +51,28 @@ class MealsType extends AbstractType
         if ($this->joining->isMeala()) {
             $builder
                 ->add('meala', 'choice', array(
-                'choices' => $choices,
+                'choices' => $this->getChoices($this->numbers->getRemainingmeala()),
                 'label' => $this->service->getMealaname() . ' £' . $this->service->getMealaprice() . ' each',
             ));
         }
         if ($this->joining->isMealb()) {
             $builder
                 ->add('mealb', 'choice', array(
-                'choices' => $choices,
+                'choices' => $this->getChoices($this->numbers->getRemainingmealb()),
                 'label' => $this->service->getMealbname() . ' £' . $this->service->getMealbprice() . ' each',
             ));
         }
         if ($this->joining->isMealc()) {
             $builder
                 ->add('mealc', 'choice', array(
-                'choices' => $choices,
+                'choices' => $this->getChoices($this->numbers->getRemainingmealc()),
                 'label' => $this->service->getMealcname() . ' £' . $this->service->getMealcprice() . ' each',
             ));
         }
         if ($this->joining->isMeald()) {
             $builder
                 ->add('meald', 'choice', array(
-                'choices' => $choices,
+                'choices' => $this->getChoices($this->numbers->getRemainingmeald()),
                 'label' => $this->service->getMealdname() . ' £' . $this->service->getMealdprice() . ' each',
             ));
         }

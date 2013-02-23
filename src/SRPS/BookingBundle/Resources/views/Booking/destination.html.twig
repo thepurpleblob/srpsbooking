@@ -19,7 +19,7 @@
               <label class="radio">
                   <input type="radio" value="{{ destination.crs }}" name="srps_bookingbundle_booking_destinationtype[destination]">
                   <p>{{ destination.description | raw }}</p>
-                  <p class="text-info"><b>First</b> &pound;{{ destination.first }},  <b>Standard</b>
+                  <p class="text-info">Price Each: <b>First</b> &pound;{{ destination.first }},  <b>Standard</b>
                       &pound;{{ destination.standard }},  <b>Child</b> &pound;{{ destination.child }}</p>
               </label>
           {% endfor %}
@@ -29,9 +29,6 @@
     <div>
         <a class="btn btn-primary" onclick="$('#destination-form').submit();">
             Next step
-        </a>
-        <a class="btn btn-warning" href="http://railtours.srps.org.uk/">
-            Cancel
         </a>
     </div>
 

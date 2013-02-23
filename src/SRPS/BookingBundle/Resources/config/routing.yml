@@ -145,3 +145,7 @@ booking_meals:
 booking_class:
     pattern: /booking/class
     defaults: { _controller: SRPSBookingBundle:Booking:class }
+
+booking_personal:
+    pattern: /booking/personal
+    defaults: { _controller: SRPSBookingBundle:Booking:personal }
