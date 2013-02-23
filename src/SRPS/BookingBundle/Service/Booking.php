@@ -354,4 +354,19 @@ class Booking
         return $result;
     }
 
+    /**
+     * Returns object with all the Sage stuff therein
+     */
+    public function getSage($service, $purchase) {
+        $em = $this->em;
+
+        $sage = new \stdClass();
+
+        $sage->submissionurl = '';
+        $sage->login = '';
+        $sage->crypt = '';
+
+        return $sage;
+    }
+
 }

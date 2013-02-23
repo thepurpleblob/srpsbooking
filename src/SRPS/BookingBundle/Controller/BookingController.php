@@ -387,16 +387,38 @@ class BookingController extends Controller
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
 
-                // check that we have a valid response
-                $class = $purchase->getClass();
-                if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
+                // need to check fields the hard way
+                $error = false;
+                if (!$purchase->getSurname()) {
+                    $form->get('surname')->addError(new FormError('Surname is required'));
+                    $error = true;
+                }
+                if (!$purchase->getFirstname()) {
+                    $form->get('firstname')->addError(new FormError('First name is required'));
+                    $error = true;
+                }
+                if (!$purchase->getAddress1()) {
+                    $form->get('address1')->addError(new FormError('Address line 1 is required'));
+                    $error = true;
+                }
+                if (!$purchase->getCity()) {
+                    $form->get('city')->addError(new FormError('Post town/city is required'));
+                    $error = true;
+                }
+                if (!$purchase->getPostcode()) {
+                    $form->get('postcode')->addError(new FormError('Postcode is required'));
+                    $error = true;
+                }
+                if (!$purchase->getEmail()) {
+                    $form->get('email')->addError(new FormError('Email is required'));
+                    $error = true;
+                }
+
+                if (!$error) {
                     $em->persist($purchase);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_personal'));
-
-                } else {
-                    $form->get('class')->addError(new FormError('You must make a selection'));
+                    return $this->redirect($this->generateUrl('booking_review'));
                 }
             }
         }
@@ -407,6 +429,50 @@ class BookingController extends Controller
             'code' => $code,
             'service' => $service,
             'form'   => $form->createView(),
+        ));
+    }
+
+   public function reviewAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
+
+        // Grab current purchase
+        $purchase = $booking->getPurchase();
+
+        // Get the service object
+        $code = $purchase->getCode();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->findOneByCode($code);
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find code ' . $code);
+        }
+
+        // work out final fare
+        $fare = $booking->calculateFare($service, $purchase, $purchase->getClass());
+        $purchase->setPayment($fare->total);
+        $em->persist($purchase);
+        $em->flush();
+
+        // get the destination
+        $destination = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findOneBy(array('serviceid'=>$service->getId(), 'crs'=>$purchase->getDestination()));
+
+        // get the joining station
+        $joining = $em->getRepository('SRPSBookingBundle:Joining')
+            ->findOneBy(array('serviceid'=>$service->getId(), 'crs'=>$purchase->getJoining()));
+
+        // get stuff for sagepay
+        $sage = $booking->getSage($service, $purchase);
+
+        // display form
+        return $this->render('SRPSBookingBundle:Booking:review.html.twig', array(
+            'purchase' => $purchase,
+            'code' => $code,
+            'service' => $service,
+            'destination' => $destination,
+            'joining' => $joining,
+            'sage' => $sage,
         ));
     }
 }

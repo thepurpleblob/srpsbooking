@@ -44,7 +44,6 @@ class PersonalType extends AbstractType
             ))
             ->add('county', 'text', array(
                 'max_length' => 25,
-                'required' => true,
                 'label' => 'County',
             ))
             ->add('postcode', 'text', array(
