@@ -11,6 +11,7 @@ use SRPS\BookingBundle\Form\Booking\NumbersType;
 use SRPS\BookingBundle\Form\Booking\JoiningType;
 use SRPS\BookingBundle\Form\Booking\DestinationType;
 use SRPS\BookingBundle\Form\Booking\MealsType;
+use SRPS\BookingBundle\Form\Booking\ClassType;
 use Symfony\Component\Form\FormError;
 
 class BookingController extends Controller
@@ -273,7 +274,7 @@ class BookingController extends Controller
                     $em->persist($purchase);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_destination'));
+                    return $this->redirect($this->generateUrl('booking_class'));
                 }
             }
         }
@@ -283,6 +284,68 @@ class BookingController extends Controller
             'purchase' => $purchase,
             'code' => $code,
             'service' => $service,
+            'form'   => $form->createView(),
+        ));
+    }
+
+   public function classAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
+
+        // Grab current purchase
+        $purchase = $booking->getPurchase();
+
+        // Get the service object
+        $code = $purchase->getCode();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->findOneByCode($code);
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find code ' . $code);
+        }
+
+        // Get the passenger count
+        $passengercount = $purchase->getAdults() + $purchase->getChildren();
+
+        // get first and standard fares
+        $farestandard = $booking->calculateFare($service, $purchase, 'S');
+        $farefirst = $booking->calculateFare($service, $purchase, 'F');
+
+        // we need to know about the number
+        $numbers = $booking->countStuff($service->getId());
+        $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
+        $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
+
+        // create form
+        $classtype = new ClassType();
+        $form   = $this->createForm($classtype, $purchase);
+
+        // submitted?
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+
+                // check that we have a value of some sort
+                if (!$purchase->getJoining()) {
+                    $form->get('joining')->addError(new FormError('You must choose a joining station'));
+                } else {
+                    $em->persist($purchase);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('booking_class'));
+                }
+            }
+        }
+
+        // display form
+        return $this->render('SRPSBookingBundle:Booking:class.html.twig', array(
+            'purchase' => $purchase,
+            'code' => $code,
+            'service' => $service,
+            'farefirst' => $farefirst,
+            'farestandard' => $farestandard,
+            'availablefirst' => $availablefirst,
+            'availablestandard' => $availablestandard,
             'form'   => $form->createView(),
         ));
     }

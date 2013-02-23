@@ -291,4 +291,65 @@ class Booking
         return $count;
     }
 
+    /**
+     * Work out the price of the tour
+     * This will work (optionally) for first or standard travel
+     * @param object $service
+     * @param object $purchase
+     * @param string $class (F or S)
+     */
+    public function calculateFare($service, $purchase, $class) {
+        $em = $this->em;
+
+        // Need to drag everything out of the database
+        $serviceid = $service->getId();
+
+        // Get basic numbers from purchase
+        $adults = $purchase->getAdults();
+        $children = $purchase->getChildren();
+        $meala = $purchase->getMeala();
+        $mealb = $purchase->getMealb();
+        $mealc = $purchase->getMealc();
+        $meald = $purchase->getMeald();
+
+        // get basic start/destination info
+        $join = $purchase->getJoining();
+        $dest= $purchase->getDestination();
+
+        // get the db records for above
+        $joining = $em->getRepository('SRPSBookingBundle:Joining')
+            ->findOneBy(array('crs'=>$join, 'serviceid'=>$serviceid));
+        $destination = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findOneBy(array('crs'=>$dest, 'serviceid'=>$serviceid));
+        $pricebandgroupid = $joining->getPricebandgroupid();
+        $destinationid = $destination->getId();
+        $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
+            ->findOneBy(array('pricebandgroupid'=>$pricebandgroupid, 'destinationid'=>$destinationid));
+
+        // we return an object with various info
+        $result = new \stdClass();
+        if ($class=="F") {
+            $result->adultunit = $priceband->getFirst();
+            $result->childunit = $priceband->getChild();
+            $result->adultfare = $adults * $result->adultunit;
+            $result->childfare = $children * $result->childunit;
+        } else {
+            $result->adultunit = $priceband->getStandard();
+            $result->childunit = $priceband->getChild();
+            $result->adultfare = $adults * $result->adultunit;
+            $result->childfare = $children * $result->childunit;
+        }
+
+        // Calculate meals
+        $result->meals = $meala * $service->getMealaprice() +
+            $mealb * $service->getMealbprice() +
+            $mealc * $service->getMealcprice() +
+            $meald * $service->getMealdprice();
+
+        // Grand total
+        $result->total = $result->adultfare + $result->childfare + $result->meals;
+
+        return $result;
+    }
+
 }

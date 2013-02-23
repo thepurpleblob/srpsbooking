@@ -19,8 +19,8 @@
               <label class="radio">
                   <input type="radio" value="{{ destination.crs }}" name="srps_bookingbundle_booking_destinationtype[destination]">
                   <p>{{ destination.description | raw }}</p>
-                  <p>First: &pound;{{ destination.first }},  Standard:
-                      &pound;{{ destination.standard }},  Child: &pound;{{ destination.child }}</p>
+                  <p class="text-info"><b>First</b> &pound;{{ destination.first }},  <b>Standard</b>
+                      &pound;{{ destination.standard }},  <b>Child</b> &pound;{{ destination.child }}</p>
               </label>
           {% endfor %}
           {{ form_errors(form.destination) }}
