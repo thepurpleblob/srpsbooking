@@ -232,6 +232,12 @@ class Purchase {
         $this->meald = 0;
         $this->payment = 0;
         $this->date = new \DateTime();
+        $this->state = '';
+        $this->statusdetail = '';
+        $this->cardtype = '';
+        $this->last4digits = 0;
+        $this->bankauthcode = 0;
+        $this->declinecode = 0;
     }
 
     /**
@@ -879,7 +885,7 @@ class Purchase {
     /**
      * Get completed
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getCompleted()
     {
@@ -889,7 +895,7 @@ class Purchase {
     /**
      * Get manual
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getManual()
     {
@@ -905,14 +911,14 @@ class Purchase {
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
@@ -928,14 +934,14 @@ class Purchase {
     public function setStatusdetail($statusdetail)
     {
         $this->statusdetail = $statusdetail;
-    
+
         return $this;
     }
 
     /**
      * Get statusdetail
      *
-     * @return string 
+     * @return string
      */
     public function getStatusdetail()
     {
@@ -951,14 +957,14 @@ class Purchase {
     public function setCardtype($cardtype)
     {
         $this->cardtype = $cardtype;
-    
+
         return $this;
     }
 
     /**
      * Get cardtype
      *
-     * @return string 
+     * @return string
      */
     public function getCardtype()
     {
@@ -974,14 +980,14 @@ class Purchase {
     public function setLast4digits($last4digits)
     {
         $this->last4digits = $last4digits;
-    
+
         return $this;
     }
 
     /**
      * Get last4digits
      *
-     * @return integer 
+     * @return integer
      */
     public function getLast4digits()
     {
@@ -997,14 +1003,14 @@ class Purchase {
     public function setBankauthcode($bankauthcode)
     {
         $this->bankauthcode = $bankauthcode;
-    
+
         return $this;
     }
 
     /**
      * Get bankauthcode
      *
-     * @return integer 
+     * @return integer
      */
     public function getBankauthcode()
     {
@@ -1020,14 +1026,14 @@ class Purchase {
     public function setDeclinecode($declinecode)
     {
         $this->declinecode = $declinecode;
-    
+
         return $this;
     }
 
     /**
      * Get declinecode
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeclinecode()
     {

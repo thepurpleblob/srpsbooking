@@ -515,6 +515,10 @@ class BookingController extends Controller
         $purchase = $em->getRepository('SRPSBookingBundle:Purchase')
             ->findOneBy(array('bookingref'=>$bookingref));
 
+        if (!$purchase) {
+            throw new \Exception( 'Unable to find record of booking '.$bookingref);
+        }
+
         // Get the service object
         $code = $purchase->getCode();
         $service = $em->getRepository('SRPSBookingBundle:Service')
@@ -523,23 +527,21 @@ class BookingController extends Controller
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
 
-        // get the SagePay response object
-        if (empty($_REQUEST['crypt'])) {
-            // it's gone wrong... what do we do?
-            throw new \Exception( 'No or empty crypt field on callback from SagePay');
-        }
-        $crypt = $_REQUEST['crypt'];
-
-        // unscramble the data
-        $values = $sagepay->decrypt( $crypt );
+        // Regardless, record the bookingdata
+        $purchase->setStatus($sage->Status);
+        $purchase->setStatusdetail($sage->StatusDetail);
+        $purchase->setCardtype($sage->CardType);
+        $purchase->setLast4digits($sage->Last4Digits);
+        $purchase->setBankauthcode($sage->BankAuthCode);
+        $purchase->setDeclinecode($sage->DeclineCode);
+        $purchase->setCompleted(true);
+        $em->persist($purchase);
+        $em->flush();
 
         // display form
-        return $this->render('SRPSBookingBundle:Booking:review.html.twig', array(
+        return $this->render('SRPSBookingBundle:Booking:callback.html.twig', array(
             'purchase' => $purchase,
-            'code' => $code,
             'service' => $service,
-            'destination' => $destination,
-            'joining' => $joining,
             'sage' => $sage,
         ));
     }
