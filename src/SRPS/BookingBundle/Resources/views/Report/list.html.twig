@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         {% for purchase in purchases %}
-                <tr>
+                <tr {{ purchase.status=='OK' ? '' : 'class="error"' }} >
                     <td>{{ purchase.bookingref }}</td>
                     <td>{{ purchase.status }}</td>
                     <td>{{ purchase.date | date('d/m/Y') }}</td>
