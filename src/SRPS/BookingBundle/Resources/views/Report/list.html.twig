@@ -1,0 +1,44 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h2>Railtour Reports</h2>
+
+    <h3>{{ service.name }}</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ref</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Postcode</th>
+                <th>Adults</th>
+                <th>Children</th>
+                <th>Payment</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for purchase in purchases %}
+                <tr>
+                    <td>{{ purchase.bookingref }}</td>
+                    <td>{{ purchase.date | date('d/m/Y') }}</td>
+                    <td>{{ purchase.firstname }} {{ purchase.surname }}</td>
+                    <td>{{ purchase.postcode }}</td>
+                    <td>{{ purchase.adults }}</td>
+                    <td>{{ purchase.children }}</td>
+                    <td>{{ purchase.payment | number_format(2) }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('admin_report_view', { 'purchaseid': purchase.id }) }}">View</a>
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('admin_index') }}">
+                Back to list
+            </a>
+        </div>
+{% endblock content %}

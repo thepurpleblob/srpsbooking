@@ -27,7 +27,7 @@
                         {% else %}
                             <a class="btn btn-info disabled">Booking</a>
                         {% endif %}
-                        <a class="btn btn-warning disabled">Report</a>
+                        <a class="btn btn-warning" href="{{ path('admin_report_list', { 'serviceid': entity.id }) }}">Report</a>
                         <a class="btn btn-warning disabled">Export</a>
                     </td>
                 </tr>
