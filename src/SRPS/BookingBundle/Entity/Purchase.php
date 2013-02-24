@@ -232,7 +232,7 @@ class Purchase {
         $this->meald = 0;
         $this->payment = 0;
         $this->date = new \DateTime();
-        $this->state = '';
+        $this->status = '';
         $this->statusdetail = '';
         $this->cardtype = '';
         $this->last4digits = 0;
