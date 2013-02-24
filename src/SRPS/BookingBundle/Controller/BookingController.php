@@ -193,6 +193,9 @@ class BookingController extends Controller
         foreach ($destinations as $destination) {
             $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
                 ->findOneBy(array('pricebandgroupid'=>$pricebandgroupid, 'destinationid'=>$destination->getId()));
+            if (!$priceband) {
+                throw new \Exception( "No priceband for pbgid=$pricebandgroupid did=".$destination->getId());
+            }
             $dest = new \stdClass();
             $dest->crs = $destination->getCrs();
             $dest->description = $destination->getDescription();
