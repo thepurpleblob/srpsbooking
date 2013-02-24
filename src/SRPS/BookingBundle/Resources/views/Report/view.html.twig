@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                     <th>Payment made</th>
-                    <td>{{ purchase.payment }}</td>
+                    <td>&pound;{{ purchase.payment | number_format(2) }}</td>
                 </tr>
                 <tr>
                     <th>Customer</th>
