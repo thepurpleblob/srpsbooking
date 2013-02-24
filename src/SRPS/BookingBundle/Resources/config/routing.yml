@@ -153,3 +153,7 @@ booking_personal:
 booking_review:
     pattern: /booking/review
     defaults: { _controller: SRPSBookingBundle:Booking:review }
+
+booking_callback:
+    pattern: /booking/callback
+    defaults: { _controller: SRPSBookingBundle:Booking:callback }

@@ -436,9 +436,21 @@ class BookingController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
+        $sagepay = $this->get('srps_sagepay');
+
+        // initialise sagepay thingy
+        // (needs to access a bunch of params)
+        $sagepay->setParameters($this->container);
 
         // Grab current purchase
         $purchase = $booking->getPurchase();
+
+        // We have to mark done here, there isn't another chance
+        // before passing control to SagePay (and it will get deleted if
+        // something goes wrong
+        $purchase->setCompleted(true);
+        $em->persist($purchase);
+        $em->flush();
 
         // Get the service object
         $code = $purchase->getCode();
@@ -462,8 +474,64 @@ class BookingController extends Controller
         $joining = $em->getRepository('SRPSBookingBundle:Joining')
             ->findOneBy(array('serviceid'=>$service->getId(), 'crs'=>$purchase->getJoining()));
 
-        // get stuff for sagepay
-        $sage = $booking->getSage($service, $purchase);
+        // get stuff for sagepay (must be absolute)
+        $callbackurl = $this->generateUrl('booking_callback', array(), true);
+        $sage = $sagepay->getSage($service, $purchase, $destination, $joining, $callbackurl);
+
+        // display form
+        return $this->render('SRPSBookingBundle:Booking:review.html.twig', array(
+            'purchase' => $purchase,
+            'code' => $code,
+            'service' => $service,
+            'destination' => $destination,
+            'joining' => $joining,
+            'sage' => $sage,
+        ));
+    }
+
+    public function callbackAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sagepay = $this->get('srps_sagepay');
+
+        // initialise sagepay thingy
+        // (needs to access a bunch of params)
+        $sagepay->setParameters($this->container);
+
+        // get the SagePay response object
+        if (empty($_REQUEST['crypt'])) {
+            // it's gone wrong... what do we do?
+            throw new \Exception( 'No or empty crypt field on callback from SagePay');
+        }
+        $crypt = $_REQUEST['crypt'];
+
+        // unscramble the data
+        $sage = $sagepay->decrypt( $crypt );
+
+        // get the important data
+        $bookingref = $sage->VendorTxCode;
+
+        // get the purchase
+        $purchase = $em->getRepository('SRPSBookingBundle:Purchase')
+            ->findOneBy(array('bookingref'=>$bookingref));
+
+        // Get the service object
+        $code = $purchase->getCode();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->findOneByCode($code);
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find code ' . $code);
+        }
+
+        // get the SagePay response object
+        if (empty($_REQUEST['crypt'])) {
+            // it's gone wrong... what do we do?
+            throw new \Exception( 'No or empty crypt field on callback from SagePay');
+        }
+        $crypt = $_REQUEST['crypt'];
+
+        // unscramble the data
+        $values = $sagepay->decrypt( $crypt );
 
         // display form
         return $this->render('SRPSBookingBundle:Booking:review.html.twig', array(
