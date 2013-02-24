@@ -31,6 +31,30 @@ class ReportController extends Controller
         ));
     }
 
+    public function viewAction($purchaseid)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
 
+        // Get the purchase record
+        $purchase = $em->getRepository('SRPSBookingBundle:Purchase')
+            ->find($purchaseid);
+        if (!$purchase) {
+            throw new \Exception('purchase item could not be found');
+        }
+
+        // Get the service object
+        $serviceid = $purchase->getServiceid();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->find($serviceid);
+        if (!$service) {
+            throw new \Exception('Unable to find service');
+        }
+
+        return $this->render('SRPSBookingBundle:Report:view.html.twig', array(
+            'service' => $service,
+            'purchase' => $purchase,
+        ));
+    }
 }
 

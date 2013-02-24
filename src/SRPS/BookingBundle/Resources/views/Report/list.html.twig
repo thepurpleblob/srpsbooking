@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Ref</th>
+                <th>Status</th>
                 <th>Date</th>
                 <th>Name</th>
                 <th>Postcode</th>
@@ -22,6 +23,7 @@
         {% for purchase in purchases %}
                 <tr>
                     <td>{{ purchase.bookingref }}</td>
+                    <td>{{ purchase.status }}</td>
                     <td>{{ purchase.date | date('d/m/Y') }}</td>
                     <td>{{ purchase.firstname }} {{ purchase.surname }}</td>
                     <td>{{ purchase.postcode }}</td>
