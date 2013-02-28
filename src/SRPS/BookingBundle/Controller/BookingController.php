@@ -529,6 +529,14 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
+        
+        // get the destination
+        $destination = $em->geRepository('SRPSBookingBundle:Destination')
+            ->findOneBy(array('crs'=>$purchase->getDestination(), 'serviceid'=>$service->getId()));
+        
+        // get the joining station
+         $joining = $em->geRepository('SRPSBookingBundle:Joining')
+            ->findOneBy(array('crs'=>$purchase->getDestination(), 'serviceid'=>$service->getId()));
 
         // Regardless, record the bookingdata
         $purchase->setStatus($sage->Status);
@@ -540,6 +548,42 @@ class BookingController extends Controller
         $purchase->setCompleted(true);
         $em->persist($purchase);
         $em->flush();
+        
+        // send email
+        $message = \Swift_Message::newInstance();
+        $message->setFrom('noreply@srps.org.uk');
+        $message->setTo($purchase->getEmail());
+        
+        if ($sage->Status=='OK') {        
+            $message->setSubject('Confirmation of SRPS Railtour Booking - ' . $service->getName())
+                ->setBody(
+                    $this->renderView(
+                        'SRPSBookingBundle:Email:confirm.html.twig',
+                        array(
+                            'purchase' => $purchase,
+                            'service' => $service,
+                            'joining' => $joining,
+                            'destination' => $destination,
+                            ),
+                        'text/html'
+                    )
+                )
+                ->addPart(
+                    $this->renderView(
+                        'SRPSBookingBundle:Email:confirm.txt.twig',
+                        array(
+                            'purchase' => $purchase,
+                            'service' => $service,
+                            'joining' => $joining,
+                            'destination' => $destination,
+                            ),
+                        'text/plain'
+                    )
+                );            
+        } else {
+            
+        }    
+        $this->get('mailer')->send($message);        
 
         // display form
         return $this->render('SRPSBookingBundle:Booking:callback.html.twig', array(

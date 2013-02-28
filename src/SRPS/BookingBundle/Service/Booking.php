@@ -5,6 +5,7 @@ namespace SRPS\BookingBundle\Service;
 use Symfony\Component\HttpFoundation\Session\Session;
 use SRPS\BookingBundle\Entity\Purchase;
 use SRPS\BookingBundle\Entity\Count;
+use SRPS\BookingBundle\Entity\Limits;
 
 class Booking
 {
