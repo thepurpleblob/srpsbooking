@@ -583,15 +583,49 @@ class BookingController extends Controller
                 );            
         } else {
             
+            // Status != OK, so the payment failed
+             $message->setSubject('Failure Notice: SRPS Railtour Booking - ' . $service->getName())
+                ->setBody(
+                    $this->renderView(
+                        'SRPSBookingBundle:Email:fail.html.twig',
+                        array(
+                            'purchase' => $purchase,
+                            'service' => $service,
+                            'joining' => $joining,
+                            'destination' => $destination,
+                            ),
+                        'text/html'
+                    )
+                )
+                ->addPart(
+                    $this->renderView(
+                        'SRPSBookingBundle:Email:fail.txt.twig',
+                        array(
+                            'purchase' => $purchase,
+                            'service' => $service,
+                            'joining' => $joining,
+                            'destination' => $destination,
+                            ),
+                        'text/plain'
+                    )
+                );            
         }    
         $this->get('mailer')->send($message);        
 
         // display form
-        return $this->render('SRPSBookingBundle:Booking:callback.html.twig', array(
-            'purchase' => $purchase,
-            'service' => $service,
-            'sage' => $sage,
-        ));
+        if ($sage->Status == 'OK') {
+            return $this->render('SRPSBookingBundle:Booking:callback.html.twig', array(
+                'purchase' => $purchase,
+                'service' => $service,
+                'sage' => $sage,
+            ));
+        } else {
+            return $this->render('SRPSBookingBundle:Booking:decline.html.twig', array(
+                'purchase' => $purchase,
+                'service' => $service,
+                'sage' => $sage,
+            ));            
+        }
     }
 }
 

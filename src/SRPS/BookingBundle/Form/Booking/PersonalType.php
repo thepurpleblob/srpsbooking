@@ -18,6 +18,11 @@ class PersonalType extends AbstractType
                 'max_length' => 12,
                 'label' => 'Title',
                 ))
+            ->add('firstname', 'text', array(
+                'max_length' => 20,
+                'required' => true,
+                'label' => 'Firstname',
+            ))                
             ->add('surname', 'text', array(
                 'max_length' => 20,
                 'required' => true,

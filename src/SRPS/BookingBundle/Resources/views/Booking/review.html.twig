@@ -38,14 +38,18 @@
         <dt>Address line 1</dt>
         <dd>{{ purchase.address1 }}</dd>
 
-        <dt>Address line 2</dt>
-        <dd>{{ purchase.address2 }}</dd>
+        {% if purchase.address2 %}
+            <dt>Address line 2</dt>
+            <dd>{{ purchase.address2 }}</dd>
+        {% endif %}
 
         <dt>Post town/city</dt>
         <dd>{{ purchase.city }}</dd>
 
-        <dt>County</dt>
-        <dd>{{ purchase.county }}</dd>
+        {% if purchase.county %}
+            <dt>County</dt>
+            <dd>{{ purchase.county }}</dd>
+        {% endif %}
 
         <dt>Postcode</dt>
         <dd>{{ purchase.postcode }}</dd>
