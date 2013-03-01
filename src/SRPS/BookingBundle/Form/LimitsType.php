@@ -19,10 +19,22 @@ class LimitsType extends AbstractType
         $builder
             ->add('first')
             ->add('standard')
-            ->add('meala', 'integer', array('label' => $this->service->getMealaname()))
-            ->add('mealb', 'integer', array('label' => $this->service->getMealbname()))
-            ->add('mealc', 'integer', array('label' => $this->service->getMealbname()))
-            ->add('meald', 'integer', array('label' => $this->service->getMealbname()))
+            ->add('meala', 'integer', array(
+                'label' => $this->service->getMealaname(),
+                'disabled' => !$this->service->isMealavisible(),
+                ))
+            ->add('mealb', 'integer', array(
+                'label' => $this->service->getMealbname(),
+                'disabled' => !$this->service->isMealbvisible(),
+                ))
+            ->add('mealc', 'integer', array(
+                'label' => $this->service->getMealcname(),
+                'disabled' => !$this->service->isMealcvisible(),
+                ))
+            ->add('meald', 'integer', array(
+                'label' => $this->service->getMealdname(),
+                'disabled' => !$this->service->isMealdvisible(),
+                ))
         ;
     }
 
