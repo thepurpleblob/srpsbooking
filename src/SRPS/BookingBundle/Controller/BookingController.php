@@ -531,12 +531,12 @@ class BookingController extends Controller
         }
         
         // get the destination
-        $destination = $em->geRepository('SRPSBookingBundle:Destination')
+        $destination = $em->getRepository('SRPSBookingBundle:Destination')
             ->findOneBy(array('crs'=>$purchase->getDestination(), 'serviceid'=>$service->getId()));
         
         // get the joining station
-         $joining = $em->geRepository('SRPSBookingBundle:Joining')
-            ->findOneBy(array('crs'=>$purchase->getDestination(), 'serviceid'=>$service->getId()));
+         $joining = $em->getRepository('SRPSBookingBundle:Joining')
+            ->findOneBy(array('crs'=>$purchase->getJoining(), 'serviceid'=>$service->getId()));
 
         // Regardless, record the bookingdata
         $purchase->setStatus($sage->Status);
@@ -553,6 +553,7 @@ class BookingController extends Controller
         $message = \Swift_Message::newInstance();
         $message->setFrom('noreply@srps.org.uk');
         $message->setTo($purchase->getEmail());
+        $message->setContentType('text/html');
         
         if ($sage->Status=='OK') {        
             $message->setSubject('Confirmation of SRPS Railtour Booking - ' . $service->getName())

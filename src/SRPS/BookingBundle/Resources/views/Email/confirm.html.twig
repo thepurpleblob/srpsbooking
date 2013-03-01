@@ -6,7 +6,7 @@
 
 <p>
     Thank you for booking with SRPS Railtours. Your ticket with seat reservations
-    will be sent to you with further informatin and final timings for the train
+    will be sent to you with further information and final timings for the train
     about a week before the tour.
 </p>
 
@@ -17,17 +17,17 @@
 <p><b>Booking reference: {{ purchase.bookingref }}</b></p>
 
 <address>
-    {{ purchase.title }} {{ purchase.firstname }} {{ purchase.surname }}
-    {{ purchase.address1 }}
-    {{ purchase.address2 }}
-    {{ purchase.city }}
-    {{ purchase.county }}
-    {{ purchase.postcode }}    
+    {{ purchase.title }} {{ purchase.firstname }} {{ purchase.surname }}<br />
+    {{ purchase.address1 }}<br />
+    {{ purchase.address2 }}{{ purchase.address2 ? '<br />' : '' }}
+    {{ purchase.city }}<br />
+    {{ purchase.county }}{{ purchase.county ? '<br />' : '' }}
+    {{ purchase.postcode }}<br />    
 </address>
 
 <p>Contact details:
     <ul>
-        <li>Telephone: {{ purchase.telephone }}</li>
+        <li>Telephone: {{ purchase.phone }}</li>
         <li>Email: {{ purchase.email }}</li>
     </ul>    
 </p>    
@@ -36,7 +36,7 @@
     Railtour booking details:
     <ul>
         <li>Railtour: {{ service.name }}</li>
-        <li>Date: {{ service.data | date('d/m/Y') }}</li>
+        <li>Date: {{ service.date | date('d/m/Y') }}</li>
         <li>Boarding at: {{ joining.station }}</li>
         <li>Destination: {{ destination.name }}</li>
     </ul>
@@ -50,16 +50,16 @@
 </p>    
 
 {% if service.mealavisible and purchase.meala %}
-    {{ service.mealaname }}: {{ purchase.meala }} booked.
+    {{ service.mealaname }}: {{ purchase.meala }} booked.<br />
 {% endif %}
 {% if service.mealbvisible and purchase.mealb %}
-    {{ service.mealbname }}: {{ purchase.mealb }} booked.
+    {{ service.mealbname }}: {{ purchase.mealb }} booked.<br />
 {% endif %}    
 {% if service.mealcvisible and purchase.mealc %}
-    {{ service.mealcname }}: {{ purchase.mealc }} booked.
+    {{ service.mealcname }}: {{ purchase.mealc }} booked.<br />
 {% endif %}  
 {% if service.mealdvisible and purchase.meald %}
-    {{ service.mealdname }}: {{ purchase.meald }} booked.
+    {{ service.mealdname }}: {{ purchase.meald }} booked.<br />
 {% endif %}    
 
 <p>Thank you for your payment of &pound;{{ purchase.payment }}.</p>

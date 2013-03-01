@@ -3,14 +3,14 @@
 Dear {{ purchase.title }} {{ purchase.firstname }} {{ purchase.surname }},
 
 Thank you for booking with SRPS Railtours. Your ticket with seat reservations
-will be sent to you with further informatin and final timings for the train
+will be sent to you with further information and final timings for the train
 about a week before the tour.
 
 Your booking details are as follows...
 
 Booking reference: {{ purchase.bookingref }}
 
-{{ purchase.title }} {{ purchase.firstname }} {{ purchase.surname }}
+{{ purchase.title }}{{ purchase.title ? ' ' : ''}}{{ purchase.firstname }} {{ purchase.surname }}
 {{ purchase.address1 }}
 {{ purchase.address2 }}
 {{ purchase.city }}
@@ -19,33 +19,29 @@ Booking reference: {{ purchase.bookingref }}
 
 Contact details:
 
-    Telephone: {{ purchase.telephone }}
+    Telephone: {{ purchase.phone }}
     Email: {{ purchase.email }}
 
 Railtour booking details:
 
     Railtour: {{ service.name }}
-    Date: {{ service.data | date('d/m/Y') }}
+    Date: {{ service.date | date('d/m/Y') }}
     Boarding at: {{ joining.station }}
     Destination: {{ destination.name }}
     
 Seats booked: {{ purchase.adults }} adults {% if purchase.children %} and {{ purchase.children }} children  {% endif %} in {{ purchase.class=='F' ? 'First' : 'Standard' }} class.
 
-{% if service.mealavisible and purchase.meala %}
-{{ service.mealaname }}: {{ purchase.meala }} booked.
+{% if service.mealavisible and purchase.meala %}{{ service.mealaname }}: {{ purchase.meala }} booked.
 {% endif %}
-{% if service.mealbvisible and purchase.mealb %}
-{{ service.mealbname }}: {{ purchase.mealb }} booked.
+{% if service.mealbvisible and purchase.mealb %}{{ service.mealbname }}: {{ purchase.mealb }} booked.
 {% endif %}    
-{% if service.mealcvisible and purchase.mealc %}
-{{ service.mealcname }}: {{ purchase.mealc }} booked.
+{% if service.mealcvisible and purchase.mealc %}{{ service.mealcname }}: {{ purchase.mealc }} booked.
 {% endif %}  
-{% if service.mealdvisible and purchase.meald %}
-{{ service.mealdname }}: {{ purchase.meald }} booked.
+{% if service.mealdvisible and purchase.meald %}{{ service.mealdname }}: {{ purchase.meald }} booked.
 {% endif %}       
 
-Thank you for your payment of £{{ purchase.payment }}.
 
+Thank you for your payment of £{{ purchase.payment }}.
 
 Please check the above details carefully and phone us on 0131 202 1033
 if you have any questions about this booking. 
