@@ -124,7 +124,7 @@ class Service {
         $this->code = '';
         $this->name = '';
         $this->description = '';
-        $this->visible = 1;
+        $this->visible = true;
         $this->date = new \DateTime();
         $this->mealaname = 'Breakfast';
         $this->mealbname = 'Lunch';

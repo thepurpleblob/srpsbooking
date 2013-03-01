@@ -31,11 +31,28 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-
-        return $this->render('SRPSBookingBundle:Booking:index.html.twig', array(
-            'code' => $code,
-            'service' => $service
-        ));
+        
+        // count the seats left
+        $count = $booking->countStuff($service->getId());
+        
+        // decide if we can go ahead with the booking
+        $today = new \DateTime('today midnight');
+        $seatsavailable = 
+            (($count->getRemainingfirst()>0) or ($count->getRemainingstandard()>0));
+        $isvisible = ($service->isVisible());
+        $isindate = ($service->getDate() > $today);
+        
+        if ($seatsavailable and $isvisible and $isindate) {
+            return $this->render('SRPSBookingBundle:Booking:index.html.twig', array(
+                'code' => $code,
+                'service' => $service
+            ));
+        } else {
+             return $this->render('SRPSBookingBundle:Booking:closed.html.twig', array(
+                'code' => $code,
+                'service' => $service
+            ));           
+        }
     }
 
     public function numbersAction($code)
@@ -49,7 +66,7 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-
+        
         // Grab current purchase
         $purchase = $booking->getPurchase($service->getId(), $code);
 
