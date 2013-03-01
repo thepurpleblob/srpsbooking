@@ -38,43 +38,68 @@ class MealsType extends AbstractType
 
         return $choices;
     }
+    
+    private function getOptions($remaining, $name, $price, $joining, $station) {
+        $options = array();
+        $options['choices'] = $this->getChoices($remaining);
+        if (!$joining) {
+            $options['label'] = "$name not from $station";
+            $options['disabled'] = true;
+        } else if ($remaining) {
+            $options['label'] = "$name £$price each";
+        } else {
+            $options['label'] = "$name fully booked";
+            $options['disabled'] = true;
+        }
+        return $options;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        // Make choice
-        $choices = array(0 => 'None');
-        for ($i=1; $i<=$this->passengercount; $i++) {
-            $choices[$i] = "$i";
-        }
-
-        if ($this->joining->isMeala() and $this->service->isMealavisible()) {
+        if ($this->service->isMealavisible()) {
             $builder
-                ->add('meala', 'choice', array(
-                'choices' => $this->getChoices($this->numbers->getRemainingmeala()),
-                'label' => $this->service->getMealaname() . ' £' . $this->service->getMealaprice() . ' each',
-            ));
+                ->add('meala', 'choice', $this->getOptions(
+                    $this->numbers->getRemainingmeala(),
+                    $this->service->getMealaname(),
+                    $this->service->getMealaprice(),
+                    $this->joining->isMeala(),
+                    $this->joining->getStation()
+                    )
+            );
         }
-        if ($this->joining->isMealb() and $this->service->isMealbvisible()) {
+        if ($this->service->isMealbvisible()) {
             $builder
-                ->add('mealb', 'choice', array(
-                'choices' => $this->getChoices($this->numbers->getRemainingmealb()),
-                'label' => $this->service->getMealbname() . ' £' . $this->service->getMealbprice() . ' each',
-            ));
+                ->add('mealb', 'choice', $this->getOptions(
+                    $this->numbers->getRemainingmealb(),
+                    $this->service->getMealbname(),
+                    $this->service->getMealbprice(),
+                    $this->joining->isMealb(),
+                    $this->joining->getStation()                        
+                    )
+            );
         }
-        if ($this->joining->isMealc() and $this->service->isMealcvisible()) {
+        if ($this->service->isMealcvisible()) {
             $builder
-                ->add('mealc', 'choice', array(
-                'choices' => $this->getChoices($this->numbers->getRemainingmealc()),
-                'label' => $this->service->getMealcname() . ' £' . $this->service->getMealcprice() . ' each',
-            ));
+                ->add('mealc', 'choice', $this->getOptions(
+                    $this->numbers->getRemainingmealc(),
+                    $this->service->getMealcname(),
+                    $this->service->getMealcprice(),
+                    $this->joining->isMealc(),
+                    $this->joining->getStation()                        
+                    )
+            );
         }
-        if ($this->joining->isMeald() and $this->service->isMealdvisible()) {
+        if ($this->service->isMealdvisible()) {
             $builder
-                ->add('meald', 'choice', array(
-                'choices' => $this->getChoices($this->numbers->getRemainingmeald()),
-                'label' => $this->service->getMealdname() . ' £' . $this->service->getMealdprice() . ' each',
-            ));
+                ->add('meald', 'choice', $this->getOptions(
+                    $this->numbers->getRemainingmeald(),
+                    $this->service->getMealdname(),
+                    $this->service->getMealdprice(),
+                    $this->joining->isMeald(),
+                    $this->joining->getStation()                        
+                    )
+            );
         }
     }
 
