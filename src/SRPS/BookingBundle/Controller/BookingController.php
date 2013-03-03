@@ -499,7 +499,7 @@ class BookingController extends Controller
 
         // get stuff for sagepay (must be absolute)
         $callbackurl = $this->generateUrl('booking_callback', array(), true);
-        $sage = $sagepay->getSage($service, $purchase, $destination, $joining, $callbackurl);
+        $sage = $sagepay->getSage($service, $purchase, $destination, $joining, $callbackurl, $fare);
 
         // display form
         return $this->render('SRPSBookingBundle:Booking:review.html.twig', array(

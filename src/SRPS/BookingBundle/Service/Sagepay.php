@@ -116,14 +116,71 @@ class Sagepay
         return $data;
     }
 
+    private function decolon($string) {
+
+        return str_replace(':', '=', $string);
+    }
+
+    private function buildBasket($service, $purchase, $fare) {
+
+        // booked class
+        $class = $purchase->getClass()=='F' ? 'First' : 'Standard';
+
+        // create the main booking line
+        $numberoflines = 1;
+        $aname = $purchase->getAdults()==1 ? 'Adult' : 'Adults';
+        $main = $this->decolon("Railtour '" . $service->getName() . "' $aname in $class Class");
+        $main .= ':' . $purchase->getAdults() . ':' . $fare->adultunit . ':::' . $fare->adultfare;
+        if ($purchase->getChildren()) {
+            $numberoflines = 2;
+            $cname = $purchase->getChildren()==1 ? 'Child' : 'Children';
+            $main .= ':' . $this->decolon("Railtour '" . $service->getName() . "' $cname in $class Class");
+            $main .= ':' . $purchase->getChildren() . ':' . $fare->childunit . ':::' . $fare->childfare;
+        }
+
+        // meals
+        $meals = array();;
+        if ($service->isMealavisible()) {
+            $meala = $this->decolon($service->getMealaname()) . ':';
+            $meala .= $purchase->getMeala() . ':' . $service->getMealaprice() . ':::';
+            $meala .= $purchase->getMeala() * $service->getMealaprice();
+            $meals[] = $meala;
+        }
+        if ($service->isMealbvisible()) {
+            $mealb = $this->decolon($service->getMealbname()) . ':';
+            $mealb .= $purchase->getMealb() . ':' . $service->getMealbprice() . ':::';
+            $mealb .= $purchase->getMealb() * $service->getMealbprice();
+            $meals[] = $mealb;
+        }
+        if ($service->isMealcvisible()) {
+            $mealc = $this->decolon($service->getMealcname()) . ':';
+            $mealc .= $purchase->getMealc() . ':' . $service->getMealcprice() . ':::';
+            $mealc .= $purchase->getMealc() * $service->getMealcprice();
+            $meals[] = $mealc;
+        }
+        if ($service->isMealdvisible()) {
+            $meald = $this->decolon($service->getMealdname()) . ':';
+            $meald .= $purchase->getMeald() . ':' . $service->getMealdprice() . ':::';
+            $meald .= $purchase->getMeald() * $service->getMealdprice();
+            $meals[] = $meald;
+        }
+
+        // Put it all together
+        $numberoflines = count($meals) + $numberoflines;
+        $basket = $numberoflines . ':' . $main . ':' . implode(':', $meals);
+//echo "<pre>" . $basket; die;
+
+        return $basket;
+    }
+
     /**
      * Create the sagepay data array
      * @param object $purchase
      */
-    private function buildSageData($service, $purchase, $destination, $joining, $callbackurl) {
+    private function buildSageData($service, $purchase, $destination, $joining, $callbackurl, $fare) {
 
         // Get the basket contents
-        $basket = '';
+        $basket = $this->buildBasket($service, $purchase, $fare);
 
         $data = "";
         $data .= "VendorTxCode=" . $purchase->getBookingref();
@@ -163,9 +220,9 @@ class Sagepay
         return $encrypted;
     }
 
-    public function getSage($service, $purchase, $destination, $joining, $callbackurl) {
+    public function getSage($service, $purchase, $destination, $joining, $callbackurl, $fare) {
 
-        $sagedata = $this->buildSageData($service, $purchase, $destination, $joining, $callbackurl);
+        $sagedata = $this->buildSageData($service, $purchase, $destination, $joining, $callbackurl, $fare);
 
         // Create object for returned data
         $sage = new \stdClass();
