@@ -25,5 +25,6 @@ div.summary_display {
 }
 
 div#pagefooter {
+    padding-top: 20px;
     text-align: right;
 }

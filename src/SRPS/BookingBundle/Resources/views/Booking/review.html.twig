@@ -73,9 +73,15 @@
     </form>
 
     <div>
-        <a class="btn btn-primary" onclick="$('#sagepay-form').submit();">
+        <a class="btn btn-primary" onclick="sagepay_submit();">
             Go to our secure payment site
         </a>
     </div>
+
+    <script>
+        function sagepay_submit() {
+            $('#sagepay-form').submit();
+        }
+    </script>
 
 {% endblock content %}

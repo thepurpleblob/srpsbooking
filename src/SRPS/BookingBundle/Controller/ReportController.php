@@ -34,7 +34,6 @@ class ReportController extends Controller
     public function viewAction($purchaseid)
     {
         $em = $this->getDoctrine()->getManager();
-        $booking = $this->get('srps_booking');
 
         // Get the purchase record
         $purchase = $em->getRepository('SRPSBookingBundle:Purchase')

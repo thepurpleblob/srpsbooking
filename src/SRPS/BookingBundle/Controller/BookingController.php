@@ -31,17 +31,17 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-        
+
         // count the seats left
         $count = $booking->countStuff($service->getId());
-        
+
         // decide if we can go ahead with the booking
         $today = new \DateTime('today midnight');
-        $seatsavailable = 
+        $seatsavailable =
             (($count->getRemainingfirst()>0) or ($count->getRemainingstandard()>0));
         $isvisible = ($service->isVisible());
         $isindate = ($service->getDate() > $today);
-        
+
         if ($seatsavailable and $isvisible and $isindate) {
             return $this->render('SRPSBookingBundle:Booking:index.html.twig', array(
                 'code' => $code,
@@ -51,7 +51,7 @@ class BookingController extends Controller
              return $this->render('SRPSBookingBundle:Booking:closed.html.twig', array(
                 'code' => $code,
                 'service' => $service
-            ));           
+            ));
         }
     }
 
@@ -66,9 +66,12 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-        
+
+        // get the booking ref prefix
+        $bookingrefprefix = $this->container->getParameter('bookingrefprefix');
+
         // Grab current purchase
-        $purchase = $booking->getPurchase($service->getId(), $code);
+        $purchase = $booking->getPurchase($service->getId(), $code, $bookingrefprefix);
 
         // create form
         $numberstype = new NumbersType();
@@ -546,11 +549,11 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-        
+
         // get the destination
         $destination = $em->getRepository('SRPSBookingBundle:Destination')
             ->findOneBy(array('crs'=>$purchase->getDestination(), 'serviceid'=>$service->getId()));
-        
+
         // get the joining station
          $joining = $em->getRepository('SRPSBookingBundle:Joining')
             ->findOneBy(array('crs'=>$purchase->getJoining(), 'serviceid'=>$service->getId()));
@@ -565,14 +568,14 @@ class BookingController extends Controller
         $purchase->setCompleted(true);
         $em->persist($purchase);
         $em->flush();
-        
+
         // send email
         $message = \Swift_Message::newInstance();
         $message->setFrom('noreply@srps.org.uk');
         $message->setTo($purchase->getEmail());
         $message->setContentType('text/html');
-        
-        if ($sage->Status=='OK') {        
+
+        if ($sage->Status=='OK') {
             $message->setSubject('Confirmation of SRPS Railtour Booking - ' . $service->getName())
                 ->setBody(
                     $this->renderView(
@@ -597,9 +600,9 @@ class BookingController extends Controller
                             ),
                         'text/plain'
                     )
-                );            
+                );
         } else {
-            
+
             // Status != OK, so the payment failed
              $message->setSubject('Failure Notice: SRPS Railtour Booking - ' . $service->getName())
                 ->setBody(
@@ -625,9 +628,9 @@ class BookingController extends Controller
                             ),
                         'text/plain'
                     )
-                );            
-        }    
-        $this->get('mailer')->send($message);        
+                );
+        }
+        $this->get('mailer')->send($message);
 
         // display form
         if ($sage->Status == 'OK') {
@@ -641,7 +644,7 @@ class BookingController extends Controller
                 'purchase' => $purchase,
                 'service' => $service,
                 'sage' => $sage,
-            ));            
+            ));
         }
     }
 }

@@ -123,7 +123,7 @@ class Booking
      * Find the current purchase record and/or create a new one if
      * needed
      */
-    public function getPurchase($serviceid=0, $code='') {
+    public function getPurchase($serviceid=0, $code='', $bookingrefprefix='') {
         $em = $this->em;
 
         // See if the purchase session attribute exists
@@ -148,6 +148,11 @@ class Booking
                 if ($purchase->getSesKey() != $key) {
                     throw new \Exception('Purchase key does not match session');
                 } else {
+
+                    // if it has a sagapay status then something is wrong
+                    if ($purchase->getStatus()) {
+                        throw new \Exception('This booking has already been submitted for payment');
+                    }
 
                     // All is well. Return the record
                     $purchase->setTimestamp(time());
@@ -191,7 +196,7 @@ class Booking
 
         // we can add the booking ref (generated from id) - it should get
         // just need another persist to make sure
-        $purchase->setBookingref('OL'.$id);
+        $purchase->setBookingref($bookingrefprefix . $id);
         $em->persist($purchase);
         $em->flush();
 
