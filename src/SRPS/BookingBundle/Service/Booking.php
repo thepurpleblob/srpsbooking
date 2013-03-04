@@ -273,6 +273,23 @@ class Booking
 
         // firct class remainder is simply
         $count->setRemainingstandard($limits->getStandard() - $count->getBookedstandard() - $count->getPendingstandard());
+        
+        // get first supplements booked. Note field is a boolean and applies to 
+        // all persons in booking (which is only asked for parties of one or two)
+        $supquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=1 AND p.class='F' AND p.seatsupplement>0 AND p.serviceid=$serviceid ");
+        $suptotal = $supquery->getResult();
+        $count->setBookedfirstsingles($this->zero($suptotal[0]['a']));
+        
+        // get first supplements in progress. Note field is a boolean and applies to 
+        // all persons in booking (which is only asked for parties of one or two)
+        $sppquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
+            WHERE p.completed=0 AND p.class='F' AND p.seatsupplement=1 AND p.serviceid=$serviceid ");
+        $spptotal = $sppquery->getResult();
+        $count->setPendingfirstsingles($this->zero($spptotal[0]['a']));  
+        
+        // First suppliements remainder
+        $count->setRemainingfirstsingles($limits->getFirstsingles() - $count->getBookedfirstsingles() - $count->getPendingfirstsingles());
 
         // Get booked meals
         $mbquery = $em->createQuery("SELECT SUM(p.meala) AS a, SUM(p.mealb) AS b,

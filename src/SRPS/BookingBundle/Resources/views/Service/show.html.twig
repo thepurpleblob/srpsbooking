@@ -37,6 +37,18 @@
                 <th>Date</th>
                 <td>{{ entity.date|date('d/m/Y') }}</td>
             </tr>
+            <tr>
+                <th>Maximum party size</th>
+                <td>{{ entity.maxparty }}</td>
+            </tr>    
+            <tr>
+                <th>First window/single supplement</th>
+                <td>&pound;{{ entity.singlesupplement | number_format(2) }}</td>
+            </tr>          
+            <tr>
+                <th>Display comment field</th>
+                <td>{{ entity.commentbox ? 'Yes' : 'No' }}</td>
+            </tr>             
         </tbody>
     </table>
 
@@ -56,25 +68,25 @@
                 <th class="lead">A</th>
                 <td>{{ entity.mealaname }}</td>
                 <td>{{ entity.mealavisible ? 'Yes' : 'No' }}</td>
-                <td>&pound;{{ entity.mealaprice }}</td>
+                <td>&pound;{{ entity.mealaprice | number_format(2) }}</td>
             </tr>
             <tr>
                 <th class="lead">B</th>
                 <td>{{ entity.mealbname }}</td>
                 <td>{{ entity.mealbvisible ? 'Yes' : 'No' }}</td>
-                <td>&pound;{{ entity.mealbprice }}</td>
+                <td>&pound;{{ entity.mealbprice | number_format(2) }}</td>
             </tr>
             <tr>
                 <th class="lead">C</th>
                 <td>{{ entity.mealcname }}</td>
                 <td>{{ entity.mealcvisible ? 'Yes' : 'No' }}</td>
-                <td>&pound;{{ entity.mealcprice }}</td>
+                <td>&pound;{{ entity.mealcprice | number_format(2) }}</td>
             </tr>
             <tr>
                 <th class="lead">D</th>
                 <td>{{ entity.mealdname }}</td>
                 <td>{{ entity.mealdvisible ? 'Yes' : 'No' }}</td>
-                <td>&pound;{{ entity.mealdprice }}</td>
+                <td>&pound;{{ entity.mealdprice | number_format(2) }}</td>
             </tr>
         </tbody>
     </table>

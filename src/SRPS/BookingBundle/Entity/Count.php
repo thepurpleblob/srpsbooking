@@ -7,6 +7,8 @@ class Count {
     protected $bookedfirst;
 
     protected $bookedstandard;
+    
+    protected $bookedfirstsingles;
 
     protected $bookedmeala;
 
@@ -19,6 +21,8 @@ class Count {
     protected $pendingfirst;
 
     protected $pendingstandard;
+    
+    protected $pendingfirstsingles;
 
     protected $pendingmeala;
 
@@ -31,6 +35,8 @@ class Count {
     protected $remainingfirst;
 
     protected $remainingstandard;
+    
+    protected $remainingfirstsingles;
 
     protected $remainingmeala;
 
@@ -43,18 +49,21 @@ class Count {
     public function __construct() {
         $this->bookedfirst = 0;
         $this->bookedstandard = 0;
+        $this->bookedfirstsingles = 0;
         $this->bookedmeala = 0;
         $this->bookedmealb = 0;
         $this->bookedmealc = 0;
         $this->bookedmeald = 0;
         $this->pendingfirst = 0;
         $this->pendingstandard = 0;
+        $this->pendingfirstsingles = 0;
         $this->pendingmeala = 0;
         $this->pendingmealb = 0;
         $this->pendingmealc = 0;
         $this->pendingmeald = 0;
         $this->remainingfirst = 0;
         $this->remainingstandard = 0;
+        $this->remainingfirstsingles = 0;
         $this->remainingmeala = 0;
         $this->remainingmealb = 0;
         $this->remainingmealc = 0;
@@ -77,6 +86,14 @@ class Count {
         return $this->bookedstandard;
     }
 
+    public function setBookedfirstsingles($bookedfirstsingles) {
+        $this->bookedfirstsingles = $bookedfirstsingles;
+    }
+
+    public function getBookedfirstsingles() {
+        return $this->bookedfirstsingles;
+    }    
+    
     public function setBookedmeala($bookedmeala) {
         $this->bookedmeala = $bookedmeala;
     }
@@ -124,6 +141,14 @@ class Count {
     public function getPendingstandard() {
         return $this->pendingstandard;
     }
+    
+    public function setPendingfirstsingles($pendingfirstsingles) {
+        $this->pendingfirstsingles = $pendingfirstsingles;
+    }
+
+    public function getPendingfirstsingles() {
+        return $this->pendingfirstsingles;
+    }      
 
     public function setPendingmeala($pendingmeala) {
         $this->pendingmeala = $pendingmeala;
@@ -172,6 +197,14 @@ class Count {
     public function getRemainingstandard() {
         return $this->remainingstandard;
     }
+    
+    public function setRemainingfirstsingles($remainingfirstsingles) {
+        $this->remainingfirstsingles = $remainingfirstsingles;
+    }
+
+    public function getRemainingfirstsingles() {
+        return $this->remainingfirstsingles;
+    }      
 
     public function setRemainingmeala($remainingmeala) {
         $this->remainingmeala = $remainingmeala;

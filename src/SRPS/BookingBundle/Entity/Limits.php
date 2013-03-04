@@ -43,6 +43,11 @@ class Limits
     /**
      * @ORM\Column(type="integer")
      */
+    protected $firstsingles;    
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
     protected $meala;
 
     /**
@@ -87,6 +92,14 @@ class Limits
     public function getStandard() {
         return $this->standard;
     }
+    
+    public function setFirstsingles($firstsingles) {
+        $this->firstsingles = $firstsingles;
+    }
+    
+    public function getFirstsingles() {
+        return $this->firstsingles;
+    }
 
     public function setStandard($standard) {
         $this->standard = $standard;
@@ -127,6 +140,7 @@ class Limits
     public function __construct() {
         $this->first = 0;
         $this->standard = 0;
+        $this->firstsingles = 0;
         $this->child = 0;
         $this->meala = 0;
         $this->mealb = 0;

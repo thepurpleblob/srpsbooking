@@ -116,6 +116,21 @@ class Service {
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $mealdprice;
+    
+    /**
+     * @ORM\Column(type="decimal", scale=2)
+     */
+    protected $singlesupplement;    
+    
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $commentbox;    
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $maxparty;    
 
     /**
      * constructor - set defaults
@@ -138,6 +153,9 @@ class Service {
         $this->mealbvisible = 0;
         $this->mealcvisible = 0;
         $this->mealdvisible = 0;
+        $this->singlesupplement = 10.00;
+        $this->maxparty = 16;        
+        $this->commentbox = false;
     }
 
     /**
@@ -559,4 +577,29 @@ class Service {
 
         return $this;
     }
+    
+    public function setSinglesupplement($singlesupplement) {
+        $this->singlesupplement = $singlesupplement;
+    }
+    
+    public function getSinglesupplement() {
+        return $this->singlesupplement;
+    }
+    
+    public function setCommentbox($commentbox) {
+        $this->commentbox = $commentbox;
+    }
+    
+    public function isCommentbox() {
+        return $this->commentbox;
+    }
+    
+    
+    public function setMaxparty($maxparty) {
+        $this->maxparty = $maxparty;
+    }
+    
+    public function getMaxparty() {
+        return $this->maxparty;
+    }    
 }

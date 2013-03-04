@@ -77,6 +77,15 @@
                     <td>{{ count.pendingmeald }}</td>
                     <td>{{ count.remainingmeald }}</td>
                 </tr>
+                <tr>
+                    <td>First Singles/Window</td>
+                    <td>
+                        {{ form_widget(edit_form.firstsingles) }}
+                    </td>
+                    <td>{{ count.bookedfirstsingles }}</td>
+                    <td>{{ count.pendingfirstsingles }}</td>
+                    <td>{{ count.remainingfirstsingles }}</td>
+                </tr>                
             </tbody>
         </table>
         {{ form_rest(edit_form) }}

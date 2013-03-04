@@ -12,9 +12,15 @@ class PricebandType extends AbstractType
     {
         $builder
             ->add('destination', 'text', array('read_only'=>true))
-            ->add('first')
-            ->add('standard')
-            ->add('child')
+            ->add('first', 'money', array(
+                'currency' => 'GBP',
+            ))
+            ->add('standard', 'money', array(
+                'currency' => 'GBP',
+            ))
+            ->add('child', 'money', array(
+                'currency' => 'GBP',
+            ))
         ;
     }
 

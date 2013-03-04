@@ -169,6 +169,17 @@ class Purchase {
      * @ORM\Column(type="decimal", scale=2)
      */
     protected $payment;
+    
+    /**
+     * NB: This applies to all in party
+     * @ORM\Column(type="boolean")
+     */
+    protected $seatsupplement;   
+    
+    /**
+     * @ORM\Column(type="string", length=40)
+     */
+    protected $comment;    
 
     /**
      * @ORM\Column(type="date")
@@ -232,6 +243,8 @@ class Purchase {
         $this->meald = 0;
         $this->payment = 0;
         $this->date = new \DateTime();
+        $this->seatsupplement = false;
+        $this->comment = '';
         $this->status = '';
         $this->statusdetail = '';
         $this->cardtype = '';
@@ -1038,5 +1051,21 @@ class Purchase {
     public function getDeclinecode()
     {
         return $this->declinecode;
+    }
+    
+    public function setSeatsupplement($seatsupplement) {
+        $this->seatsupplement = $seatsupplement;
+    }
+    
+    public function isSeatsupplement() {
+        return $this->seatsupplement;
+    }
+    
+    public function setComment($comment) {
+        $this->comment = $comment;
+    }
+    
+    public function getComment() {
+        return $this->comment;
     }
 }

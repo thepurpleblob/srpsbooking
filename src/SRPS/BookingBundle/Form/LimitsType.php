@@ -19,6 +19,9 @@ class LimitsType extends AbstractType
         $builder
             ->add('first')
             ->add('standard')
+            ->add('firstsingles', 'integer', array(
+                'label' => 'Single/Window seats in First',
+            ))    
             ->add('meala', 'integer', array(
                 'label' => $this->service->getMealaname(),
                 'disabled' => !$this->service->isMealavisible(),

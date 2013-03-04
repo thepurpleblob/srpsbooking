@@ -12,6 +12,7 @@ use SRPS\BookingBundle\Form\Booking\JoiningType;
 use SRPS\BookingBundle\Form\Booking\DestinationType;
 use SRPS\BookingBundle\Form\Booking\MealsType;
 use SRPS\BookingBundle\Form\Booking\ClassType;
+use SRPS\BookingBundle\Form\Booking\AdditionalType;
 use SRPS\BookingBundle\Form\Booking\PersonalType;
 use Symfony\Component\Form\FormError;
 
@@ -364,7 +365,7 @@ class BookingController extends Controller
                     $em->persist($purchase);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_personal'));
+                    return $this->redirect($this->generateUrl('booking_additional'));
 
                 } else {
                     $form->get('class')->addError(new FormError('You must make a selection'));
@@ -381,6 +382,73 @@ class BookingController extends Controller
             'farestandard' => $farestandard,
             'availablefirst' => $availablefirst,
             'availablestandard' => $availablestandard,
+            'form'   => $form->createView(),
+        ));
+    }
+    
+    public function additionalAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $booking = $this->get('srps_booking');
+
+        // Grab current purchase
+        $purchase = $booking->getPurchase();
+
+        // Get the service object
+        $code = $purchase->getCode();
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->findOneByCode($code);
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find code ' . $code);
+        }
+        
+        // current counts
+        $numbers = $booking->countStuff($service->getId()); 
+        
+        // Get the passenger count
+        $passengercount = $purchase->getAdults() + $purchase->getChildren();        
+        
+        // This page will only be shown if we are going to ask about firstsingle
+        // option, or ask for comments.
+        $iscomments = $service->isCommentbox();
+        $issupplement = ($numbers->getRemainingfirstsingles()>0) 
+                and ($purchase->getClass()=='F')
+                and (($passengercount==1) or ($passengercount==2))
+                ;
+        if (!($iscomments or !$issupplement)) {
+                return $this->redirect($this->generateUrl('booking_personal'));            
+        }
+
+        // create form
+        $classtype = new AdditionalType($iscomments, $issupplement);
+        $form   = $this->createForm($classtype, $purchase);
+
+        // submitted?
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+
+                // check that we have a valid response
+                $class = $purchase->getClass();
+                if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
+                    $em->persist($purchase);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('booking_personal'));
+
+                } else {
+                    $form->get('class')->addError(new FormError('You must make a selection'));
+                }
+            }
+        }
+
+        // display form
+        return $this->render('SRPSBookingBundle:Booking:additional.html.twig', array(
+            'purchase' => $purchase,
+            'code' => $code,
+            'service' => $service,
+            'iscomments' => $iscomments,
+            'issupplement' => $issupplement,
             'form'   => $form->createView(),
         ));
     }
