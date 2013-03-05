@@ -31,6 +31,14 @@
 
         <dt>Number of children</dt>
         <dd>{{ purchase.children }}</dd>
+        
+        <dt>Travel class</dt>
+        <dd>{{ purchase.class=='F' ? 'First' : 'Standard' }}</dd>
+        
+        {% if purchase.seatsupplement %}
+            <dt>Window supplement</dt>
+            <dd>Yes (&pound;{{ fare.seatsupplement | number_format(2) }})</dd>
+        {% endif %}
 
         <dt>Name<dt>
         <dd>{{ purchase.title }} {{ purchase.firstname }} {{ purchase.surname }}</dd>

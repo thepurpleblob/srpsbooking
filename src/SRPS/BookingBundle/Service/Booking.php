@@ -376,6 +376,15 @@ class Booking
             $mealb * $service->getMealbprice() +
             $mealc * $service->getMealcprice() +
             $meald * $service->getMealdprice();
+        
+        // Calculate seat supplement
+        $passengers = $adults + $children;
+        $suppallowed = (($passengers==1) or ($passengers==2));
+        if (($purchase->getClass()=='F') and $purchase->isSeatsupplement() and $suppallowed) {
+            $result->seatsupplement = $passengers * $service->getSinglesupplement();
+        } else {
+            $result->seatsupplement = 0;
+        }
 
         // Grand total
         $result->total = $result->adultfare + $result->childfare + $result->meals;

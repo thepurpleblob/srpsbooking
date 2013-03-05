@@ -428,17 +428,11 @@ class BookingController extends Controller
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
 
-                // check that we have a valid response
-                $class = $purchase->getClass();
-                if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
-                    $em->persist($purchase);
-                    $em->flush();
+                // 'save' the purchase
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_personal'));
-
-                } else {
-                    $form->get('class')->addError(new FormError('You must make a selection'));
-                }
+                return $this->redirect($this->generateUrl('booking_personal'));
             }
         }
 
@@ -577,6 +571,7 @@ class BookingController extends Controller
             'destination' => $destination,
             'joining' => $joining,
             'sage' => $sage,
+            'fare' => $fare,
         ));
     }
 
