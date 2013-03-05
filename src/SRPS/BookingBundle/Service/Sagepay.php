@@ -130,12 +130,12 @@ class Sagepay
         $numberoflines = 1;
         $aname = $purchase->getAdults()==1 ? 'Adult' : 'Adults';
         $main = $this->decolon("Railtour '" . $service->getName() . "' $aname in $class Class");
-        $main .= ':' . $purchase->getAdults() . ':' . $fare->adultunit . ':::' . $fare->adultfare;
+        $main .= ':' . $purchase->getAdults() . ':' . $fare->adultunit . ':::' . number_format($fare->adultfare, 2);
         if ($purchase->getChildren()) {
             $numberoflines = 2;
             $cname = $purchase->getChildren()==1 ? 'Child' : 'Children';
             $main .= ':' . $this->decolon("Railtour '" . $service->getName() . "' $cname in $class Class");
-            $main .= ':' . $purchase->getChildren() . ':' . $fare->childunit . ':::' . $fare->childfare;
+            $main .= ':' . $purchase->getChildren() . ':' . $fare->childunit . ':::' . number_format($fare->childfare, 2);
         }
 
         // meals
@@ -143,31 +143,41 @@ class Sagepay
         if ($service->isMealavisible()) {
             $meala = $this->decolon($service->getMealaname()) . ':';
             $meala .= $purchase->getMeala() . ':' . $service->getMealaprice() . ':::';
-            $meala .= $purchase->getMeala() * $service->getMealaprice();
+            $meala .= number_format($purchase->getMeala() * $service->getMealaprice(), 2);
             $meals[] = $meala;
         }
         if ($service->isMealbvisible()) {
             $mealb = $this->decolon($service->getMealbname()) . ':';
             $mealb .= $purchase->getMealb() . ':' . $service->getMealbprice() . ':::';
-            $mealb .= $purchase->getMealb() * $service->getMealbprice();
+            $mealb .= number_format($purchase->getMealb() * $service->getMealbprice(), 2);
             $meals[] = $mealb;
         }
         if ($service->isMealcvisible()) {
             $mealc = $this->decolon($service->getMealcname()) . ':';
             $mealc .= $purchase->getMealc() . ':' . $service->getMealcprice() . ':::';
-            $mealc .= $purchase->getMealc() * $service->getMealcprice();
+            $mealc .= number_format($purchase->getMealc() * $service->getMealcprice(), 2);
             $meals[] = $mealc;
         }
         if ($service->isMealdvisible()) {
             $meald = $this->decolon($service->getMealdname()) . ':';
             $meald .= $purchase->getMeald() . ':' . $service->getMealdprice() . ':::';
-            $meald .= $purchase->getMeald() * $service->getMealdprice();
+            $meald .= number_format($purchase->getMeald() * $service->getMealdprice(), 2);
             $meals[] = $meald;
+        }
+        
+        // extra seats
+        if ($fare->seatsupplement) {
+            $passengers = $purchase->getAdults() + $purchase->getChildren();
+            $supplement = ":Window seat supplement:$passengers:" . $service->getSinglesupplement() . ':::';
+            $supplement .= number_format($fare->seatsupplement, 2);
+            $numberoflines++;
+        } else {
+            $supplement = '';
         }
 
         // Put it all together
         $numberoflines = count($meals) + $numberoflines;
-        $basket = $numberoflines . ':' . $main . ':' . implode(':', $meals);
+        $basket = $numberoflines . ':' . $main . ':' . implode(':', $meals) . $supplement;
 //echo "<pre>" . $basket; die;
 
         return $basket;

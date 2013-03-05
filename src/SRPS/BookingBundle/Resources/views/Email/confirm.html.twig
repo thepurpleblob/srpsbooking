@@ -47,7 +47,13 @@
         and {{ purchase.children }} children  
     {% endif %}   
         in {{ purchase.class=='F' ? 'First' : 'Standard' }} class.
-</p>    
+</p>   
+
+{% if purchase.seatsupplement %}
+    <p>
+        You have requested Window seats in First Class
+    </p>
+{% endif %}    
 
 {% if service.mealavisible and purchase.meala %}
     {{ service.mealaname }}: {{ purchase.meala }} booked.<br />

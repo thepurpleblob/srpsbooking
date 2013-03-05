@@ -40,6 +40,10 @@ Seats booked: {{ purchase.adults }} adults {% if purchase.children %} and {{ pur
 {% if service.mealdvisible and purchase.meald %}{{ service.mealdname }}: {{ purchase.meald }} booked.
 {% endif %}       
 
+{% if purchase.seatsupplement %}
+You have requested Window seats in First Class
+{% endif %}    
+
 
 Thank you for your payment of £{{ purchase.payment }}.
 
