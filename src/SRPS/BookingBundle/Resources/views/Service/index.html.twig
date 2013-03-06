@@ -4,7 +4,7 @@
     <h4>Filter</h4>
     <form id="services_filter_form" class="form-horizontal" action="{{ path('admin_index') }}"
         novalidate="novalidate" method="post">
-        <label>Year</label>
+        <label>Tour season</label>
         <select id="services_filter_year" name="filter_year">
             {% for year in years %}
                 <option {{ year==filteryear ? 'selected="selected"' : '' }}>{{ year }}</option>
