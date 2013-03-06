@@ -1,5 +1,18 @@
 {% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
 
+{% block sidebar %}
+    <h4>Filter</h4>
+    <form id="services_filter_form" class="form-horizontal" action="{{ path('admin_index') }}"
+        novalidate="novalidate" method="post">
+        <label>Year</label>
+        <select id="services_filter_year" name="filter_year">
+            {% for year in years %}
+                <option {{ year==filteryear ? 'selected="selected"' : '' }}>{{ year }}</option>
+            {% endfor %}    
+        </select>
+    </form>
+{% endblock sidebar %}
+
 {% block content %}
     <h2>Railtour Services</h2>
 
@@ -47,3 +60,14 @@
             </a>
         </div>
 {% endblock content %}
+    
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('#services_filter_year').change(
+                function() {
+                    $('#services_filter_form').submit();
+                }
+            );
+    </script>    
+{% endblock javascripts %}

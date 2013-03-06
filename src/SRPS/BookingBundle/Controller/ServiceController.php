@@ -31,13 +31,35 @@ class ServiceController extends Controller
             'SELECT s FROM SRPSBookingBundle:Service s ORDER BY s.date'
         );
         $entities = $query->getResult();
+        
+        // submitted year
+        $filteryear = $this->getRequest()->request->get('filter_year');        
+        
+        // get possible years and filter results
+        // shouldn't have to do this in PHP but Doctrine sucks badly!
+        $services = array();
+        $years = array();
+        $years['All'] = 'All';        
+        foreach ($entities as $service) {
+            $servicedate = $service->getDate();
+            $year = $servicedate->format('Y');
+            $years[$year] = $year;
+            if ($filteryear=='All') {
+                $services[] = $service;
+            } else if ($year == $filteryear) {
+                $services[] = $service;
+            }
+        }
+
 
         // get booking status
         $enablebooking = $this->container->getParameter('enablebooking');
 
         return $this->render('SRPSBookingBundle:Service:index.html.twig',
-            array('entities' => $entities,
-                  'enablebooking' => $enablebooking
+            array('entities' => $services,
+                  'enablebooking' => $enablebooking,
+                  'years' => $years,
+                  'filteryear' => $filteryear,
                 ));
     }
 
