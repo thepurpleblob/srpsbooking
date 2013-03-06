@@ -44,7 +44,7 @@ class ServiceController extends Controller
             $servicedate = $service->getDate();
             $year = $servicedate->format('Y');
             $years[$year] = $year;
-            if ($filteryear=='All') {
+            if ($filteryear=='All' or $filteryear=='') {
                 $services[] = $service;
             } else if ($year == $filteryear) {
                 $services[] = $service;
