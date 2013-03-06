@@ -8,6 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NumbersType extends AbstractType
 {
+    
+    protected $maxparty;
+    
+    public function __construct($maxparty) {
+        $this->maxparty = $maxparty;
+    }
 
     private function numbersChoices($none=false) {
         if ($none) {
@@ -15,7 +21,7 @@ class NumbersType extends AbstractType
         } else {
             $choices = array();
         }
-        for ($i=1; $i<=16; $i++) {
+        for ($i=1; $i<=$this->maxparty; $i++) {
             $choices[$i] = "$i";
         }
 

@@ -75,7 +75,7 @@ class BookingController extends Controller
         $purchase = $booking->getPurchase($service->getId(), $code, $bookingrefprefix);
 
         // create form
-        $numberstype = new NumbersType();
+        $numberstype = new NumbersType($service->getMaxparty());
         $form   = $this->createForm($numberstype, $purchase);
 
         // submitted?
@@ -86,9 +86,9 @@ class BookingController extends Controller
                 // check numbers
                 $adults = $purchase->getAdults();
                 $children = $purchase->getChildren();
-                if (($adults + $children) > 16) {
-                    $form->get('adults')->addError(new FormError('Total party size is more than 16.'));
-                } else if (($adults<1) or ($adults>16) or ($children<0) or ($children>16)) {
+                if (($adults + $children) > $service->getMaxparty()) {
+                    $form->get('adults')->addError(new FormError('Total party size is more than '.$service->getMaxparty()));
+                } else if (($adults<1) or ($adults>$service->getMaxparty()) or ($children<0) or ($children>$service->getMaxparty())) {
                     $form->get('adults')->addError(new FormError('Value supplied out of range.'));
                 } else {
                     $em->persist($purchase);
