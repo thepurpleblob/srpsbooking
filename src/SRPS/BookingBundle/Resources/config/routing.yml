@@ -45,6 +45,10 @@ admin_report_list:
 admin_report_view:
     pattern:  /admin/report/{purchaseid}/view
     defaults: { _controller: SRPSBookingBundle:Report:view }
+    
+admin_report_export:
+    pattern:  /admin/report/{serviceid}/export
+    defaults: { _controller: SRPSBookingBundle:Report:export }
 
 admin_destination_ajax:
     pattern:  /admin/destination/ajax

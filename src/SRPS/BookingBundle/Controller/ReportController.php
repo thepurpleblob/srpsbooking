@@ -3,6 +3,7 @@
 namespace SRPS\BookingBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReportController extends Controller
 {
@@ -54,6 +55,42 @@ class ReportController extends Controller
             'service' => $service,
             'purchase' => $purchase,
         ));
+    }
+    
+    public function exportAction($serviceid) {
+        $em = $this->getDoctrine()->getManager();
+        $reports = $this->get('srps_reports');
+        
+        // Get the service object
+        $service = $em->getRepository('SRPSBookingBundle:Service')
+            ->find($serviceid);
+        if (!$service) {
+            throw new \Exception('Unable to find service');
+        }   
+        
+        // Get the purchases
+        $purchases = $em->getRepository('SRPSBookingBundle:Purchase')
+            ->findBy(array(
+                'serviceid' => $serviceid,
+                'completed' => true,
+                'status' => 'OK',
+                ));
+        
+        // if there are none, then nothing to do
+        if (!$purchases) {
+            return $this->redirect($this->generateUrl('admin'));
+        }
+        
+        // Create a filename
+        $filename = "railtour_".$service->getCode().date('YmdHi').'.csv';
+        
+        // create the response
+        $response = new Response();
+        $response->setContent($reports->getExport($purchases));
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="'.$filename.'"'); 
+        
+        return $response;
     }
 }
 

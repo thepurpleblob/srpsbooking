@@ -8,3 +8,6 @@ services:
     srps_sagepay:
         class: SRPS\BookingBundle\Service\Sagepay
         arguments: [@doctrine.orm.entity_manager]
+    srps_reports:
+        class: SRPS\BookingBundle\Service\Reports
+        arguments: [@doctrine.orm.entity_manager]        
