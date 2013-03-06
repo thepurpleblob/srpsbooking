@@ -415,7 +415,7 @@ class BookingController extends Controller
                 and ($purchase->getClass()=='F')
                 and (($passengercount==1) or ($passengercount==2))
                 ;
-        if (!($iscomments or !$issupplement)) {
+        if (!($iscomments or $issupplement)) {
                 return $this->redirect($this->generateUrl('booking_personal'));            
         }
 
