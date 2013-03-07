@@ -246,7 +246,7 @@ class Booking
 
         // get first class booked
         $fbquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
-            WHERE p.completed=1 AND p.class='F' AND p.serviceid=$serviceid ");
+            WHERE p.completed=1 AND p.class='F' AND p.status='OK' AND p.serviceid=$serviceid ");
         $fbtotal = $fbquery->getResult();
         $count->setBookedfirst($this->zero($fbtotal[0]['a']));
 
@@ -261,7 +261,7 @@ class Booking
 
         // get standard class booked
         $sbquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
-            WHERE p.completed=1 AND p.class='S' AND p.serviceid=$serviceid ");
+            WHERE p.completed=1 AND p.class='S' AND p.status='OK' AND p.serviceid=$serviceid ");
         $sbtotal = $sbquery->getResult();
         $count->setBookedstandard($this->zero($sbtotal[0]['a']));
 
@@ -277,7 +277,7 @@ class Booking
         // get first supplements booked. Note field is a boolean and applies to 
         // all persons in booking (which is only asked for parties of one or two)
         $supquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
-            WHERE p.completed=1 AND p.class='F' AND p.seatsupplement>0 AND p.serviceid=$serviceid ");
+            WHERE p.completed=1 AND p.class='F' AND p.status='OK' AND p.seatsupplement>0 AND p.serviceid=$serviceid ");
         $suptotal = $supquery->getResult();
         $count->setBookedfirstsingles($this->zero($suptotal[0]['a']));
         
@@ -294,7 +294,7 @@ class Booking
         // Get booked meals
         $mbquery = $em->createQuery("SELECT SUM(p.meala) AS a, SUM(p.mealb) AS b,
             SUM(p.mealc) AS c, SUM(p.meald) AS d FROM SRPSBookingBundle:Purchase p
-            WHERE p.completed=1 AND p.serviceid=$serviceid ");
+            WHERE p.completed=1 AND p.status='OK' AND p.serviceid=$serviceid ");
         $mbtotal = $mbquery->getResult();
         $count->setBookedmeala($this->zero($mbtotal[0]['a']));
         $count->setBookedmealb($this->zero($mbtotal[0]['b']));

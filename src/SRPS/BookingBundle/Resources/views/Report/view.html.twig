@@ -82,6 +82,14 @@
                     <td>{{ purchase.meald }}</td>
                 </tr>
                 <tr>
+                    <th>First window/single requested</th>
+                    <td>{{ purchase.seatsupplement ? 'Yes' : 'No' }}</td>
+                </tr>    
+                <tr>
+                    <th>Comment</th>
+                    <td>{{ purchase.comment }}</td>
+                </tr>
+                <tr>
                     <th>Card & last 4 digits</th>
                     <td>{{ purchase.cardtype }}  {{ purchase.last4digits }}</td>
                 </tr>

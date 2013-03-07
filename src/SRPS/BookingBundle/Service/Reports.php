@@ -11,6 +11,13 @@ class Reports {
     }
     
     private function clean($string, $length=255) {
+        
+        // sanitize the string
+        $string = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW );
+        
+        // restrict to required length
+        $string = substr($string, 0, $length);
+        
         return $string;
     }
     
