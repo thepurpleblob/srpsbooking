@@ -208,7 +208,7 @@ class BookingController extends Controller
         // form... so bear with me
         $joiningcrs = $purchase->getJoining();
         $joining = $em->getRepository('SRPSBookingBundle:Joining')
-            ->findOneBy(array('crs'=>$joiningcrs));
+            ->findOneBy(array('crs'=>$joiningcrs, 'serviceid'=>$service->getId()));
         $pricebandgroupid = $joining->getPricebandgroupid();
         $dests = array();
         foreach ($destinations as $destination) {
