@@ -107,7 +107,7 @@ class Reports {
             $l[] = $this->clean($p->getComment(), 39);
             
             // Payment
-            $l[] = $this->clean(number_format($p->getPayment(), 0));
+            $l[] = $this->clean(intval($p->getPayment() * 100));
             
             // Booking Date
             $bookingdate = $p->getDate();
