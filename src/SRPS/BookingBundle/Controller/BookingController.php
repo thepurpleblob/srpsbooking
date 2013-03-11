@@ -702,7 +702,7 @@ class BookingController extends Controller
             $srpsbackupemail = $this->container->getParameter('srpsbackupemail');
         
             $message->setTo($srpsbackupemail);
-            $message->setSubject($service->getName().' : '.$purchase->getBookingref().' : '.$purchase->getStatus());
+            $message->setSubject($service->getCode().'-'.$purchase->getBookingref());
             $this->get('mailer')->send($message);
         }
 
