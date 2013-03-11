@@ -20,5 +20,6 @@ parameters:
     sageencryptionpassword:    Qpu7H4zy5L5Wbwpb
     sageurl:                   https://test.sagepay.com/gateway/service/vspform-register.vsp
     srpsemail:                 howardsmiller@gmail.com
+    srpsbackupemail:           rt-bkg-msgs@srps.org.uk
 
     bookingrefprefix:          TL

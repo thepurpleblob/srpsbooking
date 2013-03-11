@@ -632,7 +632,7 @@ class BookingController extends Controller
         $em->persist($purchase);
         $em->flush();
 
-        // send email
+        // send emails
         $message = \Swift_Message::newInstance();
         $message->setFrom('noreply@srps.org.uk');
         $message->setTo($purchase->getEmail());
@@ -694,6 +694,16 @@ class BookingController extends Controller
                 );
         }
         $this->get('mailer')->send($message);
+        
+        // also send to backup (if defined)
+        if ($this->container->hasParameter('srpsbackupemail')) {
+            
+            // where we send the backup email
+            $srpsbackupemail = $this->container->getParameter('srpsbackupemail');
+        
+            $message->setTo($srpsbackupemail);
+            $this->get('mailer')->send($message);
+        }
 
         // display form
         if ($sage->Status == 'OK') {
