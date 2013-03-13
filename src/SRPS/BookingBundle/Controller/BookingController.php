@@ -412,8 +412,8 @@ class BookingController extends Controller
         // option, or ask for comments.
         $iscomments = $service->isCommentbox();
         $issupplement = ($numbers->getRemainingfirstsingles()>0) 
-                and ($purchase->getClass()=='F')
-                and (($passengercount==1) or ($passengercount==2))
+                && ($purchase->getClass()=='F')
+                && (($passengercount==1) || ($passengercount==2))
                 ;
         if (!($iscomments or $issupplement)) {
                 return $this->redirect($this->generateUrl('booking_personal'));            
