@@ -290,6 +290,12 @@ class Sagepay
         $sage->Surcharge = $this->response($fields, 'Surcharge');
         $sage->BankAuthCode = $this->response($fields, 'BankAuthCode');
         $sage->DeclineCode = $this->response($fields, 'DeclineCode');
+        
+        // cleanup status detail
+        $colonpos = stripos($sage->StatusDetail, ':');
+        if ($colonpos !== false) {
+            $sage->StatusDetail = substr($sage->StatusDetail, $colonpos+1);
+        }
 
         return $sage;
     }
