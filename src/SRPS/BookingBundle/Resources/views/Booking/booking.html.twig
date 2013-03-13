@@ -14,7 +14,9 @@
 {% block body %}
     <div class="row-fluid">
         <div class="span3">
-            {% block sidebar %}{% endblock sidebar %}
+            {% block sidebar %}
+                <img src="{{ asset('bundles/srpsbooking/images/railtourh.png') }}" alt="Railtour Logo" />
+            {% endblock sidebar %}            
         </div>
         <div class="span6">
             {% block content %}{% endblock content %}
