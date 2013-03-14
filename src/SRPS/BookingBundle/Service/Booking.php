@@ -389,7 +389,6 @@ class Booking
         // Grand total
         $result->total = $result->adultfare + $result->childfare + $result->meals + $result->seatsupplement;
 
-echo "<pre>"; var_dump($result); die;        
         return $result;
     }
 
