@@ -498,6 +498,17 @@ class BookingController extends Controller
                     $form->get('email')->addError(new FormError('Email is required'));
                     $error = true;
                 }
+                
+                // Now need to 'normalise' some of the fields
+                $purchase->setTitle(ucwords($purchase->getTitle()));                
+                $purchase->setSurname(ucwords($purchase->getSurname()));
+                $purchase->setFirstname(ucwords($purchase->getFirstname()));
+                $purchase->setAddress1(ucwords($purchase->getAddress1()));
+                $purchase->setAddress2(ucwords($purchase->getAddress2())); 
+                $purchase->setCity(ucwords($purchase->getCity()));  
+                $purchase->setCounty(ucwords($purchase->getCounty()));                
+                $purchase->setPostcode(strtoupper($purchase->getPostcode())); 
+                $purchase->setEmail(strtolower($purchase->getEmail()));
 
                 if (!$error) {
                     $em->persist($purchase);

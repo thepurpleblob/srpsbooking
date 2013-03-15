@@ -61,6 +61,14 @@
 
         <dt>Postcode</dt>
         <dd>{{ purchase.postcode }}</dd>
+        
+        {% if purchase.phone %}
+            <dt>Telephone</dt>
+            <dd>{{ purchase.phone }}</dd>
+        {% endif %}
+            
+        <dt>Email</dt>
+        <dd>{{ purchase.email }}</dd>
 
         <dt>Total price</dt>
         <dd>&pound;{{ purchase.payment | number_format(2) }}</dd>
