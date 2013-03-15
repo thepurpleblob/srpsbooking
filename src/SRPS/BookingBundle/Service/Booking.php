@@ -387,7 +387,7 @@ class Booking
         }
 
         // Grand total
-        $result->total = $result->adultfare + $result->childfare + $result->meals;
+        $result->total = $result->adultfare + $result->childfare + $result->meals + $result->seatsupplement;
 
         return $result;
     }
