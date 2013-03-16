@@ -16,6 +16,10 @@
         <div class="span3">
             {% block sidebar %}
                 <img src="{{ asset('bundles/srpsbooking/images/railtourh.png') }}" alt="Railtour Logo" />
+                <div class="alert alert-block alert-info">
+                    <h5>{{ service.name }}</h5>
+                    {{ service.description | raw }}    
+                </div>    
             {% endblock sidebar %}            
         </div>
         <div class="span6">
