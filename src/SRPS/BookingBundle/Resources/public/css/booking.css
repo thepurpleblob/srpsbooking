@@ -28,3 +28,8 @@ div#pagefooter {
     padding-top: 20px;
     text-align: right;
 }
+
+div#sb_info {
+    text-align: center;
+    margin: 15px 6px 15px 0;
+}

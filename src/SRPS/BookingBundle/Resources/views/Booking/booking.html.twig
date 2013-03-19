@@ -15,8 +15,8 @@
     <div class="row-fluid">
         <div class="span3">
             {% block sidebar %}
-                <img src="{{ asset('bundles/srpsbooking/images/railtourh.png') }}" alt="Railtour Logo" />
-                <div class="alert alert-block alert-info">
+                <div id="sb_info" class="alert alert-block alert-info">
+                    <img src="{{ asset('bundles/srpsbooking/images/railtourh.png') }}" alt="Railtour Logo" />                    
                     <h5>{{ service.name }}</h5>
                     {{ service.description | raw }}    
                 </div>    

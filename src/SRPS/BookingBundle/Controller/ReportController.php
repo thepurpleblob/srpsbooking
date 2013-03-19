@@ -82,7 +82,7 @@ class ReportController extends Controller
         }
         
         // Create a filename
-        $filename = "railtour_".$service->getCode().date('YmdHi').'.csv';
+        $filename = "rt-bkg-".$service->getCode().'.csv';
         
         // create the response
         $response = new Response();
