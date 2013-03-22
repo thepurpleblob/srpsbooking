@@ -57,6 +57,9 @@ class ReportController extends Controller
         ));
     }
     
+    /**
+     * The service id can also be the code
+     */
     public function exportAction($serviceid) {
         $em = $this->getDoctrine()->getManager();
         $reports = $this->get('srps_reports');
@@ -65,7 +68,12 @@ class ReportController extends Controller
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
         if (!$service) {
-            throw new \Exception('Unable to find service');
+            $service = $em->getRepository('SRPSBookingBundle:Service')
+                ->findOneBy(array('code'=>$serviceid));
+            if (!$service) {
+                throw new \Exception('Unable to find service');
+            }
+            $serviceid = $service->getId();
         }   
         
         // Get the purchases
