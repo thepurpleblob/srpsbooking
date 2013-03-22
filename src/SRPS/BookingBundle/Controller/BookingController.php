@@ -411,7 +411,7 @@ class BookingController extends Controller
         // This page will only be shown if we are going to ask about firstsingle
         // option, or ask for comments.
         $iscomments = $service->isCommentbox();
-        $issupplement = ($numbers->getRemainingfirstsingles()>0) 
+        $issupplement = ($numbers->getRemainingfirstsingles() >= $passengercount) 
                 && ($purchase->getClass()=='F')
                 && (($passengercount==1) || ($passengercount==2))
                 ;
