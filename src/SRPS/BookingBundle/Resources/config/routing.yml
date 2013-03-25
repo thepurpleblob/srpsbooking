@@ -133,6 +133,26 @@ admin_limits_edit:
 admin_limits_update:
     pattern:  /admin/limits/{serviceid}/update
     defaults: { _controller: SRPSBookingBundle:Limits:update }
+    
+install:
+     pattern:  /install
+     defaults: { _controller: SRPSBookingBundle:User:install }   
+    
+admin_user_index:
+     pattern:  /admin/user/index
+     defaults: { _controller: SRPSBookingBundle:User:index }
+     
+admin_user_new:
+     pattern:  /admin/user/new
+     defaults: { _controller: SRPSBookingBundle:User:new }     
+     
+admin_user_edit:
+     pattern:  /admin/user/{username}/edit
+     defaults: { _controller: SRPSBookingBundle:User:edit }     
+     
+admin_user_delete:
+     pattern:  /admin/user/{username}/delete
+     defaults: { _controller: SRPSBookingBundle:User:delete }     
 
 booking:
     pattern: /booking/start/{code}
