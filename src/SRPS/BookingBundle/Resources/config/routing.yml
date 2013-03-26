@@ -1,3 +1,10 @@
+srps_homepage:
+    pattern: /
+    defaults: { _controller: SRPSBookingBundle:User:home }
+    
+logout:
+    pattern: /logout
+
 srps_booking_homepage:
     pattern:  /booking
     defaults: { _controller: SRPSBookingBundle:Default:index }

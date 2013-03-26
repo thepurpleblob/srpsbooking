@@ -5,9 +5,16 @@ namespace SRPS\BookingBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use SRPS\BookingBundle\Entity\User;
+use SRPS\BookingBundle\Form\UserType;
 
 class UserController extends Controller
 {
+    
+    public function homeAction()
+    {
+         return $this->render('SRPSBookingBundle:User:home.html.twig', array(
+        ));       
+    }
     
     public function installAction() 
     {
@@ -54,77 +61,83 @@ class UserController extends Controller
         $user = $em->getRepository('SRPSBookingBundle:User')
             ->findOneBy(array('username'=>$username));  
         if (!$user) {
-            thrown new \Exception("User $username not found in db");
+            throw new \Exception("User $username not found in db");
         }
-    }
-
-    public function viewAction($purchaseid)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        // Get the purchase record
-        $purchase = $em->getRepository('SRPSBookingBundle:Purchase')
-            ->find($purchaseid);
-        if (!$purchase) {
-            throw new \Exception('purchase item could not be found');
-        }
-
-        // Get the service object
-        $serviceid = $purchase->getServiceid();
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-        if (!$service) {
-            throw new \Exception('Unable to find service');
-        }
-
-        return $this->render('SRPSBookingBundle:Report:view.html.twig', array(
-            'service' => $service,
-            'purchase' => $purchase,
-        ));
-    }
-    
-    /**
-     * The service id can also be the code
-     */
-    public function exportAction($serviceid) {
-        $em = $this->getDoctrine()->getManager();
-        $reports = $this->get('srps_reports');
         
-        // Get the service object
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-        if (!$service) {
-            $service = $em->getRepository('SRPSBookingBundle:Service')
-                ->findOneBy(array('code'=>$serviceid));
-            if (!$service) {
-                throw new \Exception('Unable to find service');
+        // Create form
+        $usertype = new UserType(true);
+        $form = $this->createForm($usertype, $user);
+        
+        // submitted?
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('admin_user_index'));
             }
-            $serviceid = $service->getId();
-        }   
+        }        
         
-        // Get the purchases
-        $purchases = $em->getRepository('SRPSBookingBundle:Purchase')
-            ->findBy(array(
-                'serviceid' => $serviceid,
-                'completed' => true,
-                'status' => 'OK',
-                ));
+        // display form
+        return $this->render('SRPSBookingBundle:User:edit.html.twig', array(
+            'user' => $user,
+            'form' => $form->createView(),
+        ));        
+    }
+
+    public function newAction() {
         
-        // if there are none, then nothing to do
-        if (!$purchases) {
-            return $this->redirect($this->generateUrl('admin'));
+        $em = $this->getDoctrine()->getManager();
+        
+        // create empty user
+        $user = new User();
+        
+        // Create form
+        $usertype = new UserType(false);
+        $form = $this->createForm($usertype, $user);
+        
+        // submitted?
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('admin_user_index'));
+            }
+        }        
+        
+        // display form
+        return $this->render('SRPSBookingBundle:User:new.html.twig', array(
+            'user' => $user,
+            'form' => $form->createView(),
+        ));        
+    }    
+    
+    public function deleteAction($username) {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        // check it isn't admin
+        if ('admin'==$username) {
+            throw new \Exception("may not delete primary admin");
         }
         
-        // Create a filename
-        $filename = "rt-bkg-".$service->getCode().'.csv';
+        // find the user
+        $user = $em->getRepository('SRPSBookingBundle:User')
+            ->findOneBy(array('username'=>$username));  
+        if (!$user) {
+            throw new \Exception("User $username not found in db");
+        }
         
-        // create the response
-        $response = new Response();
-        $response->setContent($reports->getExport($purchases));
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment; filename="'.$filename.'"'); 
-        
-        return $response;
-    }
+        // Delete the user
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('admin_user_index'));
+    }    
 }
 

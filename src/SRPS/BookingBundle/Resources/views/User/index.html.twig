@@ -24,7 +24,11 @@
                     <td>{{ user.active ? 'Yes' : 'No' }}</td>
                     <td>
                         <a class="btn btn-success" href="{{ path('admin_user_edit', { 'username': user.username }) }}">Edit</a>
-                        <a class="btn btn-error" href="{{ path('admin_user_delete', { 'username': user.username }) }}">Delete</a>
+                        {% if user.username == 'admin' %}
+                            <a class="btn btn-danger disabled">Delete</a>
+                        {% else %}
+                            <a class="btn btn-danger" href="{{ path('admin_user_delete', { 'username': user.username }) }}">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
         {% endfor %}

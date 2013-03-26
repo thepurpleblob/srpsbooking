@@ -31,12 +31,12 @@ class User implements UserInterface, \Serializable
     private $username;
     
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50)
      */
     private $firstname;    
     
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50)
      */
     private $lastname;    
 
@@ -51,12 +51,12 @@ class User implements UserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @ORM\Column(type="string", length=60)
      */
     private $email;
     
     /**
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @ORM\Column(type="string", length=60)
      */
     private $role;    
 
@@ -74,6 +74,15 @@ class User implements UserInterface, \Serializable
         $this->role = 'ROLE_ORGANISER';
         $this->email = '';
     }
+    
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('firstname', new NotBlank());
+        $metadata->addPropertyConstraint('lastname', new NotBlank());
+        $metadata->addPropertyConstraint('username', new NotBlank()); 
+        $metadata->addPropertyConstraint('role', new NotBlank());
+        $metadata->addPropertyConstraint('password', new NotBlank());        
+    }    
 
     public function getUsername()
     {
@@ -95,7 +104,11 @@ class User implements UserInterface, \Serializable
     }
     
     public function setPassword($password) {
-        $this->password = md5($password);
+        
+        // do not update empty password
+        if ($password) {
+            $this->password = md5($password);
+        }    
     }
 
     public function getRoles()

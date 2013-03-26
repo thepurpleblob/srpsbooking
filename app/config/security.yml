@@ -4,20 +4,24 @@ jms_security_extra:
 
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        SRPS\BookingBundle\Entity\User: 
+            algorithm: md5
+            iterations: 1
+            encode_as_base64: false
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN:       ROLE_ORGANISER
 
     providers:
-        in_memory:
-            memory:
-                users:
-                    # user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    # admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-                    fred:  { password: ryanpass, roles: 'ROLE_USER' }
-                    admin: { password: dragon, roles: 'ROLE_ADMIN' }
+        main:
+            entity: { class: SRPS\BookingBundle\Entity\User, property: username }      
+        #in_memory:
+        #    memory:
+        #        users:
+        #            # user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+        #            # admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        #            fred:  { password: ryanpass, roles: 'ROLE_USER' }
+        #            admin: { password: dragon, roles: 'ROLE_ADMIN' }
 
     firewalls:
         #dev:
@@ -33,9 +37,7 @@ security:
             #form_login:
             #    check_path: /demo/secured/login_check
             #    login_path: /demo/secured/login
-            #logout:
-            #    path:   /demo/secured/logout
-            #    target: /demo/
+            logout: ~
             anonymous: ~
             http_basic:
                 realm: "Secured Demo Area"
@@ -43,4 +45,5 @@ security:
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
+        - { path: ^/admin/report, roles: ROLE_ORGANISER }        
         - { path: ^/admin, roles: ROLE_ADMIN }
