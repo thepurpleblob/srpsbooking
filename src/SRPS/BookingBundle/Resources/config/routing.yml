@@ -10,7 +10,7 @@ srps_booking_homepage:
     defaults: { _controller: SRPSBookingBundle:Default:index }
 
 admin_index:
-    pattern:  /admin
+    pattern:  /organise
     defaults: { _controller: SRPSBookingBundle:Service:index }
 
 admin_install:
@@ -18,7 +18,7 @@ admin_install:
     defaults: { _controller: SRPSBookingBundle:Service:install }
 
 admin_service:
-    pattern:  /admin/service
+    pattern:  /organise/service
     defaults: { _controller: SRPSBookingBundle:Service:index }
 
 admin_service_new:
@@ -26,7 +26,7 @@ admin_service_new:
     defaults: { _controller: SRPSBookingBundle:Service:new }
 
 admin_service_show:
-    pattern:  /admin/service/{id}/show
+    pattern:  /organise/service/{id}/show
     defaults: { _controller: SRPSBookingBundle:Service:show }
 
 admin_service_create:
@@ -134,11 +134,11 @@ admin_joining_delete:
     defaults: { _controller: SRPSBookingBundle:Joining:delete }
 
 admin_limits_edit:
-    pattern:  /admin/limits/{serviceid}/edit
+    pattern:  /organise/limits/{serviceid}/edit
     defaults: { _controller: SRPSBookingBundle:Limits:edit }
 
 admin_limits_update:
-    pattern:  /admin/limits/{serviceid}/update
+    pattern:  /organise/limits/{serviceid}/update
     defaults: { _controller: SRPSBookingBundle:Limits:update }
     
 install:
