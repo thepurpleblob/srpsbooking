@@ -1,6 +1,11 @@
 {% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
 
 {% block sidebar %}
+
+    {% if app.user %}
+        <p><i>Welcome {{ app.user.username }} (<a href="{{ path('logout') }}">logout</a>)</i></p>
+    {% endif %}
+    
     <h4>Filter</h4>
     <form id="services_filter_form" class="form-horizontal" action="{{ path('admin_index') }}"
         novalidate="novalidate" method="post">
@@ -11,6 +16,16 @@
             {% endfor %}    
         </select>
     </form>
+    
+    <ul id="adminmenu">
+        {% if app.user.role == 'ROLE_ADMIN' %}
+            <li>
+                <a class="btn btn-success" href="{{ path('admin_user_index') }}">
+                    User admin
+                </a>
+            </li> 
+        {% endif %}
+    </ul>    
 {% endblock sidebar %}
 
 {% block content %}

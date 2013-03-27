@@ -12,27 +12,31 @@
             Show service
         </a>
     </li>
-    <li>
-        <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
-            Edit service
-        </a>
-    </li>
+    {% if app.user.role == 'ROLE_ADMIN' %}
+        <li>
+            <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
+                Edit service
+            </a>
+        </li>
+    {% endif %}
     {% if serviceid %}
-        <li>
-            <a class="btn btn-warning" href="{{ path('admin_destination', { 'serviceid': serviceid }) }}">
-                Edit destinations
-            </a>
-        </li>
-        <li>
-            <a class="btn btn-warning" href="{{ path('admin_priceband', { 'serviceid': serviceid }) }}">
-                Edit price bands
-            </a>
-        </li>
-        <li>
-            <a class="btn btn-warning" href="{{ path('admin_joining', { 'serviceid': serviceid }) }}">
-                Edit joining stations
-            </a>
-        </li>
+        {% if app.user.role == 'ROLE_ADMIN' %}
+            <li>
+                <a class="btn btn-warning" href="{{ path('admin_destination', { 'serviceid': serviceid }) }}">
+                    Edit destinations
+                </a>
+            </li>
+            <li>
+                <a class="btn btn-warning" href="{{ path('admin_priceband', { 'serviceid': serviceid }) }}">
+                    Edit price bands
+                </a>
+            </li>
+            <li>
+                <a class="btn btn-warning" href="{{ path('admin_joining', { 'serviceid': serviceid }) }}">
+                    Edit joining stations
+                </a>
+            </li>
+        {% endif %}
         <li>
             <a class="btn btn-primary" href="{{ path('admin_limits_edit', { 'serviceid': serviceid }) }}">
                 Booking limits

@@ -9,6 +9,7 @@ Don't forget 'php app/console assets:install'
 Run php app/console doctrine:schema:create
 
 Run app.php/install to create admin account
+(default admin account is admin/admin)
 
 Run app.php/admin/install to populate CRS
 
