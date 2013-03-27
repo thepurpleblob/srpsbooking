@@ -4,6 +4,12 @@
     <h2>Railtour Reports</h2>
 
     <h3>{{ service.name }}</h3>
+    
+    {% if purchase.status != 'OK' %}
+        <div class="alert alert-block alert-error">
+            This payment was not completed or failed. No seats should be allocated
+        </div>
+    {% endif %}
 
     <table class="table table-striped table-condensed">
         <tbody>
