@@ -361,7 +361,7 @@ class Booking
         $result = new \stdClass();
         if ($class=="F") {
             $result->adultunit = $priceband->getFirst();
-            $result->childunit = $priceband->getChild();
+            $result->childunit = $priceband->getFirst();
             $result->adultfare = $adults * $result->adultunit;
             $result->childfare = $children * $result->childunit;
         } else {
