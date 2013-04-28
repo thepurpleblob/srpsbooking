@@ -170,7 +170,7 @@ class Booking
 
         // if no code or serviceid was supplied then we are not allowed a new one
         if (empty($code) or empty($serviceid)) {
-            throw new \Exception('The purchase record was not found');
+            throw new \Exception("The purchase record was not found (code='$code', id=$serviceid)");
         }
 
 
