@@ -215,7 +215,7 @@ class Booking
     /**
      * Count the purchases and work out what's left. Major PITA this
      */
-    public function countStuff($serviceid) {
+    public function countStuff($serviceid, $currentpurchase=null) {
         $em = $this->em;
 
         // Clear incomplete purchases older than 1 hour
@@ -255,6 +255,16 @@ class Booking
             WHERE p.completed=0 AND p.class='F' AND p.serviceid=$serviceid ");
         $fptotal = $fpquery->getResult();
         $count->setPendingfirst($this->zero($fptotal[0]['a']));
+        
+        // if we have a purchase object then remove any current count from pending
+        if ($currentpurchase) {
+            if ($currentpurchase->getClass()=='F') {
+                $pf = $count->getPendingfirst();
+                $pf = $pf - $currentpurchase->getAdults() - $currentpurchase->getChildren();
+                $pf = $pf < 0 ? 0 : $pf;
+                $count->setPendingfirst($pf);
+            }
+        }
 
         // firct class remainder is simply
         $count->setRemainingfirst($limits->getFirst() - $count->getBookedfirst() - $count->getPendingfirst());
@@ -270,8 +280,18 @@ class Booking
             WHERE p.completed=0 AND p.class='S' AND p.serviceid=$serviceid ");
         $sptotal = $spquery->getResult();
         $count->setPendingstandard($this->zero($sptotal[0]['a']));
+        
+        // if we have a purchase object then remove any current count from pending
+        if ($currentpurchase) {
+            if ($currentpurchase->getClass()=='S') {
+                $ps = $count->getPendingstandard();
+                $ps = $ps - $currentpurchase->getAdults() - $currentpurchase->getChildren();
+                $ps = $ps < 0 ? 0 : $ps;
+                $count->setPendingstandard($ps);
+            }
+        }        
 
-        // firct class remainder is simply
+        // standard class remainder is simply
         $count->setRemainingstandard($limits->getStandard() - $count->getBookedstandard() - $count->getPendingstandard());
         
         // get first supplements booked. Note field is a boolean and applies to 

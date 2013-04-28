@@ -341,7 +341,7 @@ class BookingController extends Controller
 
         // we need to know about the number
         // it's a bodge - but if the choice is made then skip this check
-        $numbers = $booking->countStuff($service->getId());
+        $numbers = $booking->countStuff($service->getId(), $purchase);
         $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
         $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
 
@@ -398,7 +398,7 @@ class BookingController extends Controller
         }
         
         // current counts
-        $numbers = $booking->countStuff($service->getId()); 
+        $numbers = $booking->countStuff($service->getId(), $purchase); 
         
         // Get the passenger count
         $passengercount = $purchase->getAdults() + $purchase->getChildren();        
