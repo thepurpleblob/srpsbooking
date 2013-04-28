@@ -60,6 +60,8 @@ class LimitsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
+        $logger = $this->get('logger');
+        $username = $this->get('security.context')->getToken()->getUser()->getUsername();        
 
         $entity = $em->getRepository('SRPSBookingBundle:Limits')
             ->findOneByServiceid($serviceid);
@@ -76,6 +78,7 @@ class LimitsController extends Controller
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
+            $logger->info("$username: updating limits for " . $service->getName());
             $em->persist($entity);
             $em->flush();
 

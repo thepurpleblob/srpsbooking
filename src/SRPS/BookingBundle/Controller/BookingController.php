@@ -342,13 +342,8 @@ class BookingController extends Controller
         // we need to know about the number
         // it's a bodge - but if the choice is made then skip this check
         $numbers = $booking->countStuff($service->getId());
-        if (!$purchase->getClass()) {
-            $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
-            $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
-        } else {
-            $availablefirst = true;
-            $availablestandard = true;
-        }
+        $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
+        $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
 
         // create form
         $classtype = new ClassType();
