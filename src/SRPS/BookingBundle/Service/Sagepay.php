@@ -140,25 +140,25 @@ class Sagepay
 
         // meals
         $meals = array();;
-        if ($service->isMealavisible()) {
+        if ($service->isMealavisible() and $purchase->getMeala()) {
             $meala = $this->decolon($service->getMealaname()) . ':';
             $meala .= $purchase->getMeala() . ':' . $service->getMealaprice() . ':::';
             $meala .= number_format($purchase->getMeala() * $service->getMealaprice(), 2);
             $meals[] = $meala;
         }
-        if ($service->isMealbvisible()) {
+        if ($service->isMealbvisible() and $purchase->getMealb()) {
             $mealb = $this->decolon($service->getMealbname()) . ':';
             $mealb .= $purchase->getMealb() . ':' . $service->getMealbprice() . ':::';
             $mealb .= number_format($purchase->getMealb() * $service->getMealbprice(), 2);
             $meals[] = $mealb;
         }
-        if ($service->isMealcvisible()) {
+        if ($service->isMealcvisible() and $purchase->getMealc()) {
             $mealc = $this->decolon($service->getMealcname()) . ':';
             $mealc .= $purchase->getMealc() . ':' . $service->getMealcprice() . ':::';
             $mealc .= number_format($purchase->getMealc() * $service->getMealcprice(), 2);
             $meals[] = $mealc;
         }
-        if ($service->isMealdvisible()) {
+        if ($service->isMealdvisible() and $purchase->getMeald()) {
             $meald = $this->decolon($service->getMealdname()) . ':';
             $meald .= $purchase->getMeald() . ':' . $service->getMealdprice() . ':::';
             $meald .= number_format($purchase->getMeald() * $service->getMealdprice(), 2);
@@ -176,8 +176,12 @@ class Sagepay
         }
 
         // Put it all together
-        $numberoflines = count($meals) + $numberoflines;
-        $basket = $numberoflines . ':' . $main . ':' . implode(':', $meals) . $supplement;
+        $numberoflines += count($meals);
+        $basket = $numberoflines . ':' . $main;
+        if (count($meals)) {
+            $basket .= ':' . implode(':', $meals);
+        }
+        $basket .= $supplement;
 //echo "<pre>" . $basket; die;
 
         return $basket;

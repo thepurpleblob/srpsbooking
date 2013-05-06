@@ -272,6 +272,11 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
+        
+        // If there are no meals on this service just bail
+        if (!$booking->mealsAvailable($service)) {
+            return $this->redirect($this->generateUrl('booking_class'));            
+        }
 
         // get the joining station (to see what meals available)
         $station = $em->getRepository('SRPSBookingBundle:Joining')
@@ -638,79 +643,86 @@ class BookingController extends Controller
         $em->persist($purchase);
         $em->flush();
 
-        // send emails
-        $message = \Swift_Message::newInstance();
-        $message->setFrom('noreply@srps.org.uk');
-        $message->setTo($purchase->getEmail());
-        $message->setContentType('text/html');
+        // send emails IF not already (guard against refresh)
+        if (!$purchase->isEmailsent()) {
+            $message = \Swift_Message::newInstance();
+            $message->setFrom('noreply@srps.org.uk');
+            $message->setTo($purchase->getEmail());
+            $message->setContentType('text/html');
 
-        if ($sage->Status=='OK') {
-            $message->setSubject('Confirmation of SRPS Railtour Booking - ' . $service->getName())
-                ->setBody(
-                    $this->renderView(
-                        'SRPSBookingBundle:Email:confirm.html.twig',
-                        array(
-                            'purchase' => $purchase,
-                            'service' => $service,
-                            'joining' => $joining,
-                            'destination' => $destination,
-                            ),
-                        'text/html'
+            if ($sage->Status=='OK') {
+                $message->setSubject('Confirmation of SRPS Railtour Booking - ' . $service->getName())
+                    ->setBody(
+                        $this->renderView(
+                            'SRPSBookingBundle:Email:confirm.html.twig',
+                            array(
+                                'purchase' => $purchase,
+                                'service' => $service,
+                                'joining' => $joining,
+                                'destination' => $destination,
+                                ),
+                            'text/html'
+                        )
                     )
-                )
-                ->addPart(
-                    $this->renderView(
-                        'SRPSBookingBundle:Email:confirm.txt.twig',
-                        array(
-                            'purchase' => $purchase,
-                            'service' => $service,
-                            'joining' => $joining,
-                            'destination' => $destination,
-                            ),
-                        'text/plain'
-                    )
-                );
-        } else {
+                    ->addPart(
+                        $this->renderView(
+                            'SRPSBookingBundle:Email:confirm.txt.twig',
+                            array(
+                                'purchase' => $purchase,
+                                'service' => $service,
+                                'joining' => $joining,
+                                'destination' => $destination,
+                                ),
+                            'text/plain'
+                        )
+                    );
+            } else {
 
-            // Status != OK, so the payment failed
-             $message->setSubject('Failure Notice: SRPS Railtour Booking - ' . $service->getName())
-                ->setBody(
-                    $this->renderView(
-                        'SRPSBookingBundle:Email:fail.html.twig',
-                        array(
-                            'purchase' => $purchase,
-                            'service' => $service,
-                            'joining' => $joining,
-                            'destination' => $destination,
-                            ),
-                        'text/html'
+                // Status != OK, so the payment failed
+                 $message->setSubject('Failure Notice: SRPS Railtour Booking - ' . $service->getName())
+                    ->setBody(
+                        $this->renderView(
+                            'SRPSBookingBundle:Email:fail.html.twig',
+                            array(
+                                'purchase' => $purchase,
+                                'service' => $service,
+                                'joining' => $joining,
+                                'destination' => $destination,
+                                ),
+                            'text/html'
+                        )
                     )
-                )
-                ->addPart(
-                    $this->renderView(
-                        'SRPSBookingBundle:Email:fail.txt.twig',
-                        array(
-                            'purchase' => $purchase,
-                            'service' => $service,
-                            'joining' => $joining,
-                            'destination' => $destination,
-                            ),
-                        'text/plain'
-                    )
-                );
-        }
-        $this->get('mailer')->send($message);
-        
-        // also send to backup (if defined)
-        if ($this->container->hasParameter('srpsbackupemail')) {
-            
-            // where we send the backup email
-            $srpsbackupemail = $this->container->getParameter('srpsbackupemail');
-        
-            $message->setTo($srpsbackupemail);
-            $message->setSubject($service->getCode().'-'.$purchase->getBookingref());
+                    ->addPart(
+                        $this->renderView(
+                            'SRPSBookingBundle:Email:fail.txt.twig',
+                            array(
+                                'purchase' => $purchase,
+                                'service' => $service,
+                                'joining' => $joining,
+                                'destination' => $destination,
+                                ),
+                            'text/plain'
+                        )
+                    );
+            }
             $this->get('mailer')->send($message);
+
+            // also send to backup (if defined)
+            if ($this->container->hasParameter('srpsbackupemail')) {
+
+                // where we send the backup email
+                $srpsbackupemail = $this->container->getParameter('srpsbackupemail');
+
+                $message->setTo($srpsbackupemail);
+                $message->setSubject($service->getCode().'-'.$purchase->getBookingref());
+                $this->get('mailer')->send($message);
+            }
         }
+        
+        // email must have been sent
+        $purchase->setEmailsent(true);
+        $em->persist($purchase);
+        $em->flush();
 
         // display form
         if ($sage->Status == 'OK') {

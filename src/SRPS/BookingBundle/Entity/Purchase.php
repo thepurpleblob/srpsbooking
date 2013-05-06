@@ -215,6 +215,12 @@ class Purchase {
      * @ORM\Column(type="integer")
      */
     protected $declinecode;
+    
+    /**
+     * Emails are sent
+     * @ORM\Column(type="boolean")
+     */
+    protected $emailsent;     
 
     public function __construct() {
         $this->type = 'O';
@@ -251,6 +257,7 @@ class Purchase {
         $this->last4digits = 0;
         $this->bankauthcode = 0;
         $this->declinecode = 0;
+        $this->emailsent = false;
     }
 
     /**
@@ -1067,5 +1074,13 @@ class Purchase {
     
     public function getComment() {
         return $this->comment;
+    }
+    
+    public function setEmailsent($emailsent) {
+        $this->emailsent = $emailsent;
+    }
+    
+    public function isEmailsent() {
+        return $this->emailsent;
     }
 }

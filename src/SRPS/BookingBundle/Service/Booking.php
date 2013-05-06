@@ -411,6 +411,19 @@ class Booking
 
         return $result;
     }
+    
+    /**
+     * detect if any meals are available
+     * 
+     */
+    public function mealsAvailable($service) {
+        return
+            $service->isMealavisible() ||
+            $service->isMealbvisible() ||
+            $service->isMealcvisible() ||
+            $service->isMealdvisible()
+            ;
+    }
 
     /**
      * Returns object with all the Sage stuff therein
