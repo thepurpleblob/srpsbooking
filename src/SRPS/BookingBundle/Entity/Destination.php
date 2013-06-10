@@ -44,6 +44,16 @@ class Destination {
      * @ORM\Column(type="text")
      */
     protected $description;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $limit; 
+    
+    /**
+     * @ORM\Column(type="boolean')
+     */
+    protected $limitused;
 
     protected $used;
 
@@ -54,6 +64,8 @@ class Destination {
         $this->name = '';
         $this->crs = '';
         $this->description = '';
+        $this->limit = 0;
+        $this->limitused = false;
     }
 
     /**
@@ -159,5 +171,21 @@ class Destination {
 
     public function setUsed($used) {
         $this->used = $used;
+    }
+    
+    public function getLimit() {
+        return $this->limit;
+    }
+    
+    public function setLimit($limit) {
+        $this->limit = $limit;
+    }
+    
+    public function isLimitused() {
+        return $this->limitused;
+    }
+    
+    public function setLimitused($limitused) {
+        $this->limitused = $limitused;
     }
 }

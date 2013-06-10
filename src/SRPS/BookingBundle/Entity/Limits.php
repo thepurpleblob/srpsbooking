@@ -39,7 +39,7 @@ class Limits
      * @ORM\Column(type="integer")
      */
     protected $standard;
-
+    
     /**
      * @ORM\Column(type="integer")
      */
