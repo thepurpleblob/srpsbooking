@@ -7,7 +7,7 @@ class Count {
     protected $bookedfirst;
 
     protected $bookedstandard;
-    
+
     protected $bookedfirstsingles;
 
     protected $bookedmeala;
@@ -21,7 +21,7 @@ class Count {
     protected $pendingfirst;
 
     protected $pendingstandard;
-    
+
     protected $pendingfirstsingles;
 
     protected $pendingmeala;
@@ -35,7 +35,7 @@ class Count {
     protected $remainingfirst;
 
     protected $remainingstandard;
-    
+
     protected $remainingfirstsingles;
 
     protected $remainingmeala;
@@ -45,6 +45,8 @@ class Count {
     protected $remainingmealc;
 
     protected $remainingmeald;
+
+    protected $destinations;
 
     public function __construct() {
         $this->bookedfirst = 0;
@@ -68,6 +70,7 @@ class Count {
         $this->remainingmealb = 0;
         $this->remainingmealc = 0;
         $this->remainingmeald = 0;
+        $this->destinations = array();
     }
 
     public function setBookedfirst($bookedfirst) {
@@ -92,8 +95,8 @@ class Count {
 
     public function getBookedfirstsingles() {
         return $this->bookedfirstsingles;
-    }    
-    
+    }
+
     public function setBookedmeala($bookedmeala) {
         $this->bookedmeala = $bookedmeala;
     }
@@ -141,14 +144,14 @@ class Count {
     public function getPendingstandard() {
         return $this->pendingstandard;
     }
-    
+
     public function setPendingfirstsingles($pendingfirstsingles) {
         $this->pendingfirstsingles = $pendingfirstsingles;
     }
 
     public function getPendingfirstsingles() {
         return $this->pendingfirstsingles;
-    }      
+    }
 
     public function setPendingmeala($pendingmeala) {
         $this->pendingmeala = $pendingmeala;
@@ -197,14 +200,14 @@ class Count {
     public function getRemainingstandard() {
         return $this->remainingstandard;
     }
-    
+
     public function setRemainingfirstsingles($remainingfirstsingles) {
         $this->remainingfirstsingles = $remainingfirstsingles;
     }
 
     public function getRemainingfirstsingles() {
         return $this->remainingfirstsingles;
-    }      
+    }
 
     public function setRemainingmeala($remainingmeala) {
         $this->remainingmeala = $remainingmeala;
@@ -236,5 +239,13 @@ class Count {
 
     public function getRemainingmeald() {
         return $this->remainingmeald;
+    }
+
+    public function setDestinations($destinations) {
+        $this->destinations = $destinations;
+    }
+
+    public function getDestinations() {
+        return $this->destinations;
     }
 }

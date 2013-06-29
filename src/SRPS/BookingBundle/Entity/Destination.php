@@ -48,14 +48,12 @@ class Destination {
     /**
      * @ORM\Column(type="integer")
      */
-    protected $limit;
+    protected $bookinglimit;
 
     /**
      * @ORM\Column(type="boolean")
      */
     protected $limitused;
-
-    protected $used;
 
     /**
      * constructor - set defaults
@@ -64,8 +62,7 @@ class Destination {
         $this->name = '';
         $this->crs = '';
         $this->description = '';
-        $this->limit = 0;
-        $this->limitused = false;
+        $this->bookinglimit = 0;
     }
 
     /**
@@ -173,19 +170,12 @@ class Destination {
         $this->used = $used;
     }
 
-    public function getLimit() {
-        return $this->limit;
+    public function getBookinglimit() {
+        return $this->bookinglimit;
     }
 
-    public function setLimit($limit) {
-        $this->limit = $limit;
+    public function setBookinglimit($bookinglimit) {
+        $this->bookinglimit = $bookinglimit;
     }
 
-    public function isLimitused() {
-        return $this->limitused;
-    }
-
-    public function setLimitused($limitused) {
-        $this->limitused = $limitused;
-    }
 }

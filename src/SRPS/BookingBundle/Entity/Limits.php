@@ -70,6 +70,11 @@ class Limits
      */
     protected $maxparty;
 
+    /**
+     * Array holds destination(s) limits for limits form
+     */
+    protected $destinationlimits;
+
     public function getId() {
         return $this->id;
     }
@@ -150,6 +155,14 @@ class Limits
         $this->maxparty = $maxparty;
     }
 
+    public function getDestinationlimits() {
+        return $this->destinationlimits;
+    }
+
+    public function setDestinationlimits($destinationlimits) {
+        $this->destinationlimits = $destinationlimits;
+    }
+
     public function __construct() {
         $this->first = 0;
         $this->standard = 0;
@@ -160,5 +173,6 @@ class Limits
         $this->mealc = 0;
         $this->meald = 0;
         $this->maxparty = 16;
+        $this->destinationlimits = array();
     }
 }

@@ -339,6 +339,35 @@ class Booking
         $count->setRemainingmealc($limits->getMealc() - $count->getBookedmealc() - $count->getPendingmealc());
         $count->setRemainingmeald($limits->getMeald() - $count->getBookedmeald() - $count->getPendingmeald());
 
+        // Get counts for destination limits
+        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
+            ->findByServiceid($serviceid);
+        $destinationcounts = array();
+        foreach ($destinations as $destination) {
+            $name = $destination->getName();
+            $crs = $destination->getCrs();
+            $destinationcount = new \stdClass();
+
+            // bookings for this destination
+            $dbquery = $em->createQuery("SELECT p.id FROM SRPSBookingBundle:Purchase p
+                 WHERE p.completed=1 AND p.status='OK' AND p.serviceid=$serviceid
+                 AND p.destination='$crs'");
+            $dbcount = count($dbquery->getResult());
+            $destinationcount->booked = $dbcount;
+
+            // pending bookings for this destination
+            $dpquery = $em->createQuery("SELECT p.id FROM SRPSBookingBundle:Purchase p
+                 WHERE p.completed=0 AND p.serviceid=$serviceid
+                 AND p.destination='$crs'");
+            $dpcount = count($dbquery->getResult());
+            $destinationcount->pending = $dpcount;
+
+            $destinationcount->remaining = $destination->getBookinglimit() - $dbcount - $dpcount;
+
+            $destinationcounts[$name] = $destinationcount;
+        }
+        $count->setDestinations($destinationcounts);
+
         return $count;
     }
 

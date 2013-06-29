@@ -49,6 +49,9 @@ class LimitsType extends AbstractType
                 'label' => "Max party that may be booked",
                 'choices' => $mpchoices,
             ))
+            ->add('destinationlimits', 'collection', array(
+            	'type' => 'integer',
+            ))
         ;
     }
 

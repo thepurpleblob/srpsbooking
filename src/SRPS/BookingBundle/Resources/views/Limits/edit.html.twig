@@ -17,7 +17,6 @@
                 <tr>
                     <th>Item</th>
                     <th>Set</th>
-                    <th>Used?</th>
                     <th>Booked</th>
                     <th>Pending</th>
                     <th>Remaining</th>
@@ -29,7 +28,6 @@
                     <td>
                         {{ form_widget(edit_form.first) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedfirst }}</td>
                     <td>{{ count.pendingfirst }}</td>
                     <td>{{ count.remainingfirst }}</td>
@@ -39,7 +37,6 @@
                     <td>
                         {{ form_widget(edit_form.standard) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedstandard }}</td>
                     <td>{{ count.pendingstandard }}</td>
                     <td>{{ count.remainingstandard }}</td>
@@ -49,7 +46,6 @@
                     <td>
                         {{ form_widget(edit_form.meala) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedmeala }}</td>
                     <td>{{ count.pendingmeala }}</td>
                     <td>{{ count.remainingmeala }}</td>
@@ -59,7 +55,6 @@
                     <td>
                         {{ form_widget(edit_form.mealb) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedmealb }}</td>
                     <td>{{ count.pendingmealb }}</td>
                     <td>{{ count.remainingmealb }}</td>
@@ -69,7 +64,6 @@
                     <td>
                         {{ form_widget(edit_form.mealc) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedmealc }}</td>
                     <td>{{ count.pendingmealc }}</td>
                     <td>{{ count.remainingmealc }}</td>
@@ -79,7 +73,6 @@
                     <td>
                         {{ form_widget(edit_form.meald) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedmeald }}</td>
                     <td>{{ count.pendingmeald }}</td>
                     <td>{{ count.remainingmeald }}</td>
@@ -89,17 +82,27 @@
                     <td>
                         {{ form_widget(edit_form.firstsingles) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>{{ count.bookedfirstsingles }}</td>
                     <td>{{ count.pendingfirstsingles }}</td>
                     <td>{{ count.remainingfirstsingles }}</td>
                 </tr>
+                {% for destinationlimit in edit_form.destinationlimits %}
+                    {% set destinationcount = attribute(count.destinations, destinationlimit.name) %}
+                    <tr>
+                        <td><b>Destination</b> {{ destinationlimit.name }}</td>
+                        <td>
+                            {{ form_widget(destinationlimit) }}
+                        </td>
+                        <td>{{ destinationcount.booked }}</td>
+                        <td>{{ destinationcount.pending }}</td>
+                        <td>{{ destinationcount.remaining }}</td>
+                </tr>
+                {% endfor %}
                 <tr>
                     <td>Maximum party size</td>
                     <td>
                         {{ form_widget(edit_form.maxparty) }}
                     </td>
-                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
