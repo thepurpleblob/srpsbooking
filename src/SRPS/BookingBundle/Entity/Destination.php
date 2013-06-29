@@ -44,14 +44,14 @@ class Destination {
      * @ORM\Column(type="text")
      */
     protected $description;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
-    protected $limit; 
-    
+    protected $limit;
+
     /**
-     * @ORM\Column(type="boolean')
+     * @ORM\Column(type="boolean")
      */
     protected $limitused;
 
@@ -172,19 +172,19 @@ class Destination {
     public function setUsed($used) {
         $this->used = $used;
     }
-    
+
     public function getLimit() {
         return $this->limit;
     }
-    
+
     public function setLimit($limit) {
         $this->limit = $limit;
     }
-    
+
     public function isLimitused() {
         return $this->limitused;
     }
-    
+
     public function setLimitused($limitused) {
         $this->limitused = $limitused;
     }

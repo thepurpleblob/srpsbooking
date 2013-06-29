@@ -129,7 +129,7 @@ class Booking
         // See if the purchase session attribute exists
         $session = new Session();
 //        if (!$session->isStarted()) {
-//            $session->start();
+        $session->start();
 //        }
         $session->migrate();
         if ($key = $session->get('key')) {
@@ -170,7 +170,7 @@ class Booking
 
         // if no code or serviceid was supplied then we are not allowed a new one
         if (empty($code) or empty($serviceid)) {
-            throw new \Exception("The purchase record was not found (code='$code', id=$serviceid)");
+            throw new \Exception("The purchase record was not found (code='$code', id=$serviceid, key='$key')");
         }
 
 
@@ -255,7 +255,7 @@ class Booking
             WHERE p.completed=0 AND p.class='F' AND p.serviceid=$serviceid ");
         $fptotal = $fpquery->getResult();
         $count->setPendingfirst($this->zero($fptotal[0]['a']));
-        
+
         // if we have a purchase object then remove any current count from pending
         if ($currentpurchase) {
             if ($currentpurchase->getClass()=='F') {
@@ -280,7 +280,7 @@ class Booking
             WHERE p.completed=0 AND p.class='S' AND p.serviceid=$serviceid ");
         $sptotal = $spquery->getResult();
         $count->setPendingstandard($this->zero($sptotal[0]['a']));
-        
+
         // if we have a purchase object then remove any current count from pending
         if ($currentpurchase) {
             if ($currentpurchase->getClass()=='S') {
@@ -289,25 +289,25 @@ class Booking
                 $ps = $ps < 0 ? 0 : $ps;
                 $count->setPendingstandard($ps);
             }
-        }        
+        }
 
         // standard class remainder is simply
         $count->setRemainingstandard($limits->getStandard() - $count->getBookedstandard() - $count->getPendingstandard());
-        
-        // get first supplements booked. Note field is a boolean and applies to 
+
+        // get first supplements booked. Note field is a boolean and applies to
         // all persons in booking (which is only asked for parties of one or two)
         $supquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
             WHERE p.completed=1 AND p.class='F' AND p.status='OK' AND p.seatsupplement>0 AND p.serviceid=$serviceid ");
         $suptotal = $supquery->getResult();
         $count->setBookedfirstsingles($this->zero($suptotal[0]['a']));
-        
-        // get first supplements in progress. Note field is a boolean and applies to 
+
+        // get first supplements in progress. Note field is a boolean and applies to
         // all persons in booking (which is only asked for parties of one or two)
         $sppquery = $em->createQuery("SELECT (SUM(p.adults)+SUM(p.children)) AS a FROM SRPSBookingBundle:Purchase p
             WHERE p.completed=0 AND p.class='F' AND p.seatsupplement=1 AND p.serviceid=$serviceid ");
         $spptotal = $sppquery->getResult();
-        $count->setPendingfirstsingles($this->zero($spptotal[0]['a']));  
-        
+        $count->setPendingfirstsingles($this->zero($spptotal[0]['a']));
+
         // First suppliements remainder
         $count->setRemainingfirstsingles($limits->getFirstsingles() - $count->getBookedfirstsingles() - $count->getPendingfirstsingles());
 
@@ -396,7 +396,7 @@ class Booking
             $mealb * $service->getMealbprice() +
             $mealc * $service->getMealcprice() +
             $meald * $service->getMealdprice();
-        
+
         // Calculate seat supplement
         $passengers = $adults + $children;
         $suppallowed = (($passengers==1) or ($passengers==2));
@@ -411,10 +411,10 @@ class Booking
 
         return $result;
     }
-    
+
     /**
      * detect if any meals are available
-     * 
+     *
      */
     public function mealsAvailable($service) {
         return

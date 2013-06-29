@@ -38,17 +38,13 @@
                 <td>{{ entity.date|date('d/m/Y') }}</td>
             </tr>
             <tr>
-                <th>Maximum party size</th>
-                <td>{{ entity.maxparty }}</td>
-            </tr>    
-            <tr>
                 <th>First window/single supplement</th>
                 <td>&pound;{{ entity.singlesupplement | number_format(2) }}</td>
-            </tr>          
+            </tr>
             <tr>
                 <th>Display comment field</th>
                 <td>{{ entity.commentbox ? 'Yes' : 'No' }}</td>
-            </tr>             
+            </tr>
         </tbody>
     </table>
 

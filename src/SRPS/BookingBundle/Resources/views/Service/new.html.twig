@@ -15,14 +15,13 @@
                 <div class="controls">
                     {{ form_widget(form.description, {'attr': {'cols': '40', 'rows': '8'}}) }}
                     {{ form_errors(form.description) }}
-                </div>        
+                </div>
             </div>
         {% endspaceless %}
         {{ form_row(form.visible) }}
-        {{ form_row(form.date) }}  
-        {{ form_row(form.maxparty) }}
-        {{ form_row(form.singlesupplement) }}   
-        {{ form_row(form.commentbox) }}             
+        {{ form_row(form.date) }}
+        {{ form_row(form.singlesupplement) }}
+        {{ form_row(form.commentbox) }}
 
             <table class="table">
                 <thead>
@@ -59,10 +58,10 @@
                         <td>{{ form_widget(form.mealdprice) }} {{ form_errors(form.mealdprice) }}</td>
                     </tr>
                 </tbody>
-            </table>      
-        {{ form_rest(form) }}     
+            </table>
+        {{ form_rest(form) }}
     </form>
-    
+
     <button class ="btn btn-primary" onclick="$('#service-new-form').submit();">
         Create service
     </button>
@@ -71,10 +70,10 @@
     </a>
 
 {% endblock content %}
-    
+
 {%block javascripts %}
     {{ parent() }}
     <script>
         $('#srps_bookingbundle_servicetype_date').datepicker({dateFormat: "dd/mm/yy" });
     </script>
-{% endblock javascripts %}    
+{% endblock javascripts %}

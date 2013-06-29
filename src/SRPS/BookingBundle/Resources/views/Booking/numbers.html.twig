@@ -12,9 +12,9 @@
         your party. Do not include infants who travel free but will not
         be allocated a seat.
     </p>
-    
+
     <p class="alert">
-        Your party can have a maximum of {{ service.maxparty }} persons.
+        Your party can have a maximum of {{ limits.maxparty }} persons.
     </p>
 
     <form id="numbers-form" class="form-horizontal" action="{{ path('booking_numbers', {'code': code}) }}"

@@ -39,12 +39,12 @@ class Limits
      * @ORM\Column(type="integer")
      */
     protected $standard;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
-    protected $firstsingles;    
-    
+    protected $firstsingles;
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -64,6 +64,11 @@ class Limits
      * @ORM\Column(type="integer")
      */
     protected $meald;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $maxparty;
 
     public function getId() {
         return $this->id;
@@ -92,11 +97,11 @@ class Limits
     public function getStandard() {
         return $this->standard;
     }
-    
+
     public function setFirstsingles($firstsingles) {
         $this->firstsingles = $firstsingles;
     }
-    
+
     public function getFirstsingles() {
         return $this->firstsingles;
     }
@@ -137,6 +142,14 @@ class Limits
         $this->meald = $meald;
     }
 
+    public function getMaxparty() {
+        return $this->maxparty;
+    }
+
+    public function setMaxparty($maxparty) {
+        $this->maxparty = $maxparty;
+    }
+
     public function __construct() {
         $this->first = 0;
         $this->standard = 0;
@@ -146,5 +159,6 @@ class Limits
         $this->mealb = 0;
         $this->mealc = 0;
         $this->meald = 0;
+        $this->maxparty = 16;
     }
 }

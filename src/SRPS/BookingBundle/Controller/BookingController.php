@@ -68,6 +68,13 @@ class BookingController extends Controller
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
 
+        // Get the limits for this service
+        $limits = $em->getRepository('SRPSBookingBundle:Limits')
+            ->findOneByServiceid($service->getId());
+        if (!$limits) {
+            throw $this->createNotFoundException('Unable to find limits for serviceid ' . $service->getId());
+        }
+
         // get the booking ref prefix
         $bookingrefprefix = $this->container->getParameter('bookingrefprefix');
 
@@ -75,7 +82,7 @@ class BookingController extends Controller
         $purchase = $booking->getPurchase($service->getId(), $code, $bookingrefprefix);
 
         // create form
-        $numberstype = new NumbersType($service->getMaxparty());
+        $numberstype = new NumbersType($limits->getMaxparty());
         $form   = $this->createForm($numberstype, $purchase);
 
         // submitted?
@@ -86,9 +93,9 @@ class BookingController extends Controller
                 // check numbers
                 $adults = $purchase->getAdults();
                 $children = $purchase->getChildren();
-                if (($adults + $children) > $service->getMaxparty()) {
-                    $form->get('adults')->addError(new FormError('Total party size is more than '.$service->getMaxparty()));
-                } else if (($adults<1) or ($adults>$service->getMaxparty()) or ($children<0) or ($children>$service->getMaxparty())) {
+                if (($adults + $children) > $limits->getMaxparty()) {
+                    $form->get('adults')->addError(new FormError('Total party size is more than '.$limits->getMaxparty()));
+                } else if (($adults<1) or ($adults>$limits->getMaxparty()) or ($children<0) or ($children>$limits->getMaxparty())) {
                     $form->get('adults')->addError(new FormError('Value supplied out of range.'));
                 } else {
                     $em->persist($purchase);
@@ -104,6 +111,7 @@ class BookingController extends Controller
             'purchase' => $purchase,
             'code' => $code,
             'service' => $service,
+            'limits' => $limits,
             'form'   => $form->createView(),
         ));
     }
@@ -272,10 +280,10 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-        
+
         // If there are no meals on this service just bail
         if (!$booking->mealsAvailable($service)) {
-            return $this->redirect($this->generateUrl('booking_class'));            
+            return $this->redirect($this->generateUrl('booking_class'));
         }
 
         // get the joining station (to see what meals available)
@@ -385,7 +393,7 @@ class BookingController extends Controller
             'form'   => $form->createView(),
         ));
     }
-    
+
     public function additionalAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -401,22 +409,22 @@ class BookingController extends Controller
         if (!$service) {
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
-        
+
         // current counts
-        $numbers = $booking->countStuff($service->getId(), $purchase); 
-        
+        $numbers = $booking->countStuff($service->getId(), $purchase);
+
         // Get the passenger count
-        $passengercount = $purchase->getAdults() + $purchase->getChildren();        
-        
+        $passengercount = $purchase->getAdults() + $purchase->getChildren();
+
         // This page will only be shown if we are going to ask about firstsingle
         // option, or ask for comments.
         $iscomments = $service->isCommentbox();
-        $issupplement = ($numbers->getRemainingfirstsingles() >= $passengercount) 
+        $issupplement = ($numbers->getRemainingfirstsingles() >= $passengercount)
                 && ($purchase->getClass()=='F')
                 && (($passengercount==1) || ($passengercount==2))
                 ;
         if (!($iscomments or $issupplement)) {
-                return $this->redirect($this->generateUrl('booking_personal'));            
+                return $this->redirect($this->generateUrl('booking_personal'));
         }
 
         // create form
@@ -498,16 +506,16 @@ class BookingController extends Controller
                     $form->get('email')->addError(new FormError('Email is required'));
                     $error = true;
                 }
-                
+
                 // Now need to 'normalise' some of the fields
-                $purchase->setTitle(ucwords($purchase->getTitle()));                
+                $purchase->setTitle(ucwords($purchase->getTitle()));
                 $purchase->setSurname(ucwords($purchase->getSurname()));
                 $purchase->setFirstname(ucwords($purchase->getFirstname()));
                 $purchase->setAddress1(ucwords($purchase->getAddress1()));
-                $purchase->setAddress2(ucwords($purchase->getAddress2())); 
-                $purchase->setCity(ucwords($purchase->getCity()));  
-                $purchase->setCounty(ucwords($purchase->getCounty()));                
-                $purchase->setPostcode(strtoupper($purchase->getPostcode())); 
+                $purchase->setAddress2(ucwords($purchase->getAddress2()));
+                $purchase->setCity(ucwords($purchase->getCity()));
+                $purchase->setCounty(ucwords($purchase->getCounty()));
+                $purchase->setPostcode(strtoupper($purchase->getPostcode()));
                 $purchase->setEmail(strtolower($purchase->getEmail()));
 
                 if (!$error) {
@@ -718,7 +726,7 @@ class BookingController extends Controller
                 $this->get('mailer')->send($message);
             }
         }
-        
+
         // email must have been sent
         $purchase->setEmailsent(true);
         $em->persist($purchase);

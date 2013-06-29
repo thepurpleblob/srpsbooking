@@ -16,12 +16,19 @@ class LimitsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        // Choices for maxparty
+        $mpchoices = array();
+        for ($i=1; $i<=20; $i++) {
+            $mpchoices[$i] = $i;
+        }
+
         $builder
             ->add('first')
             ->add('standard')
             ->add('firstsingles', 'integer', array(
                 'label' => 'Single/Window seats in First',
-            ))    
+            ))
             ->add('meala', 'integer', array(
                 'label' => $this->service->getMealaname(),
                 'disabled' => !$this->service->isMealavisible(),
@@ -38,6 +45,10 @@ class LimitsType extends AbstractType
                 'label' => $this->service->getMealdname(),
                 'disabled' => !$this->service->isMealdvisible(),
                 ))
+            ->add('maxparty', 'choice', array(
+                'label' => "Max party that may be booked",
+                'choices' => $mpchoices,
+            ))
         ;
     }
 
