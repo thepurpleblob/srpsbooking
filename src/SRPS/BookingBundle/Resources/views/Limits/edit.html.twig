@@ -89,7 +89,10 @@
                 {% for destinationlimit in edit_form.destinationlimits %}
                     {% set destinationcount = attribute(count.destinations, destinationlimit.name) %}
                     <tr>
-                        <td><b>Destination</b> {{ destinationlimit.name }}</td>
+                        <td>
+                            <b>Destination</b> {{ destinationcount.name }}<br />
+                            <small class="text-info">0 entry disables limit</small>
+                        </td>
                         <td>
                             {{ form_widget(destinationlimit) }}
                         </td>

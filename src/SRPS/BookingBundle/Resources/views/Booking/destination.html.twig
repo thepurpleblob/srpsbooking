@@ -16,12 +16,19 @@
           novalidate="novalidate" method="post" {{ form_enctype(form) }}>
 
           {% for destination in destinations %}
-              <label class="radio">
-                  <input type="radio" value="{{ destination.crs }}" name="srps_bookingbundle_booking_destinationtype[destination]">
-                  <p>{{ destination.description | raw }}</p>
-                  <p class="text-info">Price Each: <b>First</b> &pound;{{ destination.first }},  <b>Standard adult</b>
-                      &pound;{{ destination.standard }},  <b>Standard child</b> &pound;{{ destination.child }}</p>
-              </label>
+              {% if destination.available %}
+                  <label class="radio">
+                      <input type="radio" value="{{ destination.crs }}" name="srps_bookingbundle_booking_destinationtype[destination]">
+                      <p>{{ destination.description | raw }}</p>
+                      <p class="text-info">Price Each: <b>First</b> &pound;{{ destination.first }},  <b>Standard adult</b>
+                          &pound;{{ destination.standard }},  <b>Standard child</b> &pound;{{ destination.child }}</p>
+                  </label>
+              {% else %}
+                  <div class="alert alert-error">
+                      <p class="muted">{{ destination.description | raw }}</p>
+                      <p><b>Sorry, this destination is fully booked.</b></p>
+                  </div>
+              {% endif %}
           {% endfor %}
           {{ form_errors(form.destination) }}
     </form>

@@ -42,7 +42,7 @@ class LimitsController extends Controller
         // Create array of destinations limits
         $destinationlimits = array();
         foreach ($destinations as $destination) {
-            $destinationlimits[$destination->getName()] = $destination->getBookinglimit();
+            $destinationlimits[$destination->getCrs()] = $destination->getBookinglimit();
         }
         $limits->setDestinationlimits($destinationlimits);
 
@@ -84,7 +84,7 @@ class LimitsController extends Controller
         // Create array of destinations limits
         $destinationlimits = array();
         foreach ($destinations as $destination) {
-            $destinationlimits[$destination->getName()] = $destination->getBookinglimit();
+            $destinationlimits[$destination->getCrs()] = $destination->getBookinglimit();
         }
         $limits->setDestinationlimits($destinationlimits);
 
@@ -105,9 +105,9 @@ class LimitsController extends Controller
 
             // save the destination limits
             $destinationlimits = $limits->getdestinationlimits();
-            foreach ($destinationlimits as $name=>$destinationlimit) {
+            foreach ($destinationlimits as $crs=>$destinationlimit) {
                 $destination = $em->getRepository('SRPSBookingBundle:Destination')
-                    ->findOneByName($name);
+                    ->findOneByCrs($crs);
                 $destination->setBookinglimit($destinationlimit);
                 $em->persist($destination);
                 $em->flush();

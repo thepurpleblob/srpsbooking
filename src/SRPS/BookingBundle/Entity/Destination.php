@@ -51,11 +51,6 @@ class Destination {
     protected $bookinglimit;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $limitused;
-
-    /**
      * constructor - set defaults
      */
     public function __construct() {

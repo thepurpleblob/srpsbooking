@@ -347,24 +347,42 @@ class Booking
             $name = $destination->getName();
             $crs = $destination->getCrs();
             $destinationcount = new \stdClass();
+            $destinationcount->name = $name;
 
             // bookings for this destination
-            $dbquery = $em->createQuery("SELECT p.id FROM SRPSBookingBundle:Purchase p
+            $dbquery = $em->createQuery("SELECT SUM(p.adults) AS a, SUM(p.children) AS c FROM SRPSBookingBundle:Purchase p
                  WHERE p.completed=1 AND p.status='OK' AND p.serviceid=$serviceid
                  AND p.destination='$crs'");
-            $dbcount = count($dbquery->getResult());
+            $dbresult = $dbquery->getResult();
+            $dbcount = $this->zero($dbresult[0]['a']) + $this->zero($dbresult[0]['c']);
             $destinationcount->booked = $dbcount;
 
             // pending bookings for this destination
-            $dpquery = $em->createQuery("SELECT p.id FROM SRPSBookingBundle:Purchase p
+            $dpquery = $em->createQuery("SELECT SUM(p.adults) AS am SUM(p.children) AS c FROM SRPSBookingBundle:Purchase p
                  WHERE p.completed=0 AND p.serviceid=$serviceid
                  AND p.destination='$crs'");
-            $dpcount = count($dbquery->getResult());
+            $dpresult = $dbquery->getResult();
+            $dpcount = $this->zero($dbresult[0]['a']) + $this->zero($dbresult[0]['c']);
+
+            // if we have a purchase object then remove any current count from pending
+            if ($currentpurchase) {
+                if ($currentpurchase->getDestination()==$crs) {
+                    $dpcount = $dpcount - $currentpurchase->getAdults() - $currentpurchase->getChildren();
+                    $dpcount = $dpcount < 0 ? 0 : $dpcount;
+                }
+            }
             $destinationcount->pending = $dpcount;
 
-            $destinationcount->remaining = $destination->getBookinglimit() - $dbcount - $dpcount;
+            // limit=0 means the limit is not being used
+            $dlimit = $destination->getBookinglimit();
+            $destinationcount->limit = $dlimit;
+            if ($dlimit==0) {
+                $destinationcount->remaining = '-';
+            } else {
+                $destinationcount->remaining = $dlimit - $dbcount - $dpcount;
+            }
 
-            $destinationcounts[$name] = $destinationcount;
+            $destinationcounts[$crs] = $destinationcount;
         }
         $count->setDestinations($destinationcounts);
 

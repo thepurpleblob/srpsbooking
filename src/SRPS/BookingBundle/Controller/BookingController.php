@@ -212,6 +212,11 @@ class BookingController extends Controller
             return $this->redirect($this->generateUrl('booking_meals'));
         }
 
+        // Get counts info
+        $numbers = $booking->countStuff($service->getId(), $purchase);
+        $destinationcounts = $numbers->getDestinations();
+        $passengercount = $purchase->getAdults() + $purchase->getChildren();
+
         // we'll build up a set of data to display all the useful info in the
         // form... so bear with me
         $joiningcrs = $purchase->getJoining();
@@ -220,6 +225,7 @@ class BookingController extends Controller
         $pricebandgroupid = $joining->getPricebandgroupid();
         $dests = array();
         foreach ($destinations as $destination) {
+            $destinationcount = $destinationcounts[$destination->getCrs()];
             $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
                 ->findOneBy(array('pricebandgroupid'=>$pricebandgroupid, 'destinationid'=>$destination->getId()));
             if (!$priceband) {
@@ -231,6 +237,13 @@ class BookingController extends Controller
             $dest->first = $priceband->getFirst();
             $dest->standard = $priceband->getStandard();
             $dest->child = $priceband->getChild();
+
+            // a limit of 0 means ignore the limit
+            if (($destinationcount->limit==0) or ($destinationcount->remaining>=$passengercount)) {
+                $dest->available = true;
+            } else {
+                $dest->available = false;
+            }
             $dests[] = $dest;
         }
 
