@@ -362,7 +362,7 @@ class Booking
                  WHERE p.completed=0 AND p.serviceid=$serviceid
                  AND p.destination='$crs'");
             $dpresult = $dpquery->getResult();
-            $dpcount = $this->zero($dbresult[0]['a']) + $this->zero($dbresult[0]['c']);
+            $dpcount = $this->zero($dpresult[0]['a']) + $this->zero($dpresult[0]['c']);
 
             // if we have a purchase object then remove any current count from pending
             if ($currentpurchase) {
