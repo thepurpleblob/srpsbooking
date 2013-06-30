@@ -358,10 +358,10 @@ class Booking
             $destinationcount->booked = $dbcount;
 
             // pending bookings for this destination
-            $dpquery = $em->createQuery("SELECT SUM(p.adults) AS am SUM(p.children) AS c FROM SRPSBookingBundle:Purchase p
+            $dpquery = $em->createQuery("SELECT SUM(p.adults) AS a, SUM(p.children) AS c FROM SRPSBookingBundle:Purchase p
                  WHERE p.completed=0 AND p.serviceid=$serviceid
                  AND p.destination='$crs'");
-            $dpresult = $dbquery->getResult();
+            $dpresult = $dpquery->getResult();
             $dpcount = $this->zero($dbresult[0]['a']) + $this->zero($dbresult[0]['c']);
 
             // if we have a purchase object then remove any current count from pending
