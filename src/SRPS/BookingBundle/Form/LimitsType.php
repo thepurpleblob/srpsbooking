@@ -22,6 +22,8 @@ class LimitsType extends AbstractType
         for ($i=1; $i<=20; $i++) {
             $mpchoices[$i] = $i;
         }
+        $mfchoices = $mpchoices;
+        $mfchoices[0] = 0;
 
         $builder
             ->add('first')
@@ -48,6 +50,10 @@ class LimitsType extends AbstractType
             ->add('maxparty', 'choice', array(
                 'label' => "Max party that may be booked",
                 'choices' => $mpchoices,
+            ))
+            ->add('maxpartyfirst', 'choice', array(
+                'label' => "If nonzero, max party in first that may be booked",
+                'choices' => $mfchoices,
             ))
             ->add('destinationlimits', 'collection', array(
             	'type' => 'integer',

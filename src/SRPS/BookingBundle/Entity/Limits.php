@@ -71,6 +71,12 @@ class Limits
     protected $maxparty;
 
     /**
+     * @ORM\Column(type="integer")
+     * If non-zero, differential maxparty is applied
+     */
+    protected $maxpartyfirst;
+
+    /**
      * Array holds destination(s) limits for limits form
      */
     protected $destinationlimits;
@@ -155,6 +161,14 @@ class Limits
         $this->maxparty = $maxparty;
     }
 
+    public function getMaxpartyfirst() {
+        return $this->maxpartyfirst;
+    }
+
+    public function setMaxpartyfirst($maxpartyfirst) {
+        $this->maxpartyfirst = $maxpartyfirst;
+    }
+
     public function getDestinationlimits() {
         return $this->destinationlimits;
     }
@@ -173,6 +187,7 @@ class Limits
         $this->mealc = 0;
         $this->meald = 0;
         $this->maxparty = 16;
+        $this->maxpartyfirst = 0;
         $this->destinationlimits = array();
     }
 }

@@ -36,6 +36,19 @@ class BookingController extends Controller
         // count the seats left
         $count = $booking->countStuff($service->getId());
 
+        // Get the limits for this service
+        $limits = $em->getRepository('SRPSBookingBundle:Limits')
+            ->findOneByServiceid($service->getId());
+        if (!$limits) {
+            throw $this->createNotFoundException('Unable to find limits for serviceid ' . $service->getId());
+        }
+
+        // get acting maxparty
+        $maxparty = $limits->getMaxparty();
+        if ($limits->getMaxpartyfirst() and ($limits->getMaxpartyfirst()>$maxparty)) {
+            $maxparty = $limits->getMaxpartyfirst();
+        }
+
         // decide if we can go ahead with the booking
         $today = new \DateTime('today midnight');
         $seatsavailable =
@@ -46,6 +59,7 @@ class BookingController extends Controller
         if ($seatsavailable and $isvisible and $isindate) {
             return $this->render('SRPSBookingBundle:Booking:index.html.twig', array(
                 'code' => $code,
+                'maxparty' => $maxparty,
                 'service' => $service
             ));
         } else {
@@ -85,6 +99,12 @@ class BookingController extends Controller
         $numberstype = new NumbersType($limits->getMaxparty());
         $form   = $this->createForm($numberstype, $purchase);
 
+        // get acting maxparty
+        $maxparty = $limits->getMaxparty();
+        if ($limits->getMaxpartyfirst() and ($limits->getMaxpartyfirst()>$maxparty)) {
+            $maxparty = $limits->getMaxpartyfirst();
+        }
+
         // submitted?
         if ($this->getRequest()->getMethod() == 'POST') {
             $form->bindRequest($this->getRequest());
@@ -93,9 +113,9 @@ class BookingController extends Controller
                 // check numbers
                 $adults = $purchase->getAdults();
                 $children = $purchase->getChildren();
-                if (($adults + $children) > $limits->getMaxparty()) {
-                    $form->get('adults')->addError(new FormError('Total party size is more than '.$limits->getMaxparty()));
-                } else if (($adults<1) or ($adults>$limits->getMaxparty()) or ($children<0) or ($children>$limits->getMaxparty())) {
+                if (($adults + $children) > $maxparty) {
+                    $form->get('adults')->addError(new FormError('Total party size is more than '.$maxparty));
+                } else if (($adults<1) or ($adults>$maxparty) or ($children<0) or ($children>$maxparty)) {
                     $form->get('adults')->addError(new FormError('Value supplied out of range.'));
                 } else {
                     $em->persist($purchase);
@@ -112,6 +132,7 @@ class BookingController extends Controller
             'code' => $code,
             'service' => $service,
             'limits' => $limits,
+            'maxparty' => $maxparty,
             'form'   => $form->createView(),
         ));
     }
@@ -358,6 +379,21 @@ class BookingController extends Controller
             throw $this->createNotFoundException('Unable to find code ' . $code);
         }
 
+        // Get the limits for this service
+        $limits = $em->getRepository('SRPSBookingBundle:Limits')
+            ->findOneByServiceid($service->getId());
+        if (!$limits) {
+            throw $this->createNotFoundException('Unable to find limits for serviceid ' . $service->getId());
+        }
+
+        // get first and standard maximum parties
+        $maxpartystandard = $limits->getMaxparty();
+        if ($limits->getMaxpartyfirst()) {
+            $maxpartyfirst = $limits->getMaxpartyfirst();
+        } else {
+            $maxpartyfirst = $maxpartystandard;
+        }
+
         // Get the passenger count
         $passengercount = $purchase->getAdults() + $purchase->getChildren();
 
@@ -370,6 +406,14 @@ class BookingController extends Controller
         $numbers = $booking->countStuff($service->getId(), $purchase);
         $availablefirst = $numbers->getRemainingfirst() >= $passengercount;
         $availablestandard = $numbers->getRemainingstandard() >= $passengercount;
+
+        // still might not be available if passengercount exceeds ruling maxparty
+        if ($passengercount > $maxpartyfirst) {
+            $availablefirst = false;
+        }
+        if ($passengercount > $maxpartystandard) {
+            $availablestandard = false;
+        }
 
         // create form
         $classtype = new ClassType();
