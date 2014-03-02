@@ -1,0 +1,43 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h2>Destinations</h2>
+    <h4>{{ service.name }}</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>CRS</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.crs }}</td>
+                    <td>{{ entity.description | raw }}</td>
+                    <td>
+                        <a class="btn btn-warning" href="{{ path('admin_destination_edit', { 'id': entity.id }) }}">Edit</a>
+                        {% if entity.used == 0 %}
+                            <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">Delete</a>
+                        {% else %}
+                            <a class="btn btn-danger disabled">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('admin_destination_new', { 'serviceid': service.id }) }}">
+                Add a new destination
+            </a>
+        </div>
+{% endblock content %}

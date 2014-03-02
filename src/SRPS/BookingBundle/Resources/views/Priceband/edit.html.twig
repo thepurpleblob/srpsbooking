@@ -1,0 +1,54 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% form_theme form 'SRPSBookingBundle:Admin:fields.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+
+    <h2>Edit pricebands</h2>
+    <h4>{{ service.name }}</h4>
+
+    <form id="priceband-edit-form" class="form-horizontal" action="{{ path('admin_priceband_update', {'pricebandgroupid': pricebands.id}) }}" 
+        novalidate="novalidate" method="post" {{ form_enctype(form)}}>
+        
+        <div>
+            {{ form_row(form.name) }}
+        </div>        
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Destination</th>
+                    <th>First</th>
+                    <th>Standard</th>
+                    <th>Child</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for priceband in form.pricebands %}
+                <tr>
+                    <td>{{ form_widget(priceband.destination) }}</td>
+                    <td>{{ form_widget(priceband.first) }}</td>
+                    <td>{{ form_widget(priceband.standard) }}</td>
+                    <td>{{ form_widget(priceband.child) }}</td>
+                </tr>        
+            {% endfor %}        
+            </tbody>
+        </table>
+        
+
+        {{ form_rest(form) }}     
+    </form>
+    
+    <button class ="btn btn-primary" onclick="$('#priceband-edit-form').submit();">
+        Update priceband
+    </button>
+    <a class="btn btn-warning" href="{{ path('admin_priceband', { 'serviceid': service.id }) }}">
+        Cancel
+    </a>
+
+{% endblock content %}
+ 

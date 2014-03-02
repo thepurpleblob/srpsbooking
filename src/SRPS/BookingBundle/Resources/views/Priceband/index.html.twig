@@ -1,0 +1,78 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h2>Price bands</h2>
+    <h4>{{ service.name }}</h4>
+
+    {% if destinations is empty %}
+        <div class="alert alert-block alert-error">
+            There are no destinations. You need to create at least one destination first.
+        </div>
+    {% else %}
+
+        {% if bands is empty %}
+            <div class="alert alert-block alert-warning">
+                No price bands have been defined.
+            </div>
+        {% endif %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for band in bands %}
+                    <tr>
+                        <td><b>{{ band.name }}</b></td>
+                        <td>
+                            <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': band.id }) }}">Edit</a>
+                            {% if band.used == 0 %}
+                                <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">Delete</a>
+                            {% else %}
+                                <a class="btn btn-danger disabled">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-condensed table-priceband">
+                                <thead>
+                                    <tr>
+                                        <th>Destination</th>
+                                        <th>First</th>
+                                        <th>Standard</th>
+                                        <th>Child</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for priceband in band.bandtable %}
+                                    <tr>
+                                        <td>{{ priceband.destination }}</td>
+                                        <td>&pound;{{ priceband.first }}</td>
+                                        <td>&pound;{{ priceband.standard }}</td>
+                                        <td>&pound;{{ priceband.child }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('admin_priceband_new', { 'serviceid': service.id }) }}">
+                Add a new price band
+            </a>
+        </div>
+    {% endif %}
+{% endblock content %}

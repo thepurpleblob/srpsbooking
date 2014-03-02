@@ -1,0 +1,29 @@
+security:
+    encoders:
+        SRPS\BookingBundle\Entity\User:
+            algorithm: md5
+            iterations: 1
+            encode_as_base64: false
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_ORGANISER
+
+    providers:
+        main:
+            entity: { class: SRPS\BookingBundle\Entity\User, property: username }
+
+    firewalls:
+
+        secured_area:
+            pattern:    ^/
+            form_login:
+                login_path: login
+                check_path: login_check
+            logout:
+                path:   _demo_logout
+                target: _demo
+            anonymous: ~
+
+    access_control:
+        - { path: ^/organise, roles: ROLE_ORGANISER }
+        - { path: ^/admin, roles: ROLE_ADMIN }

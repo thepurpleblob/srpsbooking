@@ -1,0 +1,3 @@
+srps_booking:
+    resource: "@SRPSBookingBundle/Resources/config/routing.yml"
+    prefix:   /

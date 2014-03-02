@@ -1,0 +1,55 @@
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
+
+{% form_theme form 'SRPSBookingBundle:Admin:fields.html.twig' %}
+
+{% block sidebar %}
+    {% include 'SRPSBookingBundle:Admin:sidebar.html.twig' %}
+{% endblock sidebar %}
+
+{% block content %}
+
+    <h2>New joining station</h2>
+    <h4>{{ service.name }}</h4>
+
+    <form id="joining-new-form" class="form-horizontal" action="{{ path('admin_joining_create', {'serviceid': service.id}) }}" novalidate="novalidate" method="post" {{ form_enctype(form) }}>
+      {{ form_row(form.crs) }}
+      {{ form_row(form.station) }}
+      {{ form_row(form.pricebandgroupid) }}
+
+      <p class="label label-info">Tick the meals available from this joining station</p>
+
+      {{ form_rest(form) }}
+    </form>
+
+    <button class ="btn btn-primary" onclick="$('#joining-new-form').submit();">
+        Create joining station
+    </button>
+    <a class="btn btn-warning" href="{{ path('admin_joining', { 'serviceid': service.id }) }}">
+        Cancel
+    </a>
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $("#srps_bookingbundle_joiningtype_crs").change(
+            function() {
+                crs = $(this).val();
+                name = $("#srps_bookingbundle_joiningtype_statio").val();
+                //if (!name) {
+                if (true) {
+                    $.ajax({
+                        url: "{{ path('admin_destination_ajax') }}",
+                        data: { 'crstyped': crs },
+                        type: 'post',
+                        success: function(output) {
+                                $("#srps_bookingbundle_joiningtype_station").val(output);
+                            }
+                    });
+                }
+            }
+        );
+    </script>
+{% endblock javascripts %}
+
