@@ -3,7 +3,8 @@
 {% block sidebar %}
 
     {% if app.user %}
-        <p><i>Welcome {{ app.user.username }} (<a href="{{ path('logout') }}">logout</a>)</i></p>
+        <p><i>Welcome {{ app.user.username }}</i> 
+            <a href="{{ path('logout') }}" class="btn btn-primary btn-sm" role="button"><i class="fa fa-sign-out"></i>logout</a></p>
     {% endif %}
     
     <h4>Filter</h4>
