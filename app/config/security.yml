@@ -20,8 +20,8 @@ security:
                 login_path: login
                 check_path: login_check
             logout:
-                path:   _demo_logout
-                target: _demo
+                path:   /logout
+                target: /
             anonymous: ~
 
     access_control:

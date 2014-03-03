@@ -1,26 +1,25 @@
-{% extends '::base.html.twig' %}
+{% extends 'SRPSBookingBundle:Admin:admin.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="{{ asset('bundles/srpsbooking/jqueryui/css/ui-lightness/jquery-ui-1.10.0.custom.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ asset('bundles/srpsbooking/css/booking.css') }}" rel="stylesheet" media="screen">
-{% endblock stylesheets %}
-
-{% block body %}    
+{% block content %}   
+    
+    <h2>SRPS Railtours</h2>
+    
+   
     <div class="row-fluid">
         {% if error %}
             <div>{{ error.message }}</div>
         {% endif %}
 
         <form action="{{ path('login_check') }}" method="post" role="form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" />
-            <br />
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" />
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password" />
-            <br />
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="_password" />
+            </div>
 
             {#
                 If you want to control the URL the user
@@ -28,7 +27,7 @@
                 <input type="hidden" name="_target_path" value="/account" />
             #}
 
-            <button type="submit" class="btn">login</button>
+            <button type="submit" class="btn btn-default"><i class="fa fa-user fa-lg"></i>login</button>
         </form>
     </div>
-{% endblock body %}
+{% endblock content %}
