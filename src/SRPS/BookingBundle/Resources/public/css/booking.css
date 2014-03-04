@@ -2,17 +2,12 @@ body {
     padding: 10px;
 }
 
-ul#adminmenu {
-    list-style-type: none;
-    color: red;
+div#adminmenu {
+    padding-top: 25px;
 }
 
-#adminmenu li {
-    margin-bottom: 8px;
-}
-
-#adminmenu li a.btn {
-    width: 120px;
+#services_filter_form {
+    width: 80%;
 }
 
 table.table-priceband {
@@ -32,4 +27,13 @@ div#pagefooter {
 div#sb_info {
     text-align: center;
     margin: 15px 6px 15px 0;
+}
+
+.table > tbody > tr.svc_lower > td {
+    border-top: none;
+    padding-top: 0;
+}
+
+.table > tbody > tr.svc_upper > td {
+    padding-bottom: 5px;
 }

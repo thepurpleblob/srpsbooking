@@ -31,15 +31,20 @@ class ServiceController extends Controller
             'SELECT s FROM SRPSBookingBundle:Service s ORDER BY s.date'
         );
         $entities = $query->getResult();
-        
+
         // submitted year
-        $filteryear = $this->getRequest()->request->get('filter_year');        
-        
+        $filteryear = $this->getRequest()->request->get('filter_year');
+
+        // this year
+        if (!$filteryear) {
+            $filteryear = date('Y');
+        }
+
         // get possible years and filter results
         // shouldn't have to do this in PHP but Doctrine sucks badly!
         $services = array();
         $years = array();
-        $years['All'] = 'All';        
+        $years['All'] = 'All';
         foreach ($entities as $service) {
             $servicedate = $service->getDate();
             $year = $servicedate->format('Y');
@@ -50,7 +55,6 @@ class ServiceController extends Controller
                 $services[] = $service;
             }
         }
-
 
         // get booking status
         $enablebooking = $this->container->getParameter('enablebooking');
