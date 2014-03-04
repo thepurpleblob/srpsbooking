@@ -5,8 +5,9 @@
     <h3>Administration</h3>
 
     {% if app.user %}
-        <p><i>Welcome <b>{{ app.user.username }}</b></i> 
-            </p>
+        <p>
+            <i>Welcome <b>{{ app.user.username }}</b></i> 
+        </p>
     {% endif %}
     
     <form id="services_filter_form" class="form-horizontal" role="form" action="{{ path('admin_index') }}"

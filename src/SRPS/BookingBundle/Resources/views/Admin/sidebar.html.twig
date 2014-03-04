@@ -1,63 +1,73 @@
 {# Sidebar template #}
 
-<h4>Admin menu</h4>
+<h3>Administration</h3>
 
 {% if app.user %}
-    <p><i>Welcome {{ app.user.username }} (<a href="{{ path('logout') }}">logout</a>)</i></p>
+    <p>
+        <i>Welcome <b>{{ app.user.username }}</b></i> 
+    </p>
 {% endif %}
 
-<ul id="adminmenu">
-    <li>
-        <a class="btn btn-primary" href="{{ path('admin_service_show', { 'id': serviceid }) }}">
-            Show service
+<div id="adminmenu">
+    <p>
+        <a class="btn btn-success" href="{{ path('admin_service_show', { 'id': serviceid }) }}">
+            <i class="fa fa-cogs"></i> Show service
         </a>
-    </li>
+    </p>
     {% if app.user.role == 'ROLE_ADMIN' %}
-        <li>
-            <a class="btn btn-warning" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
-                Edit service
+        <p>
+            <a class="btn btn-success" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
+                <i class="fa fa-edit"></i> Edit service
             </a>
-        </li>
+        </p> 
     {% endif %}
     {% if serviceid %}
         {% if app.user.role == 'ROLE_ADMIN' %}
-            <li>
-                <a class="btn btn-warning" href="{{ path('admin_destination', { 'serviceid': serviceid }) }}">
+            <p>
+                <a class="btn btn-success" href="{{ path('admin_destination', { 'serviceid': serviceid }) }}">
+                    <i class="fa fa-map-marker"></i>&nbsp;
                     {% if destinations is defined %}
                         {{ destinations ? 'Edit destinations' : 'New destination' }}
                     {% else %}
                         Edit destinations
                     {% endif %}    
                 </a>
-            </li>
-            <li>
-                <a class="btn btn-warning" href="{{ path('admin_priceband', { 'serviceid': serviceid }) }}">
+            </p>
+            <p>
+                <a class="btn btn-success" href="{{ path('admin_priceband', { 'serviceid': serviceid }) }}">
+                    <i class="fa fa-gbp"></i>&nbsp;
                     {% if pricebandgroups is defined %}
                         {{ pricebandgroups ? 'Edit price bands' : 'New price band' }}
                     {% else %}
                         Edit price bands
                     {% endif %}
                 </a>
-            </li>
-            <li>
-                <a class="btn btn-warning" href="{{ path('admin_joining', { 'serviceid': serviceid }) }}">
+            </p>
+            <p>
+                <a class="btn btn-success" href="{{ path('admin_joining', { 'serviceid': serviceid }) }}">
+                    <i class="fa fa-building-o"></i>&nbsp; 
                     {% if joinings is defined %}
                         {{ joinings ? 'Edit joining stations' : 'New joining station' }}
                     {% else %}
                         Edit joining stations
                     {% endif %}
                 </a>
-            </li>
+            </p>    
         {% endif %}
-        <li>
-            <a class="btn btn-primary" href="{{ path('admin_limits_edit', { 'serviceid': serviceid }) }}">
-                Booking limits
+        <p>
+            <a class="btn btn-success" href="{{ path('admin_limits_edit', { 'serviceid': serviceid }) }}">
+                <i class="fa fa-arrows-v"></i> Booking limits
             </a>
-        </li>
+        </p>        
     {% endif %}
-    <li>
+    <p>
         <a class="btn btn-success" href="{{ path('admin_service') }}">
-            Return to list
+            <i class="fa fa-home"></i> Return to list
         </a>
-    </li>
-</ul>
+    </p>   
+    <p>
+        <a href="{{ path('logout') }}" class="btn btn-danger btn-sm" role="button">
+            <i class="fa fa-sign-out"></i> Logout
+        </a>
+    </p>        
+</div>

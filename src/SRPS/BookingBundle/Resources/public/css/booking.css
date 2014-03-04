@@ -37,3 +37,7 @@ div#sb_info {
 .table > tbody > tr.svc_upper > td {
     padding-bottom: 5px;
 }
+
+#adminmenu .btn {
+    width: 160px;
+}
