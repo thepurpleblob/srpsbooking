@@ -27,11 +27,13 @@
             {% for entity in entities %}
                     <tr>
                         <td>{{ entity.station }}</td>
-                        <td>{{ entity.crs }}
+                        <td><span class="badge">{{ entity.crs }}</span>
                         <td>{{ entity.pricebandname }}</td>
                         <td>
-                            <a class="btn btn-warning" href="{{ path('admin_joining_edit', { 'joiningid': entity.id }) }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ path('admin_joining_delete', { 'joiningid': entity.id }) }}">Delete</a>
+                            <a class="btn btn-primary" href="{{ path('admin_joining_edit', { 'joiningid': entity.id }) }}">
+                                <i class="fa fa-edit"></i> Edit</a>
+                            <a class="btn btn-danger" href="{{ path('admin_joining_delete', { 'joiningid': entity.id }) }}">
+                                <i class="fa fa-trash-o"></i> Delete</a>
                         </td>
                     </tr>
             {% endfor %}
@@ -40,7 +42,7 @@
 
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ path('admin_joining_new', { 'serviceid': service.id }) }}">
-                Add a new joining station
+                <i class="fa fa-plus"></i> Add a new joining station
             </a>
         </div>
     {% endif %}

@@ -33,11 +33,14 @@
                     <tr>
                         <td><b>{{ band.name }}</b></td>
                         <td>
-                            <a class="btn btn-warning" href="{{ path('admin_priceband_edit', { 'id': band.id }) }}">Edit</a>
+                            <a class="btn btn-primary" href="{{ path('admin_priceband_edit', { 'id': band.id }) }}">
+                                <i class="fa fa-edit"></i> Edit</a>
                             {% if band.used == 0 %}
-                                <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">Delete</a>
+                                <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">
+                                    <i class="fa fa-trash-o"></i> Delete</a>
                             {% else %}
-                                <a class="btn btn-danger disabled">Delete</a>
+                                <a class="btn btn-danger disabled">
+                                    <i class="fa fa-trash-o"></i> Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -71,7 +74,7 @@
 
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ path('admin_priceband_new', { 'serviceid': service.id }) }}">
-                Add a new price band
+                <i class="fa fa-plus"></i> Add a new price band
             </a>
         </div>
     {% endif %}
