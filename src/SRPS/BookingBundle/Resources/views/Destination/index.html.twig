@@ -20,14 +20,18 @@
         {% for entity in entities %}
                 <tr>
                     <td>{{ entity.name }}</td>
-                    <td>{{ entity.crs }}</td>
-                    <td>{{ entity.description | raw }}</td>
+                    <td><span class="badge">{{ entity.crs }}</span></td>
+                    <td><a href="http://www.nationalrail.co.uk/stations/{{ entity.crs }}/details.html" target="_station">
+                            {{ entity.description | raw }}</a></td>
                     <td>
-                        <a class="btn btn-warning" href="{{ path('admin_destination_edit', { 'id': entity.id }) }}">Edit</a>
+                        <a class="btn btn-primary" href="{{ path('admin_destination_edit', { 'id': entity.id }) }}">
+                            <i class="fa fa-edit"></i> Edit</a>
                         {% if entity.used == 0 %}
-                            <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">Delete</a>
+                            <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">
+                                <i class="fa fa-trash-o"></i> Delete</a>
                         {% else %}
-                            <a class="btn btn-danger disabled">Delete</a>
+                            <a class="btn btn-danger disabled">
+                                <i class="fa fa-trash-o"></i> Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -37,7 +41,7 @@
 
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ path('admin_destination_new', { 'serviceid': service.id }) }}">
-                Add a new destination
+                <i class="fa fa-plus"></i> Add a new destination
             </a>
         </div>
 {% endblock content %}

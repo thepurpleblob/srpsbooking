@@ -22,10 +22,10 @@
         {{ form_row(edit_form.crs) }}
         {{ form_row(edit_form.name) }}
         {% spaceless %}
-            <div class="control-group">
-                {{ form_label(edit_form.description, null, {'label_attr': {'class': 'control-label'}}) }}
-                <div class="controls">
-                    {{ form_widget(edit_form.description, {'attr': {'cols': '40', 'rows': '5'}}) }}
+            <div class="form-group">
+                {{ form_label(edit_form.description, null, {'label_attr': {'class': 'control-label col-sm-3'}}) }}
+                <div class="col-sm-9">
+                    {{ form_widget(edit_form.description, {'attr': {'cols': '80', 'rows': '5'}, 'class': 'form-control'}) }}
                     {{ form_errors(edit_form.description) }}
                 </div>
             </div>
