@@ -18,56 +18,9 @@ class LimitsController extends Controller
 {
 
     /**
-     * Displays a form to edit the Limits entity.
-     */
-    public function editAction($serviceid)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $booking = $this->get('srps_booking');
-
-        // Always a chance the entity doesn't exist yet
-        $limits = $em->getRepository('SRPSBookingBundle:Limits')
-            ->findOneByServiceid($serviceid);
-        if (!$limits) {
-            $limits = new Limits();
-            $limits->setServiceid($serviceid);
-            $em->persist($limits);
-            $em->flush();
-        }
-
-        // Get destinations (for destination limits)
-        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
-            ->findByServiceid($serviceid);
-
-        // Create array of destinations limits
-        $destinationlimits = array();
-        foreach ($destinations as $destination) {
-            $destinationlimits[$destination->getCrs()] = $destination->getBookinglimit();
-        }
-        $limits->setDestinationlimits($destinationlimits);
-
-        // Get the current counts of everything
-        $count = $booking->countStuff($serviceid);
-
-        // Service
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-
-        $editForm = $this->createForm(new LimitsType($service), $limits);
-
-        return $this->render('SRPSBookingBundle:Limits:edit.html.twig', array(
-            'entity'      => $limits,
-            'count' => $count,
-            'edit_form'   => $editForm->createView(),
-            'service' => $service,
-            'serviceid' => $serviceid,
-        ));
-    }
-
-    /**
      * Edits the existing Limits entity.
      */
-    public function updateAction(Request $request, $serviceid)
+    public function editAction($serviceid, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -95,10 +48,10 @@ class LimitsController extends Controller
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
-        $editForm = $this->createForm(new LimitsType($service), $limits);
-        $editForm->bind($request);
+        $form = $this->createForm(new LimitsType($service), $limits);
+        $form->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($form->isValid()) {
             $logger->info("$username: updating limits for " . $service->getName());
             $em->persist($limits);
             $em->flush();
@@ -107,7 +60,7 @@ class LimitsController extends Controller
             $destinationlimits = $limits->getdestinationlimits();
             foreach ($destinationlimits as $crs=>$destinationlimit) {
                 $destination = $em->getRepository('SRPSBookingBundle:Destination')
-                    ->findOneByCrs($crs);
+                    ->findOneBy(array('crs'=>$crs, 'serviceid'=>$serviceid));
                 $destination->setBookinglimit($destinationlimit);
                 $em->persist($destination);
                 $em->flush();
@@ -119,7 +72,7 @@ class LimitsController extends Controller
         return $this->render('SRPSBookingBundle:Limits:edit.html.twig', array(
             'entity' => $limits,
             'count' => $count,
-            'edit_form'   => $editForm->createView(),
+            'edit_form'   => $form->createView(),
             'service' => $service,
             'serviceid' => $serviceid,
         ));
