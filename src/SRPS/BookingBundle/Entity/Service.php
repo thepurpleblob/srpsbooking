@@ -136,6 +136,7 @@ class Service {
      * constructor - set defaults
      */
     public function __construct() {
+        $this->id = null;
         $this->code = '';
         $this->name = '';
         $this->description = '';

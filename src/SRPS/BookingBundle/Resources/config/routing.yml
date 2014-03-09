@@ -36,17 +36,9 @@ admin_service_show:
     pattern:  /organise/service/{id}/show
     defaults: { _controller: SRPSBookingBundle:Service:show }
 
-admin_service_create:
-    pattern:  /admin/service/create
-    defaults: { _controller: SRPSBookingBundle:Service:create }
-
 admin_service_edit:
     pattern:  /admin/service/{id}/edit
     defaults: { _controller: SRPSBookingBundle:Service:edit }
-
-admin_service_update:
-    pattern:  /admin/service/{id}/update
-    defaults: { _controller: SRPSBookingBundle:Service:update }
 
 admin_service_delete:
     pattern:  /admin/service/{id}/delete

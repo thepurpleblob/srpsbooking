@@ -4,6 +4,7 @@ namespace SRPS\BookingBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use SRPS\BookingBundle\Entity\User;
 use SRPS\BookingBundle\Form\UserType;
 
@@ -53,7 +54,7 @@ class UserController extends Controller
         ));
     }
     
-    public function editAction($username) {
+    public function editAction($username, Request $request) {
         
         $em = $this->getDoctrine()->getManager();
         
@@ -69,16 +70,14 @@ class UserController extends Controller
         $form = $this->createForm($usertype, $user);
         
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                $em->persist($user);
-                $em->flush();
+            $em->persist($user);
+            $em->flush();
 
-                return $this->redirect($this->generateUrl('admin_user_index'));
-            }
-        }        
+            return $this->redirect($this->generateUrl('admin_user_index'));
+        }
         
         // display form
         return $this->render('SRPSBookingBundle:User:edit.html.twig', array(
@@ -87,7 +86,7 @@ class UserController extends Controller
         ));        
     }
 
-    public function newAction() {
+    public function newAction(Request $request) {
         
         $em = $this->getDoctrine()->getManager();
         
@@ -99,8 +98,7 @@ class UserController extends Controller
         $form = $this->createForm($usertype, $user);
         
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
+        $form->handleRequest($request);
             if ($form->isValid()) {
 
                 $em->persist($user);
@@ -108,7 +106,6 @@ class UserController extends Controller
 
                 return $this->redirect($this->generateUrl('admin_user_index'));
             }
-        }        
         
         // display form
         return $this->render('SRPSBookingBundle:User:new.html.twig', array(

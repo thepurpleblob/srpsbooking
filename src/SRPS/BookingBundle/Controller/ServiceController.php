@@ -140,92 +140,56 @@ class ServiceController extends Controller
     }
 
     /**
-     * Displays a form to create a new Service entity.
-     */
-    public function newAction()
-    {
-        $entity = new Service();
-
-        $form   = $this->createForm(new ServiceType(), $entity);
-
-        return $this->render('SRPSBookingBundle:Service:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
      * Creates a new Service entity.
      */
-    public function createAction(Request $request)
+    public function newAction(Request $request)
     {
-        $entity  = new Service();
-        $form = $this->createForm(new ServiceType(), $entity);
-        $form->bind($request);
+        $service  = new Service();
+        $form = $this->createForm(new ServiceType(), $service);
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($service);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_service_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_service_show', array('id' => $service->getId())));
         }
-
-        return $this->render('SRPSBookingBundle:Service:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing Service entity.
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('SRPSBookingBundle:Service')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Service entity.');
-        }
-
-        $editForm = $this->createForm(new ServiceType(), $entity);
 
         return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'serviceid' => $id,
+            'service' => $service,
+            'edit_form' => $form->createView(),
+            'serviceid' => 0,
         ));
     }
 
     /**
      * Edits an existing Service entity.
      */
-    public function updateAction(Request $request, $id)
+    public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SRPSBookingBundle:Service')->find($id);
+        $service = $em->getRepository('SRPSBookingBundle:Service')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Service entity.');
+        if (!$service) {
+            throw $this->createNotFoundException('Unable to find Service.');
         }
 
-        $editForm = $this->createForm(new ServiceType(), $entity);
-        $editForm->bind($request);
+        $form = $this->createForm(new ServiceType(), $service);
+        $form->handleRequest($request);
 
-        if ($editForm->isValid()) {
-            $em->persist($entity);
+        if ($form->isValid()) {
+            $em->persist($service);
             $em->flush();
 
             return $this->redirect($this->generateUrl('admin_service_show', array('id' => $id)));
         }
 
         return $this->render('SRPSBookingBundle:Service:edit.html.twig', array(
-            'entity'      => $entity,
+            'service'      => $service,
             //'destinations' => $destinations,
-            'edit_form'   => $editForm->createView(),
+            'edit_form'   => $form->createView(),
             'serviceid' => $id,
         ));
     }

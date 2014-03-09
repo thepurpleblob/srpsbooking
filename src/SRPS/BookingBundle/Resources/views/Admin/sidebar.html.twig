@@ -9,19 +9,19 @@
 {% endif %}
 
 <div id="adminmenu">
-    <p>
-        <a class="btn btn-success" href="{{ path('admin_service_show', { 'id': serviceid }) }}">
-            <i class="fa fa-cogs"></i> Show service
-        </a>
-    </p>
-    {% if app.user.role == 'ROLE_ADMIN' %}
+    {% if serviceid  %}
         <p>
-            <a class="btn btn-success" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
-                <i class="fa fa-edit"></i> Edit service
+            <a class="btn btn-success" href="{{ path('admin_service_show', { 'id': serviceid }) }}">
+                <i class="fa fa-cogs"></i> Show service
             </a>
-        </p> 
-    {% endif %}
-    {% if serviceid %}
+        </p>
+        {% if app.user.role == 'ROLE_ADMIN' %}
+            <p>
+                <a class="btn btn-success" href="{{ path('admin_service_edit', { 'id': serviceid }) }}">
+                    <i class="fa fa-edit"></i> Edit service
+                </a>
+            </p> 
+        {% endif %}
         {% if app.user.role == 'ROLE_ADMIN' %}
             <p>
                 <a class="btn btn-success" href="{{ path('admin_destination', { 'serviceid': serviceid }) }}">

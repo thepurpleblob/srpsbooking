@@ -27,11 +27,14 @@
                     <td>{{ user.role }}</td>                      
                     <td>{{ user.active ? 'Yes' : 'No' }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('admin_user_edit', { 'username': user.username }) }}">Edit</a>
+                        <a class="btn btn-primary" href="{{ path('admin_user_edit', { 'username': user.username }) }}">
+                            <i class="fa fa-edit"></i> Edit</a>
                         {% if user.username == 'admin' %}
-                            <a class="btn btn-danger disabled">Delete</a>
+                            <a class="btn btn-danger disabled">
+                                <i class="fa fa-trash-o"></i> Delete</a>
                         {% else %}
-                            <a class="btn btn-danger" href="{{ path('admin_user_delete', { 'username': user.username }) }}">Delete</a>
+                            <a class="btn btn-danger" href="{{ path('admin_user_delete', { 'username': user.username }) }}">
+                                <i class="fa fa-trash-o"></i> Delete</a>
                         {% endif %}
                     </td>
                 </tr>
