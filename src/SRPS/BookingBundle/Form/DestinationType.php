@@ -11,6 +11,7 @@ class DestinationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('serviceid', 'hidden')
             ->add('name')
             ->add('crs', 'text', array('label'=>'CRS'))
             ->add('description')

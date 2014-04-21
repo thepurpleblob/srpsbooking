@@ -54,6 +54,7 @@ class Destination {
      * constructor - set defaults
      */
     public function __construct() {
+        $this->id = 0;
         $this->name = '';
         $this->crs = '';
         $this->description = '';
@@ -68,6 +69,13 @@ class Destination {
         $metadata->addPropertyConstraint('name', new NotBlank());
         $metadata->addPropertyConstraint('crs', new NotBlank());
         $metadata->addPropertyConstraint('description', new NotBlank());
+    }
+    
+    /**
+     * Set id
+     */
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**

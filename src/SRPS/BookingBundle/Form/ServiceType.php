@@ -24,8 +24,8 @@ class ServiceType extends AbstractType
             ))
             ->add('date', 'date', array('widget'=>'single_text', 'format'=>'dd/MM/yyyy'))
             ->add('singlesupplement', 'money', array(
-                'label' => 'First window/single supplement',
-                'currency' => 'GBP',
+                'label' => 'First window/single supplement (£)',
+                'currency' => false,
             ))
             ->add('commentbox', 'choice', array(
                 'label' => 'Enable comment field',

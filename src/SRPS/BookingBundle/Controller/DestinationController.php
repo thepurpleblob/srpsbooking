@@ -52,17 +52,20 @@ class DestinationController extends Controller
      */
     public function newAction($serviceid)
     {
-        $entity = new Destination();
-        $entity->setServiceid($serviceid);
+        $destination = new Destination();
+        $destination->setServiceid($serviceid);
+        
+        // Tell edit form this is a new entry
+        $destination->setId(0);
 
         $em = $this->getDoctrine()->getManager();
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
-        $form   = $this->createForm(new DestinationType(), $entity);
+        $form   = $this->createForm(new DestinationType(), $destination);
 
-        return $this->render('SRPSBookingBundle:Destination:new.html.twig', array(
-            'entity' => $entity,
+        return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
+            'destination' => $destination,
             'service' => $service,
             'serviceid' => $serviceid,
             'form'   => $form->createView(),
@@ -156,56 +159,31 @@ class DestinationController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Destination entity.
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('SRPSBookingBundle:Destination')->find($id);
-
-        // Service
-        $serviceid = $entity->getServiceid();
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Destination entity.');
-        }
-
-        $editForm = $this->createForm(new DestinationType(), $entity);
-
-        return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'service' => $service,
-            'serviceid' => $serviceid,
-        ));
-    }
-
-    /**
      * Edits an existing Destination entity.
      */
-    public function updateAction(Request $request, $id)
+    public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('SRPSBookingBundle:Destination')->find($id);
-
+        if ($id) {
+            $destination = $em->getRepository('SRPSBookingBundle:Destination')->find($id);
+            if (!$destination) {
+                throw $this->createNotFoundException('Unable to find Destination.');
+            }
+        } else {
+            $destination = new Destination();
+        }
+        
         // Service
-        $serviceid = $entity->getServiceid();
+        $serviceid = $destination->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Destination entity.');
-        }
+        $form = $this->createForm(new DestinationType(), $destination);
+        $form->handleRequest($request);
 
-        $editForm = $this->createForm(new DestinationType(), $entity);
-        $editForm->bind($request);
-
-
-        if ($editForm->isValid()) {
-            $entity->setCrs(strtoupper($entity->getCrs()));
-            $em->persist($entity);
+        if ($form->isValid()) {
+            $destination->setCrs(strtoupper($destination->getCrs()));
+            $em->persist($destination);
             $em->flush();
 
             // Check the pricebands are synced to destinations
@@ -215,8 +193,8 @@ class DestinationController extends Controller
         }
 
         return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'destination' => $destination,
+            'form' => $form->createView(),
             'service' => $service,
             'serviceid' => $serviceid,
         ));
