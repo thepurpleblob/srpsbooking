@@ -42,7 +42,6 @@ class PricebandController extends Controller
             ->findByServiceid($serviceid);
         
         // Get the band info to go with bands
-        $booking = $this->get('srps_booking');
         foreach ($pricebandgroup as $band) {
             $pricebandgroupid = $band->getId();
             $bandtable = $booking->createPricebandTable($pricebandgroupid);
@@ -86,7 +85,7 @@ class PricebandController extends Controller
      
         $form   = $this->createForm(new PricebandgroupType(), $pricebandgroup);
 
-        return $this->render('SRPSBookingBundle:Priceband:new.html.twig', array(
+        return $this->render('SRPSBookingBundle:Priceband:edit.html.twig', array(
             'pricebands' => $pricebandgroup,
             'service' => $service,
             'destinations' => $destinations,
@@ -97,9 +96,11 @@ class PricebandController extends Controller
 
     /**
      * Creates a new Destination entity.
+     * TODO: Delete
      */
     public function createAction(Request $request, $serviceid)
     {
+    echo "NO LONGER USED"; die;    
         // Get service entity
         $em = $this->getDoctrine()->getManager();        
         $service = $em->getRepository('SRPSBookingBundle:Service')
@@ -147,64 +148,21 @@ class PricebandController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Priceband entity.
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')->find($id); 
-        
-        // remember _constructor isn't called
-        $pricebandgroup->setPricebands(new ArrayCollection());
-
-        // Service
-        $serviceid = $pricebandgroup->getServiceid();
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);  
-        
-        // Get destinations for this service
-        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
-            ->findByServiceid($serviceid);
-        
-        // get priceband for destination(s)
-        foreach ($destinations as $destination) {
-            $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
-                ->findOneBy(array('pricebandgroupid'=>$id, 'destinationid'=>$destination->getId()));
-            
-            // It's possible destination has been added
-            if (!$priceband) {
-                $priceband = new Priceband();
-                $priceband->setPricebandgroupid($id);
-                $priceband->setServiceid($serviceid);
-                $priceband->setDestinationid($destination->getId());               
-            }
-            $priceband->setDestination($destination->getName());
-            $pricebandgroup->getPricebands()->add($priceband);
-        }
-
-        $editForm = $this->createForm(new PricebandgroupType(), $pricebandgroup);
-
-        return $this->render('SRPSBookingBundle:Priceband:edit.html.twig', array(
-            'pricebands' => $pricebandgroup,
-            'service' => $service,
-            'destinations' => $destinations,
-            'serviceid' => $serviceid,
-            'form'   => $editForm->createView(),
-        ));        
-    }
-
-    /**
      * Edits an existing Destination entity.
      */
-    public function updateAction(Request $request, $pricebandgroupid)
+    public function editAction($serviceid, $pricebandgroupid, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();    
-        $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
-            ->find($pricebandgroupid);
+        $em = $this->getDoctrine()->getManager();  
+        if ($pricebandgroupid) {
+            $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
+                ->find($pricebandgroupid);
+        } else {
+            $pricebandgroup = new PricebandType;
+        }    
+        $pricebandgroup->setServiceid($serviceid);
         $pricebandgroup->setPricebands(new ArrayCollection());
         
         // Get the service 
-        $serviceid = $pricebandgroup->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid); 
         

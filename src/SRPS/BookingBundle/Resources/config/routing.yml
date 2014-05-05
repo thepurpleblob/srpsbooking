@@ -68,17 +68,9 @@ admin_destination_new:
     pattern:  /admin/destination/{serviceid}/new
     defaults: { _controller: SRPSBookingBundle:Destination:new }
 
-admin_destination_create:
-    pattern:  /admin/destination/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Destination:create }
-
 admin_destination_edit:
     pattern:  /admin/destination/{serviceid}/{id}/edit
     defaults: { _controller: SRPSBookingBundle:Destination:edit }
-
-admin_destination_update:
-    pattern:  /admin/destination/{serviceid}/{id}/update
-    defaults: { _controller: SRPSBookingBundle:Destination:update }
 
 admin_destination_delete:
     pattern:  /admin/destination/{id}/delete
@@ -92,17 +84,10 @@ admin_priceband_new:
     pattern:  /admin/priceband/{serviceid}/new
     defaults: { _controller: SRPSBookingBundle:Priceband:new }
 
+# TODO: Problem with {pricebandgroupid} vs {id}. Needs fixed
 admin_priceband_edit:
-    pattern:  /admin/priceband/{id}/edit
+    pattern:  /admin/priceband/{serviceid}/{pricebandgroupid}/edit
     defaults: { _controller: SRPSBookingBundle:Priceband:edit }
-
-admin_priceband_create:
-    pattern:  /admin/priceband/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Priceband:create }
-
-admin_priceband_update:
-    pattern:  /admin/priceband/{pricebandgroupid}/update
-    defaults: { _controller: SRPSBookingBundle:Priceband:update }
 
 admin_priceband_delete:
     pattern:  /admin/priceband/{pricebandgroupid}/delete
