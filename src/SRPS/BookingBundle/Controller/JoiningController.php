@@ -31,17 +31,17 @@ class JoiningController extends Controller
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
-        $entities = $em->getRepository('SRPSBookingBundle:Joining')
+        $joinings = $em->getRepository('SRPSBookingBundle:Joining')
             ->findByServiceid($serviceid);
 
         $pricebands = $em->getRepository('SRPSBookingBundle:Priceband')
             ->findByServiceid($serviceid);
 
         // add pricebandgroup names
-        foreach ($entities as $entity) {
+        foreach ($joinings as $joining) {
             $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
-                ->find($entity->getPricebandgroupid());
-            $entity->setPricebandname($pricebandgroup->getName());
+                ->find($joining->getPricebandgroupid());
+            $joining->setPricebandname($pricebandgroup->getName());
         }
 
         // We just want to know if the pricebands are set up
@@ -49,7 +49,7 @@ class JoiningController extends Controller
 
         return $this->render('SRPSBookingBundle:Joining:index.html.twig',
             array(
-                'entities' => $entities,
+                'joinings' => $joinings,
                 'service' => $service,
                 'serviceid' => $serviceid,
                 'setup' => $setup
@@ -61,8 +61,8 @@ class JoiningController extends Controller
      */
     public function newAction($serviceid)
     {
-        $entity = new Joining();
-        $entity->setServiceid($serviceid);
+        $joining = new Joining();
+        $joining->setServiceid($serviceid);
 
         $em = $this->getDoctrine()->getManager();
         $service = $em->getRepository('SRPSBookingBundle:Service')
@@ -72,119 +72,52 @@ class JoiningController extends Controller
             ->findByServiceid($serviceid);
 
         $joiningtype = new JoiningType($pricebandgroups, $service);
-        $form   = $this->createForm($joiningtype, $entity);
-
-        return $this->render('SRPSBookingBundle:Joining:new.html.twig', array(
-            'entity' => $entity,
-            'service' => $service,
-            'serviceid' => $serviceid,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
-     * Creates a new Destination entity.
-     */
-    public function createAction(Request $request, $serviceid)
-    {
-        $entity = new Joining();
-        $entity->setServiceid($serviceid);
-
-        $em = $this->getDoctrine()->getManager();
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-
-        $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
-            ->findByServiceid($serviceid);
-
-        $joiningtype = new JoiningType($pricebandgroups, $service);
-        $form = $this->createForm($joiningtype, $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $entity->setCrs(strtoupper($entity->getCrs()));
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('admin_joining', array('serviceid' => $serviceid)));
-        }
-
-        return $this->render('SRPSBookingBundle:Joining:new.html.twig', array(
-            'entity' => $entity,
-            'service' => $service,
-            'serviceid' => $serviceid,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing Destination entity.
-     */
-    public function editAction($joiningid)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('SRPSBookingBundle:Joining')
-            ->find($joiningid);
-
-        // Service
-        $serviceid = $entity->getServiceid();
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Destination entity.');
-        }
-
-        $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
-            ->findByServiceid($serviceid);
-
-        $joiningtype = new JoiningType($pricebandgroups, $service);
-        $editForm = $this->createForm($joiningtype, $entity);
+        $form   = $this->createForm($joiningtype, $joining);
 
         return $this->render('SRPSBookingBundle:Joining:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'joining' => $joining,
             'service' => $service,
             'serviceid' => $serviceid,
+            'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Edits an existing Destination entity.
+     * Edits an existing Joining entity.
      */
-    public function updateAction(Request $request, $joiningid)
+    public function editAction($serviceid, $joiningid, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('SRPSBookingBundle:Joining')
-            ->find($joiningid);
+        if ($joiningid) {
+            $joining = $em->getRepository('SRPSBookingBundle:Joining')
+                ->find($joiningid);
+        } else {
+            $joining = new Joining;
+        }
 
         // Service
-        $serviceid = $entity->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Destination entity.');
-        }
+        $joining->setServiceid($serviceid);
 
         $pricebandgroups = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
             ->findByServiceid($serviceid);
 
         $joiningtype = new JoiningType($pricebandgroups, $service);
-        $editForm = $this->createForm($joiningtype, $entity);
-        $editForm->bind($request);
+        $editForm = $this->createForm($joiningtype, $joining);
+        $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $entity->setCrs(strtoupper($entity->getCrs()));
-            $em->persist($entity);
+            $joining->setCrs(strtoupper($joining->getCrs()));
+            $em->persist($joining);
             $em->flush();
 
             return $this->redirect($this->generateUrl('admin_joining', array('serviceid' => $serviceid)));
         }
 
-        return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+        return $this->render('SRPSBookingBundle:Joining:edit.html.twig', array(
+            'joining' => $joining,
+            'form' => $editForm->createView(),
             'service' => $service,
             'serviceid' => $serviceid,
         ));

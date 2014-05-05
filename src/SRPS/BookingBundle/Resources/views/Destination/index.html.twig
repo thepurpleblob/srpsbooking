@@ -24,7 +24,7 @@
                     <td><a href="http://www.nationalrail.co.uk/stations/{{ entity.crs }}/details.html" target="_station">
                             {{ entity.description | raw }}</a></td>
                     <td>
-                        <a class="btn btn-primary" href="{{ path('admin_destination_edit', { 'id': entity.id }) }}">
+                        <a class="btn btn-primary" href="{{ path('admin_destination_edit', { 'serviceid': serviceid, 'id': entity.id }) }}">
                             <i class="fa fa-edit"></i> Edit</a>
                         {% if entity.used == 0 %}
                             <a class="btn btn-danger" href="{{ path('admin_destination_delete', { 'id': entity.id }) }}">

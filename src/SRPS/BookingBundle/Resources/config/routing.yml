@@ -73,11 +73,11 @@ admin_destination_create:
     defaults: { _controller: SRPSBookingBundle:Destination:create }
 
 admin_destination_edit:
-    pattern:  /admin/destination/{id}/edit
+    pattern:  /admin/destination/{serviceid}/{id}/edit
     defaults: { _controller: SRPSBookingBundle:Destination:edit }
 
 admin_destination_update:
-    pattern:  /admin/destination/{id}/update
+    pattern:  /admin/destination/{serviceid}/{id}/update
     defaults: { _controller: SRPSBookingBundle:Destination:update }
 
 admin_destination_delete:
@@ -117,16 +117,8 @@ admin_joining_new:
     defaults: { _controller: SRPSBookingBundle:Joining:new }
 
 admin_joining_edit:
-    pattern:  /admin/joining/{joiningid}/edit
+    pattern:  /admin/joining/{serviceid}/{joiningid}/edit
     defaults: { _controller: SRPSBookingBundle:Joining:edit }
-
-admin_joining_create:
-    pattern:  /admin/joining/{serviceid}/create
-    defaults: { _controller: SRPSBookingBundle:Joining:create }
-
-admin_joining_update:
-    pattern:  /admin/joining/{joiningid}/update
-    defaults: { _controller: SRPSBookingBundle:Joining:update }
 
 admin_joining_delete:
     pattern:  /admin/joining/{joiningid}/delete

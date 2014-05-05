@@ -24,15 +24,15 @@
                 </tr>
             </thead>
             <tbody>
-            {% for entity in entities %}
+            {% for joining in joinings %}
                     <tr>
-                        <td>{{ entity.station }}</td>
-                        <td><span class="badge">{{ entity.crs }}</span>
-                        <td>{{ entity.pricebandname }}</td>
+                        <td>{{ joining.station }}</td>
+                        <td><span class="badge">{{ joining.crs }}</span>
+                        <td>{{ joining.pricebandname }}</td>
                         <td>
-                            <a class="btn btn-primary" href="{{ path('admin_joining_edit', { 'joiningid': entity.id }) }}">
+                            <a class="btn btn-primary" href="{{ path('admin_joining_edit', { 'serviceid': serviceid, 'joiningid': joining.id }) }}">
                                 <i class="fa fa-edit"></i> Edit</a>
-                            <a class="btn btn-danger" href="{{ path('admin_joining_delete', { 'joiningid': entity.id }) }}">
+                            <a class="btn btn-danger" href="{{ path('admin_joining_delete', { 'joiningid': joining.id }) }}">
                                 <i class="fa fa-trash-o"></i> Delete</a>
                         </td>
                     </tr>

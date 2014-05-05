@@ -17,7 +17,7 @@
         Please make sure you include all possible combinations as destinations.
     </div>
 
-    <form id="destination-edit-form" class="form-horizontal" action="{{ path('admin_destination_edit', { 'id': destination.id }) }}"
+    <form id="destination-edit-form" class="form-horizontal" action="{{ path('admin_destination_edit', { 'serviceid': serviceid, 'id': destination.id }) }}"
           novalidate="novalidate" method="post" {{ form_enctype(form) }}>
         {{ form_row(form.crs) }}
         {{ form_row(form.name) }}

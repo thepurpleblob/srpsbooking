@@ -71,6 +71,7 @@ class Joining
     protected $pricebandname;
 
     public function __construct() {
+        $this->id = 0;
         $this->station = '';
         $this->crs = '';
         $this->meala = true;

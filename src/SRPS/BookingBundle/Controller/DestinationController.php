@@ -62,7 +62,7 @@ class DestinationController extends Controller
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
 
-        $form   = $this->createForm(new DestinationType(), $destination);
+        $form = $this->createForm(new DestinationType(), $destination);
 
         return $this->render('SRPSBookingBundle:Destination:edit.html.twig', array(
             'destination' => $destination,
@@ -125,43 +125,9 @@ class DestinationController extends Controller
     }
 
     /**
-     * Creates a new Destination entity.
-     */
-    public function createAction(Request $request, $serviceid)
-    {
-        $entity = new Destination();
-        $entity->setServiceid($serviceid);
-
-        $em = $this->getDoctrine()->getManager();
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid);
-
-        $form = $this->createForm(new DestinationType(), $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $entity->setCrs(strtoupper($entity->getCrs()));
-            $em->persist($entity);
-            $em->flush();
-
-            // Pad the pricebands with new destination
-            $this->checkPricebands($service);
-
-            return $this->redirect($this->generateUrl('admin_destination', array('serviceid' => $serviceid)));
-        }
-
-        return $this->render('SRPSBookingBundle:Destination:new.html.twig', array(
-            'entity' => $entity,
-            'service' => $service,
-            'serviceid' => $serviceid,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
      * Edits an existing Destination entity.
      */
-    public function editAction($id, Request $request)
+    public function editAction($serviceid, $id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         if ($id) {
@@ -174,9 +140,9 @@ class DestinationController extends Controller
         }
         
         // Service
-        $serviceid = $destination->getServiceid();
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid);
+        $destination->setServiceid($serviceid);
 
         $form = $this->createForm(new DestinationType(), $destination);
         $form->handleRequest($request);
