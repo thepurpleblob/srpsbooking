@@ -13,3 +13,13 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    enablebooking:	true
+
+    sagelogin:		srpsrailtours
+    sageencryptionpassword: Qpu7H4zy5L5Wbwpb
+    sageurl:		 https://live.sagepay.com/gateway/service/vspform-register.vsp
+    srpsemail:		roger.haynes@srps.org.uk:howardsmiller@gmail.com
+    srpsbackupemail:	rt-bkg-msgs@srps.org.uk
+
+    bookingprefix:	TT
