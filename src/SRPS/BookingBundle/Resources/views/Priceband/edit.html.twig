@@ -11,7 +11,7 @@
     <h2>Edit pricebands</h2>
     <h4>{{ service.name }}</h4>
 
-    <form id="priceband-edit-form" class="form-horizontal" action="{{ path('admin_priceband_update', {'serviceid': serviceid, 'pricebandgroupid': pricebands.id}) }}" 
+    <form id="priceband-edit-form" class="form-horizontal" action="{{ path('admin_priceband_edit', {'serviceid': serviceid, 'pricebandgroupid': pricebands.id}) }}" 
         novalidate="novalidate" method="post" {{ form_enctype(form)}}>
         
         <div>
@@ -44,7 +44,11 @@
     </form>
     
     <button class ="btn btn-primary" onclick="$('#priceband-edit-form').submit();">
-        Update priceband
+        {% if not pricebands.id  %}
+            Save new priceband
+        {% else %}
+            Update priceband
+        {% endif %}    
     </button>
     <a class="btn btn-warning" href="{{ path('admin_priceband', { 'serviceid': service.id }) }}">
         Cancel

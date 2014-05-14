@@ -44,6 +44,7 @@ class Pricebandgroup {
     protected $used;
     
     public function __construct() {
+        $this->id = 0;
         $this->pricebands = new ArrayCollection();
         $this->name = '';
     }

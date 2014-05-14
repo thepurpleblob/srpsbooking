@@ -95,60 +95,7 @@ class PricebandController extends Controller
     }
 
     /**
-     * Creates a new Destination entity.
-     * TODO: Delete
-     */
-    public function createAction(Request $request, $serviceid)
-    {
-    echo "NO LONGER USED"; die;    
-        // Get service entity
-        $em = $this->getDoctrine()->getManager();        
-        $service = $em->getRepository('SRPSBookingBundle:Service')
-            ->find($serviceid); 
-        
-        // Get destinations for this service
-        $destinations = $em->getRepository('SRPSBookingBundle:Destination')
-            ->findByServiceid($serviceid);
-        
-        // create empty priceband entities
-        $pricebandgroup = new Pricebandgroup();
-        $pricebandgroup->setServiceid($serviceid);   
-        foreach ($destinations as $destination) {
-            $priceband = new Priceband();
-            $priceband->setServiceid($serviceid);
-            $priceband->setDestinationid($destination->getId());
-            $priceband->setDestination($destination->getName());
-            $pricebandgroup->getPricebands()->add($priceband);
-        }        
-        
-        $form = $this->createForm(new PricebandgroupType(), $pricebandgroup);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em->persist($pricebandgroup);
-            $em->flush();
-            $pricebandgroupid = $pricebandgroup->getId();
-            $pricebands = $pricebandgroup->getPricebands();
-            foreach ($pricebands as $priceband) {
-                $priceband->setPricebandgroupid($pricebandgroupid);
-                $em->persist($priceband);
-            }
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('admin_priceband', array('serviceid' => $serviceid)));
-        }
-
-        return $this->render('SRPSBookingBundle:Priceband:new.html.twig', array(
-            'pricebands' => $pricebandgroup,
-            'service' => $service,
-            'destinations' => $destinations,
-            'serviceid' => $serviceid,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
-     * Edits an existing Destination entity.
+     * Edits an existing Priceband.
      */
     public function editAction($serviceid, $pricebandgroupid, Request $request)
     {
@@ -157,11 +104,11 @@ class PricebandController extends Controller
             $pricebandgroup = $em->getRepository('SRPSBookingBundle:Pricebandgroup')
                 ->find($pricebandgroupid);
         } else {
-            $pricebandgroup = new PricebandType;
+            $pricebandgroup = new Pricebandgroup;
         }    
         $pricebandgroup->setServiceid($serviceid);
         $pricebandgroup->setPricebands(new ArrayCollection());
-        
+
         // Get the service 
         $service = $em->getRepository('SRPSBookingBundle:Service')
             ->find($serviceid); 
@@ -170,16 +117,25 @@ class PricebandController extends Controller
         $destinations = $em->getRepository('SRPSBookingBundle:Destination')
             ->findByServiceid($serviceid);
         
-        // create empty priceband entities
+        // get/create priceband entities
+        // TODO: Won't work for new at the moment
         $pricebandgroup->setServiceid($serviceid);   
         foreach ($destinations as $destination) {
             $priceband = $em->getRepository('SRPSBookingBundle:Priceband')
                 ->findOneBy(array('pricebandgroupid'=>$pricebandgroupid, 'destinationid'=>$destination->getId()));
+            if (!$priceband) {
+                $priceband = new Priceband;
+                $priceband->setServiceid($serviceid);
+                $priceband->setDestinationid($destination->getId());
+                $priceband->setPricebandgroupid($pricebandgroupid);
+            }
+            $priceband->setDestination($destination->getName());
             $pricebandgroup->getPricebands()->add($priceband);
-        }        
+        }
+//echo "<pre>"; var_dump($pricebandgroup); die;
         
         $form = $this->createForm(new PricebandgroupType(), $pricebandgroup);
-        $form->bind($request);
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em->persist($pricebandgroup);

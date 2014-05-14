@@ -33,7 +33,7 @@
                     <tr>
                         <td><b>{{ band.name }}</b></td>
                         <td>
-                            <a class="btn btn-primary" href="{{ path('admin_priceband_edit', { 'serviceid': serviceid, 'id': band.id }) }}">
+                            <a class="btn btn-primary" href="{{ path('admin_priceband_edit', { 'serviceid': serviceid, 'pricebandgroupid': band.id }) }}">
                                 <i class="fa fa-edit"></i> Edit</a>
                             {% if band.used == 0 %}
                                 <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">
