@@ -3,6 +3,7 @@
 namespace SRPS\BookingBundle\Service;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use SRPS\BookingBundle\Entity\Purchase;
 use SRPS\BookingBundle\Entity\Count;
 use SRPS\BookingBundle\Entity\Limits;
@@ -127,9 +128,11 @@ class Booking
         $em = $this->em;
 
         // See if the purchase session attribute exists
-        $session = new Session();
+        // !! SHouldn't need this bridge thing, but something always starts
+        // the PHP session first. 
+        $session = new Session(new PhpBridgeSessionStorage());
 //        if (!$session->isStarted()) {
-        $session->start();
+            $session->start();
 //        }
         $session->migrate();
         if ($key = $session->get('key')) {

@@ -70,7 +70,7 @@ class BookingController extends Controller
         }
     }
 
-    public function numbersAction($code)
+    public function numbersAction($code, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -106,25 +106,23 @@ class BookingController extends Controller
         }
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // check numbers
-                $adults = $purchase->getAdults();
-                $children = $purchase->getChildren();
-                if (($adults + $children) > $maxparty) {
-                    $form->get('adults')->addError(new FormError('Total party size is more than '.$maxparty));
-                } else if (($adults<1) or ($adults>$maxparty) or ($children<0) or ($children>$maxparty)) {
-                    $form->get('adults')->addError(new FormError('Value supplied out of range.'));
-                } else {
-                    $em->persist($purchase);
-                    $em->flush();
+            // check numbers
+            $adults = $purchase->getAdults();
+            $children = $purchase->getChildren();
+            if (($adults + $children) > $maxparty) {
+                $form->get('adults')->addError(new FormError('Total party size is more than '.$maxparty));
+            } else if (($adults<1) or ($adults>$maxparty) or ($children<0) or ($children>$maxparty)) {
+                $form->get('adults')->addError(new FormError('Value supplied out of range.'));
+            } else {
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_joining'));
-                }
+                return $this->redirect($this->generateUrl('booking_joining'));
             }
-        }
+        }    
 
         // display form
         return $this->render('SRPSBookingBundle:Booking:numbers.html.twig', array(
@@ -137,7 +135,7 @@ class BookingController extends Controller
         ));
     }
 
-    public function joiningAction()
+    public function joiningAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -175,19 +173,17 @@ class BookingController extends Controller
         $form   = $this->createForm($joiningtype, $purchase);
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // check that we have a value of some sort
-                if (!$purchase->getJoining()) {
-                    $form->get('joining')->addError(new FormError('You must choose a joining station'));
-                } else {
-                    $em->persist($purchase);
-                    $em->flush();
+            // check that we have a value of some sort
+            if (!$purchase->getJoining()) {
+                $form->get('joining')->addError(new FormError('You must choose a joining station'));
+            } else {
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_destination'));
-                }
+                return $this->redirect($this->generateUrl('booking_destination'));
             }
         }
 
@@ -200,7 +196,7 @@ class BookingController extends Controller
         ));
     }
 
-    public function destinationAction()
+    public function destinationAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -273,19 +269,17 @@ class BookingController extends Controller
         $form   = $this->createForm($destinationtype, $purchase);
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // check that we have a value of some sort
-                if (!$purchase->getDestination()) {
-                    $form->get('destination')->addError(new FormError('You must make a choice'));
-                } else {
-                    $em->persist($purchase);
-                    $em->flush();
+            // check that we have a value of some sort
+            if (!$purchase->getDestination()) {
+                $form->get('destination')->addError(new FormError('You must make a choice'));
+            } else {
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_meals'));
-                }
+                return $this->redirect($this->generateUrl('booking_meals'));
             }
         }
 
@@ -299,7 +293,7 @@ class BookingController extends Controller
         ));
     }
 
-   public function mealsAction()
+   public function mealsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -338,19 +332,17 @@ class BookingController extends Controller
         $form   = $this->createForm($mealstype, $purchase);
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // check that we have a value of some sort
-                if (!$purchase->getJoining()) {
-                    $form->get('joining')->addError(new FormError('You must choose a joining station'));
-                } else {
-                    $em->persist($purchase);
-                    $em->flush();
+            // check that we have a value of some sort
+            if (!$purchase->getJoining()) {
+                $form->get('joining')->addError(new FormError('You must choose a joining station'));
+            } else {
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_class'));
-                }
+                return $this->redirect($this->generateUrl('booking_class'));
             }
         }
 
@@ -363,7 +355,7 @@ class BookingController extends Controller
         ));
     }
 
-   public function classAction()
+   public function classAction(Request $request);
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -420,21 +412,19 @@ class BookingController extends Controller
         $form   = $this->createForm($classtype, $purchase);
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // check that we have a valid response
-                $class = $purchase->getClass();
-                if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
-                    $em->persist($purchase);
-                    $em->flush();
+            // check that we have a valid response
+            $class = $purchase->getClass();
+            if (($class=='F' and $availablefirst) or ($class=='S' and $availablestandard)) {
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_additional'));
+                return $this->redirect($this->generateUrl('booking_additional'));
 
-                } else {
-                    $form->get('class')->addError(new FormError('You must make a selection'));
-                }
+            } else {
+                $form->get('class')->addError(new FormError('You must make a selection'));
             }
         }
 
@@ -451,7 +441,7 @@ class BookingController extends Controller
         ));
     }
 
-    public function additionalAction()
+    public function additionalAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -489,16 +479,14 @@ class BookingController extends Controller
         $form   = $this->createForm($classtype, $purchase);
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // 'save' the purchase
-                $em->persist($purchase);
-                $em->flush();
+            // 'save' the purchase
+            $em->persist($purchase);
+            $em->flush();
 
-                return $this->redirect($this->generateUrl('booking_personal'));
-            }
+            return $this->redirect($this->generateUrl('booking_personal'));
         }
 
         // display form
@@ -512,7 +500,7 @@ class BookingController extends Controller
         ));
     }
 
-    public function personalAction()
+    public function personalAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
@@ -533,54 +521,52 @@ class BookingController extends Controller
         $form   = $this->createForm($personaltype, $purchase);
 
         // submitted?
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-                // need to check fields the hard way
-                $error = false;
-                if (!$purchase->getSurname()) {
-                    $form->get('surname')->addError(new FormError('Surname is required'));
-                    $error = true;
-                }
-                if (!$purchase->getFirstname()) {
-                    $form->get('firstname')->addError(new FormError('First name is required'));
-                    $error = true;
-                }
-                if (!$purchase->getAddress1()) {
-                    $form->get('address1')->addError(new FormError('Address line 1 is required'));
-                    $error = true;
-                }
-                if (!$purchase->getCity()) {
-                    $form->get('city')->addError(new FormError('Post town/city is required'));
-                    $error = true;
-                }
-                if (!$purchase->getPostcode()) {
-                    $form->get('postcode')->addError(new FormError('Postcode is required'));
-                    $error = true;
-                }
-                if (!$purchase->getEmail()) {
-                    $form->get('email')->addError(new FormError('Email is required'));
-                    $error = true;
-                }
+            // need to check fields the hard way
+            $error = false;
+            if (!$purchase->getSurname()) {
+                $form->get('surname')->addError(new FormError('Surname is required'));
+                $error = true;
+            }
+            if (!$purchase->getFirstname()) {
+                $form->get('firstname')->addError(new FormError('First name is required'));
+                $error = true;
+            }
+            if (!$purchase->getAddress1()) {
+                $form->get('address1')->addError(new FormError('Address line 1 is required'));
+                $error = true;
+            }
+            if (!$purchase->getCity()) {
+                $form->get('city')->addError(new FormError('Post town/city is required'));
+                $error = true;
+            }
+            if (!$purchase->getPostcode()) {
+                $form->get('postcode')->addError(new FormError('Postcode is required'));
+                $error = true;
+            }
+            if (!$purchase->getEmail()) {
+                $form->get('email')->addError(new FormError('Email is required'));
+                $error = true;
+            }
 
-                // Now need to 'normalise' some of the fields
-                $purchase->setTitle(ucwords($purchase->getTitle()));
-                $purchase->setSurname(ucwords($purchase->getSurname()));
-                $purchase->setFirstname(ucwords($purchase->getFirstname()));
-                $purchase->setAddress1(ucwords($purchase->getAddress1()));
-                $purchase->setAddress2(ucwords($purchase->getAddress2()));
-                $purchase->setCity(ucwords($purchase->getCity()));
-                $purchase->setCounty(ucwords($purchase->getCounty()));
-                $purchase->setPostcode(strtoupper($purchase->getPostcode()));
-                $purchase->setEmail(strtolower($purchase->getEmail()));
+            // Now need to 'normalise' some of the fields
+            $purchase->setTitle(ucwords($purchase->getTitle()));
+            $purchase->setSurname(ucwords($purchase->getSurname()));
+            $purchase->setFirstname(ucwords($purchase->getFirstname()));
+            $purchase->setAddress1(ucwords($purchase->getAddress1()));
+            $purchase->setAddress2(ucwords($purchase->getAddress2()));
+            $purchase->setCity(ucwords($purchase->getCity()));
+            $purchase->setCounty(ucwords($purchase->getCounty()));
+            $purchase->setPostcode(strtoupper($purchase->getPostcode()));
+            $purchase->setEmail(strtolower($purchase->getEmail()));
 
-                if (!$error) {
-                    $em->persist($purchase);
-                    $em->flush();
+            if (!$error) {
+                $em->persist($purchase);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('booking_review'));
-                }
+                return $this->redirect($this->generateUrl('booking_review'));
             }
         }
 
