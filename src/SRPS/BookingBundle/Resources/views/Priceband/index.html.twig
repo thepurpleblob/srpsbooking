@@ -7,7 +7,7 @@
 {% block content %}
     <h2>Price bands</h2>
     <h4>{{ service.name }}</h4>
-
+    
     {% if destinations is empty %}
         <div class="alert alert-block alert-error">
             There are no destinations. You need to create at least one destination first.
@@ -39,7 +39,7 @@
                                 <a class="btn btn-danger" href="{{ path('admin_priceband_delete', { 'pricebandgroupid': band.id }) }}">
                                     <i class="fa fa-trash-o"></i> Delete</a>
                             {% else %}
-                                <a class="btn btn-danger disabled">
+                                <a class="btn btn-danger disabled" data-toggle="tooltip" title="stuff" >
                                     <i class="fa fa-trash-o"></i> Delete</a>
                             {% endif %}
                         </td>

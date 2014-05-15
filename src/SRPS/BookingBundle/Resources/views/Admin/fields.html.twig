@@ -18,9 +18,9 @@
 {% block form_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}
-    <ul>
+    <ul class="list-unstyled">
         {% for error in errors %}
-            <li><span class="label label-important">{{
+            <li><span class="label label-danger">{{
                 error.messagePluralization is null
                     ? error.messageTemplate|trans(error.messageParameters, 'validators')
                     : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
