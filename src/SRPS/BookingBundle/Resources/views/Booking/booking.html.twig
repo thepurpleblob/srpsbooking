@@ -6,28 +6,30 @@
     {{ parent() }}
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href="{{ asset('bundles/srpsbooking/jqueryui/css/ui-lightness/jquery-ui-1.10.0.custom.min.css') }}" rel="stylesheet" media="screen">
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.min.css" rel="stylesheet" media="screen">
     <link href="{{ asset('bundles/srpsbooking/css/booking.css') }}" rel="stylesheet" media="screen">
 {% endblock stylesheets %}
 
 {% block title %}SRPS Railtours{% endblock title %}
 
 {% block body %}
-    <div class="row-fluid">
-        <div class="span3">
-            {% block sidebar %}
-                <div id="sb_info" class="alert alert-block alert-info">
-                    <img src="{{ asset('bundles/srpsbooking/images/railtourh.png') }}" alt="Railtour Logo" />                    
-                    <h5>{{ service.name }}</h5>
-                    {{ service.description | raw }}    
-                </div>    
-            {% endblock sidebar %}            
-        </div>
-        <div class="span6">
-            {% block content %}{% endblock content %}
-        </div>
-        <div class="span3">
-            &nbsp;
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                {% block sidebar %}
+                    <div id="sb_info" class="alert alert-block alert-info">
+                        <img src="{{ asset('bundles/srpsbooking/images/railtourh.png') }}" alt="Railtour Logo" />                    
+                        <h5>{{ service.name }}</h5>
+                        {{ service.description | raw }}    
+                    </div>    
+                {% endblock sidebar %}            
+            </div>
+            <div class="col-md-6">
+                {% block content %}{% endblock content %}
+            </div>
+            <div class="col-md-3">
+                &nbsp;
+            </div>
         </div>
     </div>
 {% endblock body%}

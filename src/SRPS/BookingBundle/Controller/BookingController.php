@@ -355,7 +355,7 @@ class BookingController extends Controller
         ));
     }
 
-   public function classAction(Request $request);
+   public function classAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $booking = $this->get('srps_booking');
