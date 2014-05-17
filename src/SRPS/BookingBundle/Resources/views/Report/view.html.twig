@@ -88,7 +88,7 @@
                     <td>{{ purchase.meald }}</td>
                 </tr>
                 <tr>
-                    <th>First window/single requested</th>
+                    <th>First window/single requested?</th>
                     <td>{{ purchase.seatsupplement ? 'Yes' : 'No' }}</td>
                 </tr>    
                 <tr>
@@ -103,6 +103,14 @@
                     <th>Bank auth code</th>
                     <td>{{ purchase.bankauthcode }}</td>
                 </tr>
+                <tr>
+                    <th>eTicket selected?</th>
+                    <td>{{ purchase.eticket ? 'Yes' : 'No' }}</td>
+                </tr> 
+                                <tr>
+                    <th>eInfo selected?</th>
+                    <td>{{ purchase.eticket ? 'Yes' : 'No' }}</td>
+                </tr> 
         </tbody>
     </table>
 
