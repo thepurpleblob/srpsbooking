@@ -127,6 +127,12 @@ class Reports {
             // Action required
             $l[] = 'N';
             
+            // eTicket
+            $l[] = $p->isEticket() ? 'Y' : 'N';
+            
+            // eInfo
+            $l[] = $p->isEinfo() ? 'Y' : 'N';
+            
             // make tab separated line
             $line = implode("\t", $l);
             $lines[] = $line;

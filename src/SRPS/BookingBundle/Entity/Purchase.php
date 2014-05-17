@@ -221,7 +221,19 @@ class Purchase {
      * @ORM\Column(type="boolean")
      */
     protected $emailsent;     
-
+    
+    /**
+     * Customer has requested eTicket
+     * @ORM\Column(type="boolean")
+     */
+    protected $eticket; 
+        
+    /**
+     * Customer has requested information by email
+     * @ORM\Column(type="boolean")
+     */
+    protected $einfo; 
+    
     public function __construct() {
         $this->type = 'O';
         $this->code = '';
@@ -258,6 +270,8 @@ class Purchase {
         $this->bankauthcode = 0;
         $this->declinecode = 0;
         $this->emailsent = false;
+        $this->eticket = false;
+        $this->einfo = true;
     }
 
     /**
@@ -1082,5 +1096,21 @@ class Purchase {
     
     public function isEmailsent() {
         return $this->emailsent;
+    }
+        
+    public function setEticket($eticket) {
+        $this->eticket = $eticket;
+    }
+    
+    public function isEticket() {
+        return $this->eticket;
+    }
+        
+    public function setEinfo($einfo) {
+        $this->einfo = $einfo;
+    }
+    
+    public function isEinfo() {
+        return $this->einfo;
     }
 }

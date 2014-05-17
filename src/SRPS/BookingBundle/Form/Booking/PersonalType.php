@@ -64,6 +64,12 @@ class PersonalType extends AbstractType
                 'required' => true,
                 'label' => 'Email',
             ))
+            ->add('einfo', 'choice', array(
+                'choices' => array(0 => 'No', 1 => 'Yes'),
+                'empty_value' => false,
+                'required' => false,
+                'label' => 'We may contact you by email with information about future SRPS events and promotions',
+            ))
         ;
     }
 
