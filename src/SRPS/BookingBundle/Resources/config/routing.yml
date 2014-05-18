@@ -84,7 +84,6 @@ admin_priceband_new:
     pattern:  /admin/priceband/{serviceid}/new
     defaults: { _controller: SRPSBookingBundle:Priceband:new }
 
-# TODO: Problem with {pricebandgroupid} vs {id}. Needs fixed
 admin_priceband_edit:
     pattern:  /admin/priceband/{serviceid}/{pricebandgroupid}/edit
     defaults: { _controller: SRPSBookingBundle:Priceband:edit }

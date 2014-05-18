@@ -5,7 +5,7 @@
 
     <h3>{{ service.name }}</h3>
     
-    <div class="alert alert-error alert-block">
+    <div class="alert alert-danger">
         Any lines shaded like this did <b>NOT</b> complete payment and must not
         be allocated seats.
     </div>
@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         {% for purchase in purchases %}
-                <tr {{ purchase.status=='OK' ? '' : 'class="error"' }} >
+                <tr {{ purchase.status=='OK' ? '' : 'class="danger"' }} >
                     <td>{{ purchase.bookingref }}</td>
                     <td>{{ purchase.status }}</td>
                     <td>{{ purchase.date | date('d/m/Y') }}</td>
@@ -36,7 +36,8 @@
                     <td>{{ purchase.children }}</td>
                     <td>{{ purchase.payment | number_format(2) }}</td>
                     <td>
-                        <a class="btn btn-small btn-success" href="{{ path('admin_report_view', { 'purchaseid': purchase.id }) }}">View</a>
+                        <a class="btn btn-small btn-success" href="{{ path('admin_report_view', { 'purchaseid': purchase.id }) }}">
+                            <i class="fa fa-camera-retro"></i> View</a>
                     </td>
                 </tr>
         {% endfor %}
@@ -45,7 +46,7 @@
 
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ path('admin_index') }}">
-                Back to list
+                <i class="fa fa-home"></i> Back to list
             </a>
         </div>
 {% endblock content %}

@@ -127,7 +127,7 @@
     <button class ="btn btn-primary" onclick="$('#limits-edit-form').submit();">
         Set limits
     </button>
-    <a class="btn btn-warning" href="{{ path('admin_limits_edit', { 'serviceid': serviceid }) }}">
+    <a class="btn btn-warning" href="{{ path('admin_service_show', { 'id': serviceid }) }}">
         Cancel
     </a>
 {% endblock content %}
