@@ -130,7 +130,8 @@ class Booking
         // See if the purchase session attribute exists
         // !! SHouldn't need this bridge thing, but something always starts
         // the PHP session first. 
-        $session = new Session(new PhpBridgeSessionStorage());
+        //$session = new Session(new PhpBridgeSessionStorage());
+        $session = new Session();
 //        if (!$session->isStarted()) {
             $session->start();
 //        }
