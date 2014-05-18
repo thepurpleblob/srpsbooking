@@ -132,10 +132,7 @@ class Booking
         // the PHP session first. 
         //$session = new Session(new PhpBridgeSessionStorage());
         $session = new Session();
-//        if (!$session->isStarted()) {
-            $session->start();
-//        }
-        $session->migrate();
+        // $session->start();
         if ($key = $session->get('key')) {
 
             // then we should have the record id and they should match
