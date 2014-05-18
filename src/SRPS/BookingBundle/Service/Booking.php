@@ -96,14 +96,13 @@ class Booking
         $em = $this->em;
 
         // Get the session
-        $session = new Session();
-//        if (!$session->isStarted()) {
-//            $session->start();
-//        }
+        // $session = new Session();
 
         // remove the key and the purchaseid
-        $session->remove('key');
-        $session->remove('purchaseid');
+        // $session->remove('key');
+        // $session->remove('purchaseid');
+        unset($_SESSION['key']);
+        unset($_SESSION['purchaseid']);
 
         // get incomplete purchases older than 1 hour
         $oldtime = time() - 3600;
@@ -131,12 +130,17 @@ class Booking
         // !! SHouldn't need this bridge thing, but something always starts
         // the PHP session first. 
         //$session = new Session(new PhpBridgeSessionStorage());
-        $session = new Session();
+        // $session = new Session();
         // $session->start();
-        if ($key = $session->get('key')) {
+        // if ($key = $session->get('key')) {
+        if (isset($_SESSION['key'])) {
+            $key = $_SESSION['key'];
 
             // then we should have the record id and they should match
-            if ($purchaseid = $session->get('purchaseid')) {
+            // if ($purchaseid = $session->get('purchaseid')) {
+            if (isset($_SESSION['purchaseid'])) {
+                $purchaseid = $_SESSION['purchaseid'];
+                
                 $purchase = $em->getRepository('SRPSBookingBundle:Purchase')
                     ->find($purchaseid);
 
@@ -192,8 +196,10 @@ class Booking
 
         // id should be set automagically
         $id = $purchase->getId();
-        $session->set('key', $key);
-        $session->set('purchaseid', $id);
+        //$session->set('key', $key);
+        //$session->set('purchaseid', $id);
+        $_SESSION['key'] = $key;
+        $_SESSION['purchaseid'] = $id;
 
         // we can add the booking ref (generated from id) - it should get
         // just need another persist to make sure
