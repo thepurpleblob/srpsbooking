@@ -39,3 +39,11 @@ Run app.php/install to create admin account
 
 Run app.php/admin/install to populate CRS
 
+
+NOTES:
+Session errors can (usually) be fixed by
+framework:
+    session:
+        storage_id: session.storage.php_bridge
+        handler_id: session.handler.native_file
+(See http://symfony.com/doc/current/cookbook/session/php_bridge.html)
