@@ -1,0 +1,4 @@
+
+_index:
+    pattern: /admin/index
+    defaults: { _controller: SRPSSantaBundle:Admin:Index }

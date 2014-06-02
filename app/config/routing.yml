@@ -1,0 +1,4 @@
+srps_santa:
+    resource: "@SRPSSantaBundle/Resources/config/routing.yml"
+    prefix:   /
+
