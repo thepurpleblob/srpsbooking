@@ -1,28 +1,19 @@
 {# src/SRPS/Resources/views/Admin/AdminTemplate.html.twig #}
 
-{% extends '::base.html.twig' %}
+{% extends 'MopaBootstrapBundle::base_less.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
+    <!---
     <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/amelia/bootstrap.min.css" rel="stylesheet" media="screen"> 
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.min.css" rel="stylesheet" media="screen">  
+    --->
 {% endblock stylesheets %}
 
 {% block title %}SRPS Santa Administration{% endblock title %}
 
-{% block body %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                {% block sidebar %}{% endblock sidebar %}
-            </div>
-            <div class="col-md-9">    
-                {% block content %}{% endblock content %}
-            </div>
-        </div>
-    </div>
-{% endblock body%}
+
 
 {% block javascripts %}
     {{ parent() }}

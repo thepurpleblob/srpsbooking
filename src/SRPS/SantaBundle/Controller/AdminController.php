@@ -10,5 +10,10 @@ class AdminController extends Controller
     {
         return $this->render('SRPSSantaBundle:Admin:index.html.twig');
     }
+    
+    public function TimetableAction()
+    {
+        return $this->render('SRPSSantaBundle:admin:timetable.html.twig');
+    }
 
 }

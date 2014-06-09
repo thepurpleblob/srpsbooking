@@ -2,3 +2,7 @@
 _index:
     pattern: /admin/index
     defaults: { _controller: SRPSSantaBundle:Admin:Index }
+    
+admin_timetable:
+    pattern: /admin/timetable
+    defaults: { _controller: SRPSSantaBundle:Admin:timetable }
