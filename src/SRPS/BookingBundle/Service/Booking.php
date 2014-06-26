@@ -101,6 +101,7 @@ class Booking
         // remove the key and the purchaseid
         // $session->remove('key');
         // $session->remove('purchaseid');
+        session_start();
         unset($_SESSION['key']);
         unset($_SESSION['purchaseid']);
 
@@ -175,6 +176,9 @@ class Booking
 
         // if no code or serviceid was supplied then we are not allowed a new one
         if (empty($code) or empty($serviceid)) {
+            if (empty($key)) {
+                $key = 'not found';
+            }
             throw new \Exception("The purchase record was not found (code='$code', id=$serviceid, key='$key')");
         }
 
