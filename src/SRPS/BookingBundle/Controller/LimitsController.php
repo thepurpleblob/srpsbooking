@@ -29,6 +29,10 @@ class LimitsController extends Controller
 
         $limits = $em->getRepository('SRPSBookingBundle:Limits')
             ->findOneByServiceid($serviceid);
+        if (!$limits) {
+            $limits = new Limits();
+            $limits->setServiceID($serviceid);
+        }
 
         // Get destinations (for destination limits)
         $destinations = $em->getRepository('SRPSBookingBundle:Destination')
