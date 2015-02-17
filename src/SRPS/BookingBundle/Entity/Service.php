@@ -154,7 +154,7 @@ class Service {
         $this->mealbvisible = 0;
         $this->mealcvisible = 0;
         $this->mealdvisible = 0;
-        $this->singlesupplement = 10.00;
+        $this->singlesupplement = 15.00;
         $this->maxparty = 16;
         $this->commentbox = false;
     }
